@@ -1,0 +1,27 @@
+package team7.demo.login.services;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import team7.demo.login.models.Hospital;
+import team7.demo.login.repositories.HospitalRepository;
+
+import java.util.List;
+
+@Service
+public class HospitalService {
+    private final HospitalRepository repository;
+
+    @Autowired
+    //automatically assign repo
+    public HospitalService(HospitalRepository repository){
+        this.repository = repository;
+    }
+
+    public Hospital save(Hospital hospital){
+        return repository.saveAndFlush(hospital);
+    }
+
+    public List<Hospital> getAll(){
+        return repository.findAll();
+    }
+}
