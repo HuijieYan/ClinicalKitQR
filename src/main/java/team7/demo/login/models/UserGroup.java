@@ -16,7 +16,7 @@ public class UserGroup{
     @Column(name = "password",nullable = false,columnDefinition = "TEXT")
     private String password;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY,cascade = CascadeType.PERSIST)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital
     @JoinColumn(
             name = "hospital_id",
@@ -31,6 +31,8 @@ public class UserGroup{
     //added because we must have a default constructor
 
     public UserGroup(String name,String username,String password){
+    //For this constructor, you MUST call addgroup function of Hospital object which this group belongs to before
+    //saving this group to the database
         this.name = name;
         this.username = username;
         this.password = password;
@@ -41,7 +43,6 @@ public class UserGroup{
         this.username = username;
         this.password = password;
         this.hospital_id = hospital;
-        this.hospital_id.addGroup(this);
     }
 
     public void setUsername(String username) {

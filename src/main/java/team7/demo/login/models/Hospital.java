@@ -34,7 +34,6 @@ public class Hospital {
     public Hospital(String name,Trust trust){
         this.hospitalName = name;
         this.trust = trust;
-        this.trust.addHospital(this);
     }
 
     public Hospital(String name,Trust trust,List<UserGroup>  groups){

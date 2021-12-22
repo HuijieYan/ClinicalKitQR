@@ -18,10 +18,15 @@ public class HospitalService {
     }
 
     public Hospital save(Hospital hospital){
+        hospital.getTrust().addHospital(hospital);
         return repository.saveAndFlush(hospital);
     }
 
     public List<Hospital> getAll(){
         return repository.findAll();
+    }
+
+    public Hospital findByID(long id){
+        return repository.findByHospitalId(id);
     }
 }

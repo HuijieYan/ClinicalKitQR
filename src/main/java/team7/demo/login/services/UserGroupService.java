@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.repositories.UserGroupRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -22,7 +21,9 @@ public class UserGroupService {
         if (repository.findByHospitalIdAndUsername(group.getHospital().getId(), group.getUsername())!=null){
             return null;
         }
-        return repository.saveAndFlush(group);
+        group.getHospital().addGroup(group);
+        //we need to add group for usergroup to establish connection between hospital and usergroup
+        return repository.save(group);
     }
 
     public List<UserGroup> getAll(){

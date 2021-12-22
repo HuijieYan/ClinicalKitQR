@@ -22,7 +22,7 @@ public class Trust {
     @Column(columnDefinition = "TEXT")
     private String trustName;
 
-    @OneToMany(mappedBy = "trust",orphanRemoval = true,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trust",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Hospital> hospitals = new ArrayList<>();
 
     public Trust(){}
