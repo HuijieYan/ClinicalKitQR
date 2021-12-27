@@ -19,7 +19,7 @@ public class HospitalService {
 
     public Hospital save(Hospital hospital){
         hospital.getTrust().addHospital(hospital);
-        return repository.saveAndFlush(hospital);
+        return repository.save(hospital);
     }
 
     public List<Hospital> getAll(){

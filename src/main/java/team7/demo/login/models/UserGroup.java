@@ -1,5 +1,6 @@
 package team7.demo.login.models;
 
+
 import javax.persistence.*;
 
 @Entity(name = "UserGroup")
@@ -16,7 +17,7 @@ public class UserGroup{
     @Column(name = "password",nullable = false,columnDefinition = "TEXT")
     private String password;
 
-    @ManyToOne(optional = false,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital
     @JoinColumn(
             name = "hospital_id",

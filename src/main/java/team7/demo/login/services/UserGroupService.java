@@ -18,7 +18,7 @@ public class UserGroupService {
     }
 
     public UserGroup save(UserGroup group){
-        if (repository.findByHospitalIdAndUsername(group.getHospital().getId(), group.getUsername())!=null){
+        if (repository.findByHospitalIdAndUsername(group.getHospital().getHospitalId(), group.getUsername())!=null){
             return null;
         }
         group.getHospital().addGroup(group);

@@ -29,7 +29,7 @@ class DemoApplicationTests {
 	@BeforeAll
 	public void setUp(){
 		hospital = hospitalService.save(hospital);
-		hospital_id = hospital.getId();
+		hospital_id = hospital.getHospitalId();
 	}
 
 	@Test

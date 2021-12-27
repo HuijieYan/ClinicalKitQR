@@ -1,10 +1,10 @@
 package team7.demo.login.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "Trust")
@@ -22,6 +22,7 @@ public class Trust {
     @Column(columnDefinition = "TEXT")
     private String trustName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "trust",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Hospital> hospitals = new ArrayList<>();
 

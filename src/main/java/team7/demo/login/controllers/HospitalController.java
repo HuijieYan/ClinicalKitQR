@@ -1,32 +1,45 @@
 package team7.demo.login.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team7.demo.login.models.Hospital;
 import team7.demo.login.services.HospitalService;
+import team7.demo.login.services.TrustService;
 
-import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup"})
 @RestController
 @RequestMapping("/hospitals")
 public class HospitalController {
     private final HospitalService service;
+    private final TrustService trustService;
 
     @Autowired
-    public HospitalController(HospitalService service){
+    public HospitalController(HospitalService service,TrustService trustService){
         this.service = service;
+        this.trustService = trustService;
     }
 
-    @GetMapping
-    public List<String> getHospitals(){
-        List<Hospital> hospitals = service.getAll();
-        List<String> list = new ArrayList<>();
-        for (Hospital hospital:hospitals){
-            list.add(hospital.toString());
-        }
-        return list;
+    @GetMapping("/all")
+    public List<Hospital> getAll(){
+        return service.getAll();
     }
+
+    @PostMapping("/register/trustID={trustID} name={name}")
+    public boolean register(@PathVariable long trustID,@PathVariable String name){
+        if(checkStringIsInvalid(name)){
+            return false;
+        }
+        service.save(new Hospital(name,trustService.findByID(trustID)));
+        return true;
+    }
+
+    private boolean checkStringIsInvalid(String str){
+        if (str == null||str.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
 }

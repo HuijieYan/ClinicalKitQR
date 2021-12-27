@@ -1,10 +1,11 @@
 package team7.demo.login.models;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity(name = "Hospital")
 @Table(name = "hospital")
@@ -15,17 +16,18 @@ public class Hospital {
             allocationSize = 1
     )
     @GeneratedValue(strategy =  GenerationType.SEQUENCE,generator = "HospitalidSeqGen")
-    @Column(name = "hospitalId",columnDefinition = "bigint not null")
+    @Column(columnDefinition = "bigint not null")
     @Id
     private long hospitalId;
 
     @Column(columnDefinition = "TEXT")
     private String hospitalName;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "trust_id",referencedColumnName = "trustId",columnDefinition = "bigint not null")
     private Trust trust;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "hospital_id",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<UserGroup> groups = new ArrayList<>();
 
@@ -42,20 +44,20 @@ public class Hospital {
         this.groups = groups;
     }
 
-    public long getId() {
+    public long getHospitalId() {
         return hospitalId;
     }
 
-    public String getName() {
+    public void setHospitalId(long hospitalId) {
+        this.hospitalId = hospitalId;
+    }
+
+    public String getHospitalName() {
         return hospitalName;
     }
 
-    public void setId(long id) {
-        this.hospitalId = id;
-    }
-
-    public void setName(String name) {
-        this.hospitalName = name;
+    public void setHospitalName(String hospitalName) {
+        this.hospitalName = hospitalName;
     }
 
     public Trust getTrust() {
@@ -74,9 +76,8 @@ public class Hospital {
     @Override
     public String toString() {
         return "Hospital{" +
-                "id=" + hospitalId +
-                ", name='" + hospitalName + '\'' +
-                ", trust='" + trust + '\'' +
+                "hospitalId=" + hospitalId +
+                ", hospitalName='" + hospitalName + '\'' +
                 '}';
     }
 }

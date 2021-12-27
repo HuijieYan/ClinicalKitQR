@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import team7.demo.login.models.Trust;
 import team7.demo.login.repositories.TrustRepository;
 
+import java.util.List;
+
 @Service
 public class TrustService {
     private final TrustRepository repository;
@@ -16,5 +18,9 @@ public class TrustService {
 
     public Trust findByID(long id){
         return repository.findByTrustId(id);
+    }
+
+    public List<Trust> getAll(){
+        return repository.findAll();
     }
 }
