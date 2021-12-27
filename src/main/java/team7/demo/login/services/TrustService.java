@@ -23,4 +23,8 @@ public class TrustService {
     public List<Trust> getAll(){
         return repository.findAll();
     }
+
+    public void save(Trust trust){
+        repository.saveAndFlush(trust);
+    }
 }

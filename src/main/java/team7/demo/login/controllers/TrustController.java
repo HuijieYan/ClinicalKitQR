@@ -1,16 +1,14 @@
 package team7.demo.login.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import team7.demo.login.models.Hospital;
 import team7.demo.login.models.Trust;
 import team7.demo.login.services.TrustService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup"})
+@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup","http://localhost:3000/trustCreation"})
 @RestController
 @RequestMapping("/trusts")
 public class TrustController {
@@ -25,6 +23,22 @@ public class TrustController {
     public List<Trust> getAll(){
         List<Trust> trusts = service.getAll();
         return trusts;
+    }
+
+    @PostMapping("/register/name={name}")
+    public boolean register(@PathVariable String name){
+        if(checkStringIsInvalid(name)){
+            return false;
+        }
+        service.save(new Trust(name));
+        return true;
+    }
+
+    private boolean checkStringIsInvalid(String str){
+        if (str == null||str.isEmpty()){
+            return true;
+        }
+        return false;
     }
 
 }
