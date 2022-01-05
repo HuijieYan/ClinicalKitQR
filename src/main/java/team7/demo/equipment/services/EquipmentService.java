@@ -11,6 +11,7 @@ import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.repositories.EquipmentRepository;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 @Service
 public class EquipmentService {
@@ -40,5 +41,13 @@ public class EquipmentService {
         BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, 200, 200);
 
         return MatrixToImageWriter.toBufferedImage(bitMatrix);
+    }
+
+    public List<Equipment> getAll(){
+        return repository.findAll();
+    }
+
+    public void delete(long id){
+        repository.deleteById(id);
     }
 }

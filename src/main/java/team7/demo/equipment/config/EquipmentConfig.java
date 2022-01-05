@@ -17,6 +17,8 @@ public class EquipmentConfig {
         return args -> {
             Equipment equipment = new Equipment("Equipment1","Some description");
             service.save(equipment);
+            equipment = new Equipment("Equipment2","Some description");
+            service.save(equipment);
         };
     }
 
