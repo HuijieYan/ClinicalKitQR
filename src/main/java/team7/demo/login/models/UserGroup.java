@@ -24,8 +24,9 @@ public class UserGroup{
             referencedColumnName = "hospitalId",
             columnDefinition = "bigint not null"
     )
+    //reference is the variable in Hospital
     @Id
-    private Hospital hospital_id;
+    private Hospital hospitalId;
     //the name of this variable must be the same as the long variable in UserGroupPrimaryKey
 
     public UserGroup(){}
@@ -43,7 +44,7 @@ public class UserGroup{
         this.name = name;
         this.username = username;
         this.password = password;
-        this.hospital_id = hospital;
+        this.hospitalId = hospital;
     }
 
     public void setUsername(String username) {
@@ -55,7 +56,7 @@ public class UserGroup{
     }
 
     public void setHospital(Hospital hospital_id) {
-        this.hospital_id = hospital_id;
+        this.hospitalId = hospital_id;
     }
 
     public String getUsername() {
@@ -71,7 +72,7 @@ public class UserGroup{
     }
 
     public Hospital getHospital() {
-        return hospital_id;
+        return hospitalId;
     }
 
     @Override

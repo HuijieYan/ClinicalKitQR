@@ -7,6 +7,8 @@ import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.services.EquipmentService;
+import team7.demo.login.models.Hospital;
+import team7.demo.login.models.Trust;
 
 import java.awt.image.BufferedImage;
 
@@ -15,9 +17,8 @@ public class EquipmentConfig {
     @Bean
     CommandLineRunner equipmentRunner(EquipmentService service){
         return args -> {
-            Equipment equipment = new Equipment("Equipment1","Some description");
-            service.save(equipment);
-            equipment = new Equipment("Equipment2","Some description");
+            Hospital hospital = new Hospital("New Hospital",new Trust("Trust2"));
+            Equipment equipment = new Equipment("Equipment3","Some description",hospital);
             service.save(equipment);
         };
     }

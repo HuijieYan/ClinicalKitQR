@@ -2,6 +2,7 @@ package team7.demo.login.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import team7.demo.equipment.models.Equipment;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -28,8 +29,13 @@ public class Hospital {
     private Trust trust;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "hospital_id",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    //mappedBy is the name of variable in UserGroup
     private List<UserGroup> groups = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Equipment> equipments = new ArrayList<>();
 
     public Hospital(){}
 
@@ -71,6 +77,11 @@ public class Hospital {
     public void addGroup(UserGroup group) {
         this.groups.add(group);
         group.setHospital(this);
+    }
+
+    public void addEquipment(Equipment equipment) {
+        this.equipments.add(equipment);
+        equipment.setHospital(this);
     }
 
     @Override

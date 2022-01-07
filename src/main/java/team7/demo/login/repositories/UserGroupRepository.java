@@ -13,12 +13,12 @@ import java.util.List;
 @Repository
 public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
 //this is used to access, manipulate database
-    @Query("select u from UserGroup u where u.hospital_id.hospitalId = ?1 and u.username = ?2")
+    @Query("select u from UserGroup u where u.hospitalId.hospitalId = ?1 and u.username = ?2")
     UserGroup findByHospitalIdAndUsername(long id,String username);
 
     @Transactional //if update failed, nothing is going to change
     @Modifying
-    @Query("update UserGroup u set u.name = ?4, u.password=?3 where u.username = ?2 and u.hospital_id.hospitalId = ?1")
+    @Query("update UserGroup u set u.name = ?4, u.password=?3 where u.username = ?2 and u.hospitalId.hospitalId = ?1")
     int updateUserGroup(long id,String username,String password,String name);
 
 }

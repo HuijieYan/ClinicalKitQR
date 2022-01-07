@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class UserGroupPrimaryKey implements Serializable {
     private String username;
-    private long hospital_id;
+    private long hospitalId;
 
     public UserGroupPrimaryKey(){}
 
-    public UserGroupPrimaryKey(String username,long hospital_id){
+    public UserGroupPrimaryKey(String username,long hospitalId){
         this.username = username;
-        this.hospital_id = hospital_id;
+        this.hospitalId = hospitalId;
     }
 
     @Override
@@ -19,24 +19,24 @@ public class UserGroupPrimaryKey implements Serializable {
         if (this == o) return true;
         if (!(o instanceof UserGroupPrimaryKey)) return false;
         UserGroupPrimaryKey that = (UserGroupPrimaryKey) o;
-        return hospital_id == that.hospital_id && username.equals(that.username);
+        return hospitalId == that.hospitalId && username.equals(that.username);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, hospital_id);
+        return Objects.hash(username, hospitalId);
     }
 
-    public long getHospital_id() {
-        return hospital_id;
+    public long getHospitalId() {
+        return hospitalId;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setHospital_id(long hospital_id) {
-        this.hospital_id = hospital_id;
+    public void setHospitalId(long hospitalId) {
+        this.hospitalId = hospitalId;
     }
 
     public void setUsername(String username) {
