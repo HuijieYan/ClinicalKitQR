@@ -15,9 +15,12 @@ public class UserGroupConfig {
     CommandLineRunner commandLineRunner(HospitalService service){
         return args -> {
             Trust trust = new Trust("Team7");
+            Hospital trustAdmin = trust.getHospitals().get(0);
             Hospital hospital = new Hospital("MyHospital",trust);
-            UserGroup group = new UserGroup("group1","g1","123");
-            UserGroup group2 = new UserGroup("group2","g2","123");
+            UserGroup group = new UserGroup("group1","g1","123",true);
+            UserGroup group2 = new UserGroup("group2","g2","123",false);
+            UserGroup g3 = new UserGroup("admin1","admin","123",false);
+            trustAdmin.addGroup(g3);
             Equipment equipment1 = new Equipment("Equipment1","Some Description");
             Equipment equipment2 = new Equipment("Equipment2","Some Description");
             hospital.addGroup(group);

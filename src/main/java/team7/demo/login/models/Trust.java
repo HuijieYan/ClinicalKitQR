@@ -30,6 +30,7 @@ public class Trust {
 
     public Trust(String trustName){
         this.trustName = trustName;
+        this.addHospital(new Hospital("Trust Admin",this));
     }
 
     public long getTrustId() {

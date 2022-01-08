@@ -26,6 +26,11 @@ public class HospitalController {
         return service.getAll();
     }
 
+    @GetMapping("/all/trustID={trustID}")
+    public List<Hospital> getAllByTrust(@PathVariable long trustID){
+        return service.getAllByTrust(trustID);
+    }
+
     @PostMapping("/register/trustID={trustID} name={name}")
     public boolean register(@PathVariable long trustID,@PathVariable String name){
         if(checkStringIsInvalid(name)){

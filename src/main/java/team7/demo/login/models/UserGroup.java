@@ -29,22 +29,27 @@ public class UserGroup{
     private Hospital hospitalId;
     //the name of this variable must be the same as the long variable in UserGroupPrimaryKey
 
+    @Column(name="is_admin",nullable = false)
+    private boolean isAdmin;
+
     public UserGroup(){}
     //added because we must have a default constructor
 
-    public UserGroup(String name,String username,String password){
+    public UserGroup(String name,String username,String password,boolean isAdmin){
     //For this constructor, you MUST call addgroup function of Hospital object which this group belongs to before
     //saving this group to the database
         this.name = name;
         this.username = username;
         this.password = password;
+        this.isAdmin = isAdmin;
     }
 
-    public UserGroup(String name,String username,String password,Hospital hospital){
+    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin){
         this.name = name;
         this.username = username;
         this.password = password;
         this.hospitalId = hospital;
+        this.isAdmin = isAdmin;
     }
 
     public void setUsername(String username) {
@@ -73,6 +78,14 @@ public class UserGroup{
 
     public Hospital getHospital() {
         return hospitalId;
+    }
+
+    public boolean getIsAdmin() {
+        return isAdmin;
+    }
+
+    public void setIsAdmin(boolean admin) {
+        isAdmin = admin;
     }
 
     @Override

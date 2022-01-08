@@ -44,7 +44,7 @@ class DemoApplicationTests {
 	void testSavingUserGroupSuccess(){
 	//check whether
 		int originalSize = service.getAll().size();
-		UserGroup group = new UserGroup("test1","test1","test1",hospital);
+		UserGroup group = new UserGroup("test1","test1","test1",hospital,true);
 		//hospital.addGroup(group);
 		service.save(group);
 		Assertions.assertTrue(originalSize+1==service.getAll().size());
@@ -61,7 +61,7 @@ class DemoApplicationTests {
 	@Order(4)
 	void testSavingUserGroupFailed(){
 		int originalSize = service.getAll().size();
-		UserGroup group = new UserGroup("test1","test1","test1",hospital);
+		UserGroup group = new UserGroup("test1","test1","test1",hospital,true);
 		//hospital.addGroup(group);
 		service.save(group);
 		Assertions.assertTrue(originalSize==service.getAll().size());

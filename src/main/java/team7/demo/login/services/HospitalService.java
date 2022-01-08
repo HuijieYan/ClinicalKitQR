@@ -22,6 +22,10 @@ public class HospitalService {
         return repository.save(hospital);
     }
 
+    public List<Hospital> getAllByTrust(long id){
+        return repository.findByTrustId(id);
+    }
+
     public List<Hospital> getAll(){
         return repository.findAll();
     }
