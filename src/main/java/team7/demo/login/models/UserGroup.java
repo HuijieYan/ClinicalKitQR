@@ -1,7 +1,12 @@
 package team7.demo.login.models;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import team7.demo.issue.models.Issue;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity(name = "UserGroup")
 @Table(name = "usergroup")
@@ -32,6 +37,10 @@ public class UserGroup{
     @Column(name="is_admin",nullable = false)
     private boolean isAdmin;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "userGroupName",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Issue> issueList = new ArrayList<>();
+
     public UserGroup(){}
     //added because we must have a default constructor
 
@@ -60,7 +69,7 @@ public class UserGroup{
         this.name = name;
     }
 
-    public void setHospital(Hospital hospital_id) {
+    public void setHospitalId(Hospital hospital_id) {
         this.hospitalId = hospital_id;
     }
 
@@ -76,7 +85,7 @@ public class UserGroup{
         return password;
     }
 
-    public Hospital getHospital() {
+    public Hospital getHospitalId() {
         return hospitalId;
     }
 
@@ -86,6 +95,10 @@ public class UserGroup{
 
     public void setIsAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public void addIssue(Issue issue){
+        issueList.add(issue);
     }
 
     @Override

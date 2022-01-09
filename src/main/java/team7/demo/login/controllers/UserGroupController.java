@@ -30,7 +30,7 @@ public class UserGroupController {
         UserGroup group = service.findByPK(hospitalID,username);
         if(group!=null&&group.getPassword().equals(password)){
             result.add(1);
-            if (group.getHospital().getHospitalName().equals("Trust Admin")){
+            if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
                 result.add(3);
             }else {
                 if (group.getIsAdmin()){

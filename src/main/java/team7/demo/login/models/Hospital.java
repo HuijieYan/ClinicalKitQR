@@ -76,7 +76,6 @@ public class Hospital {
 
     public void addGroup(UserGroup group) {
         this.groups.add(group);
-        group.setHospital(this);
     }
 
     public void addEquipment(Equipment equipment) {

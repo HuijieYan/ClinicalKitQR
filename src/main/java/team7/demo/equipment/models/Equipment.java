@@ -3,6 +3,7 @@ package team7.demo.equipment.models;
 import javax.imageio.ImageIO;
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
 import team7.demo.Constant;
@@ -10,13 +11,16 @@ import team7.demo.Constant;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
+import team7.demo.issue.models.Issue;
 import team7.demo.login.models.Hospital;
 
 @Entity(name = "Equipment")
 @Table(name = "Equipment")
-@IdClass(EquipmentPrimaryKey.class)
 public class Equipment {
     @Id
     @SequenceGenerator(
@@ -28,7 +32,6 @@ public class Equipment {
     @Column(name = "equipmentId",columnDefinition = "bigint not null")
     private long equipmentId;
 
-    @Id
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "hospitalId",
             referencedColumnName = "hospitalId",
@@ -42,6 +45,10 @@ public class Equipment {
 
     @Column(columnDefinition = "TEXT")
     private String content;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Issue> issueList = new ArrayList<>();
 
     public Equipment(){}
 
@@ -82,5 +89,9 @@ public class Equipment {
 
     public Hospital getHospitalId() {
         return hospitalId;
+    }
+
+    public void addIssue(Issue issue){
+        issueList.add(issue);
     }
 }

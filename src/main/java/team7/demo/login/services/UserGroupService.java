@@ -18,10 +18,10 @@ public class UserGroupService {
     }
 
     public UserGroup save(UserGroup group){
-        if (repository.findByHospitalIdAndUsername(group.getHospital().getHospitalId(), group.getUsername())!=null){
+        if (repository.findByHospitalIdAndUsername(group.getHospitalId().getHospitalId(), group.getUsername())!=null){
             return null;
         }
-        group.getHospital().addGroup(group);
+        group.getHospitalId().addGroup(group);
         //we need to add group for usergroup to establish connection between hospital and usergroup
         return repository.save(group);
     }
