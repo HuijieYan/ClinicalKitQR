@@ -30,6 +30,10 @@ public class EquipmentService {
     }
 
     public void save(Equipment equipment){
+        if (equipment.getEquipmentId()>=Constant.MAX_EQUIPMENT){
+        //we only stores 2^36 equipments for readability of the string in qr code
+            return;
+        }
         equipment.getHospitalId().addEquipment(equipment);
         repository.save(equipment);
     }
@@ -47,16 +51,58 @@ public class EquipmentService {
     }
 
     public BufferedImage generateQRCodeImage(long id) throws Exception {
+        int width = 300;
+        int height = 300;
         Equipment equipment = this.get(id);
         if (equipment==null){
             return null;
         }
         String url = Constant.URL + "/equipment/id="+Long.toString(id);
         QRCodeWriter barcodeWriter = new QRCodeWriter();
-        BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, 200, 200);
+        BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
 
         BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        return image;
+        return addText(image,id);
+    }
+
+    public BufferedImage addText(BufferedImage image,long id){
+        StringBuffer buffer = new StringBuffer(Long.toHexString(id));
+        int zeros = 9-buffer.length();
+        for (int i =0;i<zeros;i++){
+            buffer.insert(0,"0");
+        }
+        int[] position = {3,7};
+        int height = image.getHeight();
+        for (int pos:position){
+            buffer.insert(pos,"-");
+        }
+        String text = buffer.toString();
+
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), height + 40, BufferedImage.TYPE_INT_ARGB);
+        Graphics g = outputImage.getGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
+        g.setFont(new Font("Century Schoolbook", Font.BOLD, 20));
+        Color textColor = Color.BLACK;
+        g.setColor(textColor);
+        FontMetrics fm = g.getFontMetrics();
+        int startingYposition = height - 10;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        g.setFont(new Font("Neue Haas Grotesk Text Pro", Font.BOLD, 14));
+        fm = g.getFontMetrics();
+        text ="ENTER THE CODE ABOVE IF YOU";
+        startingYposition += 18;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        text ="CANNOT SCAN THE QR CODE";
+        startingYposition += 15;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        g.setFont(new Font("Neue Haas Grotesk Text Pro", Font.BOLD, 16));
+        fm = g.getFontMetrics();
+        text ="EQUIPMENT EDUCATION QR CODE";
+        startingYposition = 23;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        return outputImage;
     }
 
     /*

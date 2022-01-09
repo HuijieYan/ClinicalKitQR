@@ -12,12 +12,15 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import team7.demo.issue.models.Issue;
 import team7.demo.login.models.Hospital;
+import team7.demo.login.models.UserGroup;
 
 @Entity(name = "Equipment")
 @Table(name = "Equipment")
@@ -49,6 +52,7 @@ public class Equipment {
     @JsonIgnore
     @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
+
 
     public Equipment(){}
 
