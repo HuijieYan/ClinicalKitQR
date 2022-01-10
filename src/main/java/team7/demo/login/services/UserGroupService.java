@@ -30,6 +30,18 @@ public class UserGroupService {
         return repository.findAll();
     }
 
+    public List<UserGroup> getAllByHospital(long id){
+        return repository.findAllByHospitalId(id);
+    }
+
+    public List<UserGroup> getAllByTrust(long id){
+        return repository.findAllByTrustId(id);
+    }
+
+    public void delete(UserGroup group){
+        repository.delete(group);
+    }
+
     public UserGroup findByPK(long id,String username){
         if (username.length()==0||username == null){
             return null;

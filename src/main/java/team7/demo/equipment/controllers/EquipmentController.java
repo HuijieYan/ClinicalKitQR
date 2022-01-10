@@ -30,9 +30,15 @@ public class EquipmentController {
         }
     }
 
-    @GetMapping(value = "/Trust/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
+    @GetMapping(value = "/trustId={id}")
     public List<Equipment> getEquipmentsInTrust(@PathVariable long id){
-        return service.getAllByTrust(id);
+        List<Equipment> ls = service.getAllByTrust(id);
+        return ls;
+    }
+
+    @GetMapping(value = "/hospitalId={id}")
+    public List<Equipment> getEquipmentsInHospital(@PathVariable long id){
+        return service.getAllByHospital(id);
     }
 
     @GetMapping("/all")

@@ -24,25 +24,71 @@ public class UserGroupController {
         this.hospitalService = hospitalService;
     }
 
+    @GetMapping("/hospitalId={hospitalId}")
+    public List<List<String>> getAllByHospital(@PathVariable long hospitalId){
+        List<List<String>> result = new ArrayList<>();
+        List<UserGroup> groups = service.getAllByHospital(hospitalId);
+        for (UserGroup group:groups){
+            List<String> groupls = new ArrayList<>();
+            groupls.add(group.getName());
+            groupls.add(group.getUsername());
+            groupls.add(getRole(group));
+            groupls.add(group.getHospitalId().getHospitalName());
+            result.add(groupls);
+        }
+        return result;
+    }
+
+    private String getRole(UserGroup group){
+        if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
+            return "Trust Admin";
+        }else{
+            if (group.getIsAdmin()){
+                return "Hospital Admin";
+            }else {
+                return "Normal User";
+            }
+        }
+    }
+
+    @GetMapping("/trustId={trustId}")
+    public List<List<String>> getAllByTrust(@PathVariable long trustId){
+        List<List<String>> result = new ArrayList<>();
+        List<UserGroup> groups = service.getAllByTrust(trustId);
+        for (UserGroup group:groups){
+            List<String> groupls = new ArrayList<>();
+            groupls.add(group.getName());
+            groupls.add(group.getUsername());
+            groupls.add(getRole(group));
+            groupls.add(group.getHospitalId().getHospitalName());
+            result.add(groupls);
+        }
+        return result;
+    }
+
+    @DeleteMapping("/delete/hospitalID={hospitalID} username={username}")
+    public void delete(@PathVariable long hospitalID,@PathVariable String username){
+        service.delete(service.findByPK(hospitalID,username));
+    }
+
     @GetMapping("/login/hospitalID={hospitalID} username={username} password={password}")
-    public List<Integer> login(@PathVariable long hospitalID, @PathVariable String username, @PathVariable String password){
-        List<Integer> result = new ArrayList<>();
+    public List<Long> login(@PathVariable long hospitalID, @PathVariable String username, @PathVariable String password){
+        List<Long> result = new ArrayList<>();
         UserGroup group = service.findByPK(hospitalID,username);
         if(group!=null&&group.getPassword().equals(password)){
-            result.add(1);
             if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
-                result.add(3);
+                result.add(3L);
             }else {
                 if (group.getIsAdmin()){
-                    result.add(2);
+                    result.add(2L);
                 }else{
-                    result.add(1);
+                    result.add(1L);
                 }
             }
+            result.add(group.getHospitalId().getHospitalId());
+            result.add(group.getHospitalId().getTrust().getTrustId());
             return result;
         }
-        result.add(0);
-        result.add(-1);
         return result;
     }
 

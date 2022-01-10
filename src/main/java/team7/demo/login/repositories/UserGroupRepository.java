@@ -21,4 +21,9 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
     @Query("update UserGroup u set u.name = ?4, u.password=?3 where u.username = ?2 and u.hospitalId.hospitalId = ?1")
     int updateUserGroup(long id,String username,String password,String name);
 
+    @Query("select u from UserGroup u where u.hospitalId.hospitalId = ?1")
+    List<UserGroup> findAllByHospitalId(long id);
+
+    @Query("select u from UserGroup u where u.hospitalId.trust.trustId = ?1")
+    List<UserGroup> findAllByTrustId(long id);
 }
