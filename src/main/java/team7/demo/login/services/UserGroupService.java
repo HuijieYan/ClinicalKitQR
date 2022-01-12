@@ -38,8 +38,8 @@ public class UserGroupService {
         return repository.findAllByTrustId(id);
     }
 
-    public void delete(UserGroup group){
-        repository.delete(group);
+    public void delete(long hospitalId,String username){
+        repository.deleteByPK(hospitalId,username);
     }
 
     public UserGroup findByPK(long id,String username){

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import team7.demo.Constant;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.repositories.EquipmentRepository;
+import team7.demo.issue.models.Issue;
+import team7.demo.issue.repositories.IssueRepository;
 import team7.demo.login.services.HospitalService;
 
 import java.awt.*;
@@ -24,9 +26,11 @@ import java.util.List;
 public class EquipmentService {
 
     private final EquipmentRepository repository;
+    private final IssueRepository issueRepository;
     @Autowired
-    public EquipmentService(EquipmentRepository repository){
+    public EquipmentService(EquipmentRepository repository,IssueRepository issueRepository){
         this.repository = repository;
+        this.issueRepository = issueRepository;
     }
 
     public void save(Equipment equipment){
@@ -151,6 +155,9 @@ public class EquipmentService {
     }
 
     public void delete(long id){
+        for (Issue issue:repository.findById(id).getIssueList()){
+            issueRepository.deleteById(issue.getIssueId());
+        }
         repository.deleteById(id);
     }
 }

@@ -34,6 +34,7 @@ public class UserGroupController {
             groupls.add(group.getUsername());
             groupls.add(getRole(group));
             groupls.add(group.getHospitalId().getHospitalName());
+            groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
             result.add(groupls);
         }
         return result;
@@ -61,14 +62,15 @@ public class UserGroupController {
             groupls.add(group.getUsername());
             groupls.add(getRole(group));
             groupls.add(group.getHospitalId().getHospitalName());
+            groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
             result.add(groupls);
         }
         return result;
     }
 
-    @DeleteMapping("/delete/hospitalID={hospitalID} username={username}")
-    public void delete(@PathVariable long hospitalID,@PathVariable String username){
-        service.delete(service.findByPK(hospitalID,username));
+    @DeleteMapping("/delete/hospitalId={hospitalId} username={username}")
+    public void delete(@PathVariable long hospitalId,@PathVariable String username){
+        service.delete(hospitalId,username);
     }
 
     @GetMapping("/login/hospitalID={hospitalID} username={username} password={password}")

@@ -67,6 +67,10 @@ public class Equipment {
         this.hospitalId = hospitalId;
     }
 
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

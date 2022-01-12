@@ -64,9 +64,6 @@ public class Issue {
         this.solved = solved;
     }
 
-    public void setEquipmentId(Equipment equipmentId) {
-        this.equipmentId = equipmentId;
-    }
 
     public void setDate(LocalDate date) {
         this.date = date;
@@ -78,10 +75,6 @@ public class Issue {
 
     public void setSolved(boolean solved) {
         this.solved = solved;
-    }
-
-    public void setUserGroupName(UserGroup userGroupName) {
-        this.userGroupName = userGroupName;
     }
 
     public void setIssueId(long issueId) {
