@@ -12,5 +12,4 @@ public interface HospitalRepository extends JpaRepository<Hospital,Long> {
 
     @Query("select h from Hospital h where h.trust.trustId = ?1")
     public List<Hospital> findByTrustId(long id);
-
 }

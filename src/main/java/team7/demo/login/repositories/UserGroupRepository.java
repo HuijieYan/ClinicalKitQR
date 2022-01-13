@@ -27,6 +27,7 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
     @Query("select u from UserGroup u where u.hospitalId.trust.trustId = ?1")
     List<UserGroup> findAllByTrustId(long id);
 
+
     @Transactional
     @Modifying
     @Query("delete from UserGroup u where u.username=?2 and u.hospitalId.hospitalId=?1")

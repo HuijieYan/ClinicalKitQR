@@ -26,6 +26,11 @@ public class HospitalController {
         return service.getAll();
     }
 
+    @GetMapping("/hospitalId={hospitalId}")
+    public Hospital getHospital(@PathVariable long hospitalId){
+        return service.findByID(hospitalId);
+    }
+
     @GetMapping("/all/trustID={trustID}")
     public List<Hospital> getAllByTrust(@PathVariable long trustID){
         return service.getAllByTrust(trustID);

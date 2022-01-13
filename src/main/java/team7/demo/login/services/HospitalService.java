@@ -33,4 +33,8 @@ public class HospitalService {
     public Hospital findByID(long id){
         return repository.findByHospitalId(id);
     }
+
+    public String getNameByID(long id){
+        return findByID(id).getHospitalName();
+    }
 }
