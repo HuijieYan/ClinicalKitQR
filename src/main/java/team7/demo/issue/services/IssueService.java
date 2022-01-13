@@ -20,10 +20,21 @@ public class IssueService {
         return repository.getAllByHospitalId(id);
     }
 
+    public List<Issue> getAllByTrust(long id){
+        return repository.getAllByTrustId(id);
+    }
+
+    public void delete(long id){
+        repository.deleteByIssueId(id);
+    }
+
     public void save(Issue issue){
         issue.getEquipmentId().addIssue(issue);
         issue.getUserGroupName().addIssue(issue);
         repository.save(issue);
     }
 
+    public void updateSolved(long id,boolean solved){
+        repository.updateSolved(id,solved);
+    }
 }

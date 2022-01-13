@@ -18,8 +18,23 @@ public class IssueController {
         this.service = service;
     }
 
-    @GetMapping("/all/hospitalId={hospitalId}")
+    @GetMapping("/hospitalId={hospitalId}")
     public List<Issue> getByHospital(@PathVariable long hospitalId){
         return service.getAllByHospital(hospitalId);
+    }
+
+    @GetMapping("/trustId={trustId}")
+    public List<Issue> getByTrust(@PathVariable long trustId){
+        return service.getAllByTrust(trustId);
+    }
+
+    @PostMapping("/issueId={issueId} solved={solved}")
+    public void updateSolved(@PathVariable long issueId,@PathVariable boolean solved){
+        service.updateSolved(issueId, solved);
+    }
+
+    @DeleteMapping("/delete/issueId={issueId}")
+    public void deleteById(@PathVariable long issueId){
+        service.delete(issueId);
     }
 }
