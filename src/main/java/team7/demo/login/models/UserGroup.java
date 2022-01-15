@@ -22,6 +22,9 @@ public class UserGroup{
     @Column(name = "password",nullable = false,columnDefinition = "TEXT")
     private String password;
 
+    @Column(name = "email",nullable = true,columnDefinition = "TEXT")
+    private String email;
+
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital
     @JoinColumn(
@@ -44,13 +47,13 @@ public class UserGroup{
     public UserGroup(){}
     //added because we must have a default constructor
 
-    public UserGroup(String name,String username,String password,boolean isAdmin){
-    //For this constructor, you MUST call addgroup function of Hospital object which this group belongs to before
-    //saving this group to the database
+    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email){
         this.name = name;
         this.username = username;
         this.password = password;
+        this.hospitalId = hospital;
         this.isAdmin = isAdmin;
+        this.email = email;
     }
 
     public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin){
@@ -91,6 +94,14 @@ public class UserGroup{
 
     public boolean getIsAdmin() {
         return isAdmin;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setIsAdmin(boolean admin) {

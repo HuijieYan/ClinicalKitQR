@@ -94,8 +94,10 @@ public class UserGroupController {
         return result;
     }
 
-    @PostMapping("/register/trustID={trustID} hospitalID={hospitalID} name={name} username={username} password={password} isAdmin={isAdmin}")
-    public boolean register(@PathVariable long trustID,@PathVariable long hospitalID,@PathVariable String name,@PathVariable String username,@PathVariable String password,@PathVariable boolean isAdmin){
+    @PostMapping("/register/trustID={trustID} hospitalID={hospitalID} name={name} username={username} password={password} isAdmin={isAdmin} email={email}")
+    public boolean register(@PathVariable long trustID,@PathVariable long hospitalID,@PathVariable String name,
+                            @PathVariable String username,@PathVariable String password,
+                            @PathVariable boolean isAdmin,@PathVariable String email){
     //request body is the data part of a request
         Hospital hospital = hospitalService.findByID(hospitalID);
         if (checkStringIsInvalid(name)||checkStringIsInvalid(username)||checkStringIsInvalid(password)
@@ -106,7 +108,12 @@ public class UserGroupController {
         //All usernames are unique
             return false;
         }
-        UserGroup group = new UserGroup(name,username,password,hospital,isAdmin);
+        UserGroup group;
+        if (email.length() >0){
+            group = new UserGroup(name,username,password,hospital,isAdmin,email);
+        }else {
+            group = new UserGroup(name, username, password, hospital, isAdmin);
+        }
         //hospital.addGroup(group);
         service.save(group);
         return true;
