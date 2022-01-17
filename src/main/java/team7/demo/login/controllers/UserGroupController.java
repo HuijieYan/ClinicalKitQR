@@ -119,6 +119,22 @@ public class UserGroupController {
         return true;
     }
 
+    @GetMapping("/all/admins")
+    public List<List<String>> getAllAdmin(){
+        List<List<String>> result = new ArrayList<>();
+        List<UserGroup> groups = service.getAllAdmins();
+        for (UserGroup group:groups){
+            List<String> groupls = new ArrayList<>();
+            groupls.add(group.getName());
+            groupls.add(group.getHospitalId().getHospitalName());
+            groupls.add(getRole(group));
+            groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
+            groupls.add(group.getEmail());
+            result.add(groupls);
+        }
+        return result;
+    }
+
     private boolean checkStringIsInvalid(String str){
         if (str == null||str.isEmpty()){
             return true;

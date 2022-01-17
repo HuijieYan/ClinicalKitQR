@@ -64,4 +64,8 @@ public class UserGroupService {
         return false;
     }
 
+    public List<UserGroup> getAllAdmins(){
+        return repository.findALlAdmins();
+    }
+
 }

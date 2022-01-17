@@ -3,6 +3,7 @@ package team7.demo.login.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import team7.demo.issue.models.Issue;
+import team7.demo.mail.models.Mail;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -44,6 +45,10 @@ public class UserGroup{
     @OneToMany(mappedBy = "userGroupName",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "receiver",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Mail> inbox = new ArrayList<>();
+
     public UserGroup(){}
     //added because we must have a default constructor
 
@@ -52,8 +57,12 @@ public class UserGroup{
         this.username = username;
         this.password = password;
         this.hospitalId = hospital;
-        this.isAdmin = isAdmin;
         this.email = email;
+        if (hospital.getHospitalName().equals("Trust Admin")){
+            this.isAdmin = true;
+        }else{
+            this.isAdmin = isAdmin;
+        }
     }
 
     public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin){
@@ -61,7 +70,11 @@ public class UserGroup{
         this.username = username;
         this.password = password;
         this.hospitalId = hospital;
-        this.isAdmin = isAdmin;
+        if (hospital.getHospitalName().equals("Trust Admin")){
+            this.isAdmin = true;
+        }else{
+            this.isAdmin = isAdmin;
+        }
     }
 
     public void setUsername(String username) {
@@ -110,6 +123,10 @@ public class UserGroup{
 
     public void addIssue(Issue issue){
         issueList.add(issue);
+    }
+
+    public void addMail(Mail mail){
+        inbox.add(mail);
     }
 
     @Override
