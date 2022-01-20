@@ -125,4 +125,6 @@ public class Mail {
     public void addEquipment(Equipment equipment){
         equipments.add(equipment);
     }
+
+
 }

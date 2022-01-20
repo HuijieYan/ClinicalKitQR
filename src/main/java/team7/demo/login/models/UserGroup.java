@@ -26,6 +26,9 @@ public class UserGroup{
     @Column(name = "email",nullable = true,columnDefinition = "TEXT")
     private String email;
 
+    @Column(name = "specialty",nullable = true,columnDefinition = "TEXT")
+    private String specialty;
+
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital
     @JoinColumn(
@@ -52,12 +55,13 @@ public class UserGroup{
     public UserGroup(){}
     //added because we must have a default constructor
 
-    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email){
+    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email,String specialty){
         this.name = name;
         this.username = username;
         this.password = password;
         this.hospitalId = hospital;
         this.email = email;
+        this.specialty = specialty;
         if (hospital.getHospitalName().equals("Trust Admin")){
             this.isAdmin = true;
         }else{
@@ -105,6 +109,10 @@ public class UserGroup{
         return hospitalId;
     }
 
+    public String getSpecialty() {
+        return specialty;
+    }
+
     public boolean getIsAdmin() {
         return isAdmin;
     }
@@ -121,6 +129,10 @@ public class UserGroup{
         isAdmin = admin;
     }
 
+    public void setSpecialty(String speciality) {
+        this.specialty = speciality;
+    }
+
     public void addIssue(Issue issue){
         issueList.add(issue);
     }
@@ -129,12 +141,4 @@ public class UserGroup{
         inbox.add(mail);
     }
 
-    @Override
-    public String toString() {
-        return "UserGroup{" +
-                "name='" + name + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                '}';
-    }
 }

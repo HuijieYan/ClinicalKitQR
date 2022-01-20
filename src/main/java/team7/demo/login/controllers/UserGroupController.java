@@ -74,30 +74,32 @@ public class UserGroupController {
     }
 
     @GetMapping("/login/hospitalID={hospitalID} username={username} password={password}")
-    public List<Long> login(@PathVariable long hospitalID, @PathVariable String username, @PathVariable String password){
-        List<Long> result = new ArrayList<>();
+    public List<String> login(@PathVariable long hospitalID, @PathVariable String username, @PathVariable String password){
+        List<String> result = new ArrayList<>();
         UserGroup group = service.findByPK(hospitalID,username);
         if(group!=null&&group.getPassword().equals(password)){
             if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
-                result.add(3L);
+                result.add(Integer.toString(3));
             }else {
                 if (group.getIsAdmin()){
-                    result.add(2L);
+                    result.add(Integer.toString(2));
                 }else{
-                    result.add(1L);
+                    result.add(Integer.toString(1));
                 }
             }
-            result.add(group.getHospitalId().getHospitalId());
-            result.add(group.getHospitalId().getTrust().getTrustId());
+            result.add(Long.toString(group.getHospitalId().getHospitalId()));
+            result.add(Long.toString(group.getHospitalId().getTrust().getTrustId()));
+            result.add(group.getName());
             return result;
         }
         return result;
     }
 
-    @PostMapping("/register/trustID={trustID} hospitalID={hospitalID} name={name} username={username} password={password} isAdmin={isAdmin} email={email}")
+    @PostMapping("/register/trustID={trustID} hospitalID={hospitalID} name={name} username={username} password={password} isAdmin={isAdmin} email={email} speciality={speciality}")
     public boolean register(@PathVariable long trustID,@PathVariable long hospitalID,@PathVariable String name,
                             @PathVariable String username,@PathVariable String password,
-                            @PathVariable boolean isAdmin,@PathVariable String email){
+                            @PathVariable boolean isAdmin,@PathVariable String email,
+                            @PathVariable String speciality){
     //request body is the data part of a request
         Hospital hospital = hospitalService.findByID(hospitalID);
         if (checkStringIsInvalid(name)||checkStringIsInvalid(username)||checkStringIsInvalid(password)
@@ -109,12 +111,8 @@ public class UserGroupController {
             return false;
         }
         UserGroup group;
-        if (email.length() >0){
-            group = new UserGroup(name,username,password,hospital,isAdmin,email);
-        }else {
-            group = new UserGroup(name, username, password, hospital, isAdmin);
-        }
-        //hospital.addGroup(group);
+        group = new UserGroup(name,username,password,hospital,isAdmin,email,speciality);
+
         service.save(group);
         return true;
     }
