@@ -53,9 +53,11 @@ public class UserGroupConfig {
             Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),group2,"Title","description");
             mail.addEquipment(equipment1);
             mail.addEquipment(equipment2);
-            equipment1.addMail(mail);
-            equipment2.addMail(mail);
             mailService.save(mail);
+            Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),group2,"Title2","description");
+            mail2.addEquipment(equipment1);
+            mail2.addEquipment(equipment2);
+            mailService.save(mail2);
         };
     }
 }
