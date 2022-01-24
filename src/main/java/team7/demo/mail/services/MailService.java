@@ -16,8 +16,12 @@ public class MailService {
         this.repository = repository;
     }
 
-    public List<Mail>  getAllReceived(long id,String username){
+    public List<Mail> getAllReceived(long id,String username){
         return repository.getAllReceived(id,username);
+    }
+
+    public List<Mail> getAllSent(long id,String username){
+        return repository.getAllSent(id,username);
     }
 
     public void save(Mail mail){

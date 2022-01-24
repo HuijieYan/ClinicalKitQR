@@ -20,12 +20,14 @@ public class Mail {
     @Column(name = "sender_username",columnDefinition = "TEXT")
     private String senderUsername;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumns(
-            {@JoinColumn(name = "username", referencedColumnName = "username", nullable = false,columnDefinition = "TEXT"),
+    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "mail_receivers",
+            joinColumns = {@JoinColumn(name = "senderHospitalId"),@JoinColumn(name = "senderUsername"),@JoinColumn(name = "time")},
+            inverseJoinColumns = {@JoinColumn(name = "username", referencedColumnName = "username", nullable = false,columnDefinition = "TEXT"),
                     @JoinColumn(name = "hospital_id",referencedColumnName = "hospital_id",columnDefinition = "bigint not null")}
     )
-    private UserGroup receiver;
+    private List<UserGroup> receiver = new ArrayList<>();
 
     @Id
     @Column(name = "time")
@@ -49,13 +51,12 @@ public class Mail {
 
     public Mail(){}
 
-    public Mail(long senderHospitalId,String senderUsername,LocalDateTime time,UserGroup receiver,String title,String description){
+    public Mail(long senderHospitalId,String senderUsername,LocalDateTime time,String title,String description){
         this.senderHospitalId =senderHospitalId;
         this.senderUsername = senderUsername;
         this.time = time;
         this.title = title;
         this.description = description;
-        this.receiver = receiver;
     }
 
     public String getSenderUsername() {
@@ -74,7 +75,7 @@ public class Mail {
         return title;
     }
 
-    public UserGroup getReceiver() {
+    public List<UserGroup> getReceiver() {
         return receiver;
     }
 
@@ -110,7 +111,7 @@ public class Mail {
         this.equipments = equipments;
     }
 
-    public void setReceiver(UserGroup receiver) {
+    public void setReceiver(List<UserGroup> receiver) {
         this.receiver = receiver;
     }
 
@@ -126,5 +127,8 @@ public class Mail {
         equipments.add(equipment);
     }
 
+    public void addReceiver(UserGroup group){
+        receiver.add(group);
+    }
 
 }

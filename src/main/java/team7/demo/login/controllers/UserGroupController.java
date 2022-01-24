@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import team7.demo.login.models.Hospital;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
+import team7.demo.login.services.SpecialtyService;
 import team7.demo.login.services.TrustService;
 import team7.demo.login.services.UserGroupService;
 
@@ -17,11 +18,13 @@ import java.util.List;
 public class UserGroupController {
     private final UserGroupService service;
     private final HospitalService hospitalService;
+    private final SpecialtyService specialtyService;
 
     @Autowired
-    public UserGroupController(UserGroupService service,HospitalService hospitalService){
+    public UserGroupController(UserGroupService service,HospitalService hospitalService,SpecialtyService specialtyService){
         this.service = service;
         this.hospitalService = hospitalService;
+        this.specialtyService = specialtyService;
     }
 
     @GetMapping("/hospitalId={hospitalId}")
@@ -111,7 +114,8 @@ public class UserGroupController {
             return false;
         }
         UserGroup group;
-        group = new UserGroup(name,username,password,hospital,isAdmin,email,speciality);
+        group = new UserGroup(name,username,password,hospital,isAdmin,email,specialtyService.findByName(speciality));
+        //assume that specialty passed is inside the database
 
         service.save(group);
         return true;

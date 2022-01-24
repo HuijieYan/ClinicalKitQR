@@ -6,6 +6,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.services.EquipmentService;
+import team7.demo.login.models.Hospital;
+import team7.demo.login.services.HospitalService;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -15,10 +17,12 @@ import java.util.List;
 @RequestMapping("/equipment")
 public class EquipmentController {
     private final EquipmentService service;
+    private final HospitalService hospitalService;
 
     @Autowired
-    public EquipmentController(EquipmentService service){
+    public EquipmentController(EquipmentService service,HospitalService hospitalService){
         this.service = service;
+        this.hospitalService = hospitalService;
     }
 
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
@@ -49,5 +53,12 @@ public class EquipmentController {
     @DeleteMapping("/delete/id={id}")
     public void deleteById(@PathVariable long id){
         service.delete(id);
+    }
+
+    @PostMapping("/save/name={name} content={content} hospitalId={hospitalId}")
+    public void save(@PathVariable String name,@PathVariable String content,@PathVariable long hospitalId){
+        Hospital hospital = hospitalService.findByID(hospitalId);
+        Equipment equipment = new Equipment(name,content,hospital);
+        service.save(equipment);
     }
 }

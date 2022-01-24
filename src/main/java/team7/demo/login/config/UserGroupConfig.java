@@ -7,6 +7,7 @@ import team7.demo.equipment.models.Equipment;
 import team7.demo.issue.models.Issue;
 import team7.demo.issue.services.IssueService;
 import team7.demo.login.models.Hospital;
+import team7.demo.login.models.Specialty;
 import team7.demo.login.models.Trust;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
@@ -26,9 +27,10 @@ public class UserGroupConfig {
             Hospital hospital = new Hospital("MyHospital",trust);
             Hospital hospital2 = new Hospital("MyHospital2",trust);
             trust.addHospital(hospital2);
-            UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com","admin");
+            Specialty specialty = new Specialty("admin");
+            UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com",specialty);
             UserGroup group2 = new UserGroup("group2","g2","123",hospital,false);
-            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,false,"trustAdmin@nhs.com","admin");
+            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,false,"trustAdmin@nhs.com",specialty);
             UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
 
             Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital);
@@ -50,11 +52,13 @@ public class UserGroupConfig {
             service.save(hospital);
             service.save(hospital2);
 
-            Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),group2,"Title","description");
+            Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description");
+            mail.addReceiver(group2);
             mail.addEquipment(equipment1);
-            mail.addEquipment(equipment2);
             mailService.save(mail);
-            Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),group2,"Title2","description");
+            Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description");
+            mail2.addReceiver(group);
+            mail2.addReceiver(group2);
             mail2.addEquipment(equipment1);
             mail2.addEquipment(equipment2);
             mailService.save(mail2);

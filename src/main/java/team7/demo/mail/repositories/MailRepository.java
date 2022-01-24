@@ -8,6 +8,9 @@ import team7.demo.mail.models.MailPrimaryKey;
 import java.util.List;
 
 public interface MailRepository extends JpaRepository<Mail, MailPrimaryKey> {
-    @Query("select m from Mail m where m.receiver.hospitalId = ?1 and m.receiver.username = ?2")
+    @Query("select m from Mail m join m.receiver r where r.hospitalId.hospitalId = ?1 and r.username = ?2")
     List<Mail> getAllReceived(long id,String username);
+
+    @Query("select m from Mail m where m.senderHospitalId = ?1 and m.senderUsername = ?2")
+    List<Mail> getAllSent(long id,String username);
 }

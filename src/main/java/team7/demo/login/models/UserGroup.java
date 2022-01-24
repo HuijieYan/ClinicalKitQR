@@ -26,8 +26,9 @@ public class UserGroup{
     @Column(name = "email",nullable = true,columnDefinition = "TEXT")
     private String email;
 
-    @Column(name = "specialty",nullable = true,columnDefinition = "TEXT")
-    private String specialty;
+    @ManyToOne(optional = true,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "specialty",columnDefinition = "TEXT")
+    private Specialty specialty;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital
@@ -49,13 +50,13 @@ public class UserGroup{
     private List<Issue> issueList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "receiver",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "receiver")
     private List<Mail> inbox = new ArrayList<>();
 
     public UserGroup(){}
     //added because we must have a default constructor
 
-    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email,String specialty){
+    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email,Specialty specialty){
         this.name = name;
         this.username = username;
         this.password = password;
@@ -109,7 +110,7 @@ public class UserGroup{
         return hospitalId;
     }
 
-    public String getSpecialty() {
+    public Specialty getSpecialty() {
         return specialty;
     }
 
@@ -129,7 +130,7 @@ public class UserGroup{
         isAdmin = admin;
     }
 
-    public void setSpecialty(String speciality) {
+    public void setSpecialty(Specialty speciality) {
         this.specialty = speciality;
     }
 
