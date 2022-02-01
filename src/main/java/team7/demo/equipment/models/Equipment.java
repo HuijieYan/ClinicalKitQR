@@ -11,6 +11,7 @@ import team7.demo.Constant;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Dictionary;
 import java.util.Hashtable;
@@ -50,6 +51,14 @@ public class Equipment {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column(columnDefinition = "TEXT")
+    private String type;
+
+    @Column(columnDefinition = "TEXT")
+    private String category;
+
+    private LocalDate date;
+
     @JsonIgnore
     @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
@@ -66,10 +75,21 @@ public class Equipment {
         this.content = content;
     }
 
-    public Equipment(String name,String content,Hospital hospitalId){
+    public Equipment(String name,String content,Hospital hospitalId,String type,String category){
         this.name = name;
         this.content = content;
         this.hospitalId = hospitalId;
+        this.type = type;
+        this.category = category;
+        this.date = LocalDate.now();
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public List<Issue> getIssueList() {
@@ -92,6 +112,10 @@ public class Equipment {
         return content;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     public String getName() {
         return name;
     }
@@ -110,5 +134,13 @@ public class Equipment {
 
     public void addMail(Mail mail){
         mailList.add(mail);
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getType() {
+        return type;
     }
 }

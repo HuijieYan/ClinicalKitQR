@@ -58,7 +58,7 @@ public class EquipmentController {
     @PostMapping("/save/name={name} content={content} hospitalId={hospitalId}")
     public void save(@PathVariable String name,@PathVariable String content,@PathVariable long hospitalId){
         Hospital hospital = hospitalService.findByID(hospitalId);
-        Equipment equipment = new Equipment(name,content,hospital);
+        Equipment equipment = new Equipment(name,content,hospital,"Neonatal","A");
         service.save(equipment);
     }
 }

@@ -18,7 +18,7 @@ public class EquipmentConfig {
     CommandLineRunner equipmentRunner(EquipmentService service){
         return args -> {
             Hospital hospital = new Hospital("New Hospital",new Trust("Trust2"));
-            Equipment equipment = new Equipment("Equipment3","Some description",hospital);
+            Equipment equipment = new Equipment("Equipment3","Some description",hospital,"Neonatal","A");
             service.save(equipment);
         };
     }

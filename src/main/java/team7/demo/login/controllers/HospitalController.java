@@ -8,7 +8,7 @@ import team7.demo.login.services.TrustService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup","http://localhost:3000/hospitalCreation"})
+@CrossOrigin(origins = {"http://localhost:3000/"})
 @RestController
 @RequestMapping("/hospitals")
 public class HospitalController {
@@ -31,17 +31,17 @@ public class HospitalController {
         return service.findByID(hospitalId);
     }
 
-    @GetMapping("/all/trustID={trustID}")
-    public List<Hospital> getAllByTrust(@PathVariable long trustID){
-        return service.getAllByTrust(trustID);
+    @GetMapping("/all/trustId={trustId}")
+    public List<Hospital> getAllByTrust(@PathVariable long trustId){
+        return service.getAllByTrust(trustId);
     }
 
-    @PostMapping("/register/trustID={trustID} name={name}")
-    public boolean register(@PathVariable long trustID,@PathVariable String name){
+    @PostMapping("/register/trustId={trustId} name={name}")
+    public boolean register(@PathVariable long trustId,@PathVariable String name){
         if(checkStringIsInvalid(name)){
             return false;
         }
-        service.save(new Hospital(name,trustService.findByID(trustID)));
+        service.save(new Hospital(name,trustService.findByID(trustId)));
         return true;
     }
 

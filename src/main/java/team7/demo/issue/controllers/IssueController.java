@@ -28,8 +28,8 @@ public class IssueController {
         return service.getAllByTrust(trustId);
     }
 
-    @PostMapping("/issueId={issueId} solved={solved}")
-    public void updateSolved(@PathVariable long issueId,@PathVariable boolean solved){
+    @PostMapping("/issueId={issueId}")
+    public void updateSolved(@PathVariable long issueId,@RequestParam("solved") boolean solved){
         service.updateSolved(issueId, solved);
     }
 

@@ -66,11 +66,11 @@ public class EquipmentService {
         BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
 
         BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        return addText(image,id);
+        return addText(image,equipment);
     }
 
-    public BufferedImage addText(BufferedImage image,long id){
-        StringBuffer buffer = new StringBuffer(Long.toHexString(id));
+    public BufferedImage addText(BufferedImage image,Equipment equipment){
+        StringBuffer buffer = new StringBuffer(Long.toHexString(equipment.getEquipmentId()));
         int zeros = 9-buffer.length();
         for (int i =0;i<zeros;i++){
             buffer.insert(0,"0");
@@ -80,6 +80,7 @@ public class EquipmentService {
         for (int pos:position){
             buffer.insert(pos,"-");
         }
+        buffer.insert(0,getTypeAndCategoryStr(equipment));
         String text = buffer.toString();
 
         BufferedImage outputImage = new BufferedImage(image.getWidth(), height + 40, BufferedImage.TYPE_INT_ARGB);
@@ -93,12 +94,13 @@ public class EquipmentService {
         FontMetrics fm = g.getFontMetrics();
         int startingYposition = height - 10;
         g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+
         g.setFont(new Font("Neue Haas Grotesk Text Pro", Font.BOLD, 14));
         fm = g.getFontMetrics();
-        text ="ENTER THE CODE ABOVE IF YOU";
+        text ="ENTER THE 9-DIGIT CODE ABOVE IF";
         startingYposition += 18;
         g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
-        text ="CANNOT SCAN THE QR CODE";
+        text ="YOU CANNOT SCAN THE QR CODE";
         startingYposition += 15;
         g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
         g.setFont(new Font("Neue Haas Grotesk Text Pro", Font.BOLD, 16));
@@ -109,46 +111,21 @@ public class EquipmentService {
         return outputImage;
     }
 
-    /*
-    public byte[] generateQRCode(String data, Integer width, Integer height, String[] text) throws Exception{
-            QRCodeWriter qrCodeWriter = new QRCodeWriter();
-            BitMatrix bitMatrix = qrCodeWriter.encode(data, BarcodeFormat.QR_CODE, width, height);
-
-            ByteArrayOutputStream pngOutputStream = new ByteArrayOutputStream();
-            MatrixToImageWriter.writeToStream(bitMatrix, "PNG", pngOutputStream);
-            byte[] pngData = pngOutputStream.toByteArray();
-
-            //        If text is needed to display
-            if (text.length > 0) {
-                int totalTextLineToadd = text.length;
-                InputStream in = new ByteArrayInputStream(pngData);
-                BufferedImage image = ImageIO.read(in);
-
-                BufferedImage outputImage = new BufferedImage(image.getWidth(), image.getHeight() + 25 * totalTextLineToadd, BufferedImage.TYPE_INT_ARGB);
-                Graphics g = outputImage.getGraphics();
-                g.setColor(Color.WHITE);
-                g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
-                g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), null);
-                g.setFont(new Font("Arial Black", Font.BOLD, 12));
-                Color textColor = Color.BLACK;
-                g.setColor(textColor);
-                FontMetrics fm = g.getFontMetrics();
-                int startingYposition = height + 5;
-                for(String displayText : text) {
-                    g.drawString(displayText, (outputImage.getWidth() / 2)   - (fm.stringWidth(displayText) / 2), startingYposition);
-                    startingYposition += 20;
-                }
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                ImageIO.write(outputImage, "PNG", baos);
-                baos.flush();
-                pngData = baos.toByteArray();
-                baos.close();
-            }
-
-            return pngData;
-
+    private String getTypeAndCategoryStr(Equipment equipment){
+        String type="";
+        switch (equipment.getType()){
+            case "Adult":
+                type = "A";
+                break;
+            case "Neonatal":
+                type = "N";
+                break;
+            case "Children":
+                type = "C";
+        }
+        return type+equipment.getCategory()+Integer.toString(equipment.getDate().getYear()).substring(2)+" ";
     }
-    */
+
 
     public List<Equipment> getAll(){
         return repository.findAll();

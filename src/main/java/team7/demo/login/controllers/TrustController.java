@@ -8,7 +8,7 @@ import team7.demo.login.services.TrustService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup","http://localhost:3000/trustCreation"})
+@CrossOrigin(origins = {"http://localhost:3000/"})
 @RestController
 @RequestMapping("/trusts")
 public class TrustController {

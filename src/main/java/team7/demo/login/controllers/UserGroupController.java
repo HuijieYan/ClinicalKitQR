@@ -12,7 +12,7 @@ import team7.demo.login.services.UserGroupService;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup"})
+@CrossOrigin(origins = {"http://localhost:3000/"})
 @RestController
 @RequestMapping("/usergroup")
 public class UserGroupController {
@@ -76,10 +76,11 @@ public class UserGroupController {
         service.delete(hospitalId,username);
     }
 
-    @GetMapping("/login/hospitalID={hospitalID} username={username} password={password}")
-    public List<String> login(@PathVariable long hospitalID, @PathVariable String username, @PathVariable String password){
+    @PostMapping("/login")
+    public List<String> login(@RequestParam("hospitalId") String hospitalId, @RequestParam("username") String username, @RequestParam("password") String password){
         List<String> result = new ArrayList<>();
-        UserGroup group = service.findByPK(hospitalID,username);
+        long HospitalID = Long.parseLong(hospitalId);
+        UserGroup group = service.findByPK(HospitalID,username);
         if(group!=null&&group.getPassword().equals(password)){
             if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
                 result.add(Integer.toString(3));
@@ -98,11 +99,11 @@ public class UserGroupController {
         return result;
     }
 
-    @PostMapping("/register/trustID={trustID} hospitalID={hospitalID} name={name} username={username} password={password} isAdmin={isAdmin} email={email} speciality={speciality}")
-    public boolean register(@PathVariable long trustID,@PathVariable long hospitalID,@PathVariable String name,
-                            @PathVariable String username,@PathVariable String password,
-                            @PathVariable boolean isAdmin,@PathVariable String email,
-                            @PathVariable String speciality){
+    @PostMapping("/register")
+    public boolean register(@RequestParam("trustId") long trustID,@RequestParam("hospitalID") long hospitalID,@RequestParam("name")  String name,
+                            @RequestParam("username") String username,@RequestParam("password") String password,
+                            @RequestParam("isAdmin") boolean isAdmin,@RequestParam("email") String email,
+                            @RequestParam("speciality") String speciality){
     //request body is the data part of a request
         Hospital hospital = hospitalService.findByID(hospitalID);
         if (checkStringIsInvalid(name)||checkStringIsInvalid(username)||checkStringIsInvalid(password)
@@ -132,6 +133,7 @@ public class UserGroupController {
             groupls.add(getRole(group));
             groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
             groupls.add(group.getEmail());
+            groupls.add(group.getUsername());
             result.add(groupls);
         }
         return result;
