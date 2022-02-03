@@ -22,4 +22,28 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
     @Modifying
     @Query("delete from Equipment e where e.equipmentId = ?1")
     public void deleteById(long id);
+
+    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4% ")
+    public List<Equipment> findByCategoryAndTypeAndNameAndHospital(long id,String type, String category,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.category=?2 and e.searchName like %?3%")
+    public List<Equipment> findByCategoryAndNameAndHospital(long id, String category,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.searchName like %?3% ")
+    public List<Equipment> findByTypeAndNameAndHospital(long id, String type,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.searchName like %?2% ")
+    public List<Equipment> findByNameAndHospital(long id,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4%")
+    public List<Equipment> findByCategoryAndTypeAndNameAndTrust(long id,String type, String category,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.category=?2 and e.searchName like %?3%")
+    public List<Equipment> findByCategoryAndNameAndTrust(long id, String category,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.type=?2 and e.searchName like %?3%")
+    public List<Equipment> findByTypeAndNameAndTrust(long id, String type,String text);
+
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.searchName like %?2%")
+    public List<Equipment> findByNameAndTrust(long id, String text);
 }

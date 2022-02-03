@@ -44,6 +44,8 @@ public class Equipment {
     )
     public Hospital hospitalId;
 
+    @Column(columnDefinition = "TEXT")
+    private String searchName;
 
     @Column(columnDefinition = "TEXT")
     private String name;
@@ -70,11 +72,6 @@ public class Equipment {
 
     public Equipment(){}
 
-    public Equipment(String name,String content){
-        this.name = name;
-        this.content = content;
-    }
-
     public Equipment(String name,String content,Hospital hospitalId,String type,String category){
         this.name = name;
         this.content = content;
@@ -82,6 +79,7 @@ public class Equipment {
         this.type = type;
         this.category = category;
         this.date = LocalDate.now();
+        this.searchName = name.toLowerCase();
     }
 
     public void setCategory(String category) {
@@ -98,6 +96,7 @@ public class Equipment {
 
     public void setName(String name) {
         this.name = name;
+        this.searchName = name.toLowerCase();
     }
 
     public void setHospital(Hospital hospitalId) {
@@ -142,5 +141,9 @@ public class Equipment {
 
     public String getType() {
         return type;
+    }
+
+    public String getSearchName() {
+        return searchName;
     }
 }

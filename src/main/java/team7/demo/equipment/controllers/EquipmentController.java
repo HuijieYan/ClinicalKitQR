@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.services.EquipmentService;
 import team7.demo.login.models.Hospital;
+import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
+import team7.demo.login.services.UserGroupService;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
@@ -18,11 +20,13 @@ import java.util.List;
 public class EquipmentController {
     private final EquipmentService service;
     private final HospitalService hospitalService;
+    private final UserGroupService userGroupService;
 
     @Autowired
-    public EquipmentController(EquipmentService service,HospitalService hospitalService){
+    public EquipmentController(EquipmentService service,HospitalService hospitalService,UserGroupService userGroupService){
         this.service = service;
         this.hospitalService = hospitalService;
+        this.userGroupService = userGroupService;
     }
 
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
@@ -60,5 +64,22 @@ public class EquipmentController {
         Hospital hospital = hospitalService.findByID(hospitalId);
         Equipment equipment = new Equipment(name,content,hospital,"Neonatal","A");
         service.save(equipment);
+    }
+
+    @PostMapping("/search")
+    public List<Equipment> search(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username,
+                                  @RequestParam("type") String type,@RequestParam("category")String category,
+                                  @RequestParam("name") String name){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        return service.search(group,type,category,name);
+    }
+
+    @GetMapping("/types")
+    public String[] getTypes(){
+        return service.getTypes();
+    }
+    @GetMapping("/categories")
+    public String[] getCategories(){
+        return service.getCategories();
     }
 }
