@@ -29,8 +29,9 @@ public class UserGroupConfig {
             trust.addHospital(hospital2);
             Specialty specialty = new Specialty("admin");
             UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com",specialty);
-            UserGroup group2 = new UserGroup("group2","g2","123",hospital,false);
-            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,false,"trustAdmin@nhs.com",specialty);
+            UserGroup group2 = new UserGroup("group2","g2","123",hospital,true);
+            UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
+            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,true,"trustAdmin@nhs.com",specialty);
             UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
 
             Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"Neonatal","A");
@@ -53,7 +54,7 @@ public class UserGroupConfig {
             service.save(hospital2);
 
             Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description");
-            mail.addReceiver(group2);
+            mail.addReceiver(g3);
             mail.addEquipment(equipment1);
             mailService.save(mail);
             Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description");

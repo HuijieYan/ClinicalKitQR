@@ -24,8 +24,8 @@ public class MailController {
         this.groupService = groupService;
     }
 
-    @GetMapping("/receiver/hospitalId={hospitalId} username={username}")
-    public List<List<Object>> getAllReceivedMails(@PathVariable long hospitalId,@PathVariable String username){
+    @PostMapping("/receiver")
+    public List<List<Object>> getAllReceivedMails(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username){
         List<List<Object>> result = new ArrayList<>();
         List<Mail> mails = service.getAllReceived(hospitalId,username);
         for (Mail mail:mails){
@@ -38,8 +38,8 @@ public class MailController {
         return result;
     }
 
-    @GetMapping("/sender/hospitalId={hospitalId} username={username}")
-    public List<List<Object>> getAllSentMails(@PathVariable long hospitalId,@PathVariable String username){
+    @PostMapping("/sender")
+    public List<List<Object>> getAllSentMails(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username){
         List<List<Object>> result = new ArrayList<>();
         List<Mail> mails = service.getAllSent(hospitalId,username);
         for (Mail mail:mails){
