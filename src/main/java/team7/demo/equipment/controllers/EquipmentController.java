@@ -59,11 +59,39 @@ public class EquipmentController {
         service.delete(id);
     }
 
-    @PostMapping("/save/name={name} content={content} hospitalId={hospitalId}")
-    public void save(@PathVariable String name,@PathVariable String content,@PathVariable long hospitalId){
-        Hospital hospital = hospitalService.findByID(hospitalId);
-        Equipment equipment = new Equipment(name,content,hospital,"Neonatal","A");
-        service.save(equipment);
+    @PostMapping("/save")
+    public String save(@RequestParam("name") String name,@RequestParam("content") String content,@RequestParam("hospitalId") long hospitalId,
+                       @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return "Failed to save the equipment, error: User does not exist or login session expired";
+        }
+        try{
+            Hospital hospital = hospitalService.findByID(hospitalId);
+            Equipment equipment = new Equipment(name,content,hospital,type,category);
+            service.save(equipment);
+            return "Equipment Saved Successfully";
+        }catch(Exception e){
+            return "Failed to save the equipment, error: "+e.getMessage();
+        }
+    }
+
+    @PostMapping("/get")
+    public Equipment getById(@RequestParam("id") long id,@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return null;
+        }
+        Equipment equipment = service.get(id);
+        if (equipment.getHospitalId().getHospitalId()==hospitalId){
+            return equipment;
+        }else if(group.getHospitalId().getHospitalName().equals("Trust Admin")&&group.getHospitalId().getTrust().getTrustId()==equipment.getHospitalId().getTrust().getTrustId()){
+            //if the user is the admin of this equipment's trust
+            return equipment;
+        }else{
+            return null;
+            //null represents the user group has no right to access this equipment or the equipment is not found
+        }
     }
 
     @PostMapping("/search")
@@ -71,6 +99,9 @@ public class EquipmentController {
                                   @RequestParam("type") String type,@RequestParam("category")String category,
                                   @RequestParam("name") String name){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return null;
+        }
         return service.search(group,type,category,name);
     }
 

@@ -83,6 +83,10 @@ public class Hospital {
         equipment.setHospital(this);
     }
 
+    public List<UserGroup> getGroups() {
+        return groups;
+    }
+
     @Override
     public String toString() {
         return "Hospital{" +

@@ -20,14 +20,16 @@ public class UserGroup{
     @Column(name = "username",nullable = false,columnDefinition = "TEXT")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password",nullable = false,columnDefinition = "TEXT")
     private String password;
+    //you can't access the password of the user group if the object is passed
 
     @Column(name = "email",nullable = true,columnDefinition = "TEXT")
     private String email;
 
     @ManyToOne(optional = true,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "specialty",columnDefinition = "TEXT")
+    @JoinColumn(name = "specialty",nullable = true,columnDefinition = "TEXT")
     private Specialty specialty;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -63,6 +65,19 @@ public class UserGroup{
         this.hospitalId = hospital;
         this.email = email;
         this.specialty = specialty;
+        if (hospital.getHospitalName().equals("Trust Admin")){
+            this.isAdmin = true;
+        }else{
+            this.isAdmin = isAdmin;
+        }
+    }
+
+    public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email){
+        this.name = name;
+        this.username = username;
+        this.password = password;
+        this.hospitalId = hospital;
+        this.email = email;
         if (hospital.getHospitalName().equals("Trust Admin")){
             this.isAdmin = true;
         }else{

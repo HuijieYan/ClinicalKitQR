@@ -134,6 +134,8 @@ public class UserGroupController {
             groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
             groupls.add(group.getEmail());
             groupls.add(group.getUsername());
+            groupls.add(group.getSpecialty().getSpecialty());
+            groupls.add(group.getHospitalId().getTrust().getTrustName());
             result.add(groupls);
         }
         return result;

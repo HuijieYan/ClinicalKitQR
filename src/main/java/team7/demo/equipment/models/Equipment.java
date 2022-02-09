@@ -55,9 +55,11 @@ public class Equipment {
 
     @Column(columnDefinition = "TEXT")
     private String type;
+    //the type of the equipment ie. equipment for stomach
 
     @Column(columnDefinition = "TEXT")
     private String category;
+    //the category of the equipment, can be Neonatal or Adult or Child
 
     private LocalDate date;
 

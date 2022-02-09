@@ -9,6 +9,7 @@ import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.services.EquipmentService;
 import team7.demo.login.models.Hospital;
 import team7.demo.login.models.Trust;
+import team7.demo.login.models.UserGroup;
 
 import java.awt.image.BufferedImage;
 
@@ -18,6 +19,8 @@ public class EquipmentConfig {
     CommandLineRunner equipmentRunner(EquipmentService service){
         return args -> {
             Hospital hospital = new Hospital("New Hospital",new Trust("Trust2"));
+            UserGroup group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
+            hospital.addGroup(group);
             Equipment equipment = new Equipment("Equipment3","Some description",hospital,"Neonatal","A");
             service.save(equipment);
         };
