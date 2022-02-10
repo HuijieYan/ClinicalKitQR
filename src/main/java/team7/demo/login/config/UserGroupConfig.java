@@ -48,8 +48,6 @@ public class UserGroupConfig {
             equipment1.addIssue(issue);
             group.addIssue(issue);
 
-
-
             service.save(hospital);
             service.save(hospital2);
 
@@ -57,12 +55,18 @@ public class UserGroupConfig {
             mail.addReceiver(g3);
             mail.addEquipment(equipment1);
             mailService.save(mail);
+
             Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description");
             mail2.addReceiver(group);
             mail2.addReceiver(group2);
             mail2.addEquipment(equipment1);
             mail2.addEquipment(equipment2);
             mailService.save(mail2);
+
+            Mail mail3 = new Mail(group2.getHospitalId().getHospitalId(), group2.getUsername(), LocalDateTime.now(),"Title3","description");
+            mail3.addReceiver(g3);
+            mail3.addEquipment(equipment3);
+            mailService.save(mail3);
         };
     }
 }
