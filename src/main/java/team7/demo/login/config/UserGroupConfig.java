@@ -67,6 +67,7 @@ public class UserGroupConfig {
             mail3.addReceiver(g3);
             mail3.addEquipment(equipment3);
             mailService.save(mail3);
+            
         };
     }
 }
