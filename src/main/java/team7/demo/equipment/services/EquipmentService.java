@@ -56,6 +56,10 @@ public class EquipmentService {
         return repository.findByTrust(id);
     }
 
+    public void update(long id,String name,String content,String type,String category) throws Exception{
+        repository.update(id,name,name.toLowerCase(),content,type,category);
+    }
+
     public BufferedImage generateQRCodeImage(long id) throws Exception {
         int width = 300;
         int height = 300;

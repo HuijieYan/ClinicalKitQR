@@ -76,6 +76,28 @@ public class EquipmentController {
         }
     }
 
+    @PostMapping("/update")
+    public String update(@RequestParam("name") String name,@RequestParam("content") String content,@RequestParam("hospitalId") long hospitalId,
+                       @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username,
+                         @RequestParam("equipmentId")long equipmentId){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return "Failed to update the equipment, error: User does not exist or login session expired";
+        }
+        try{
+            Equipment equipment = service.get(equipmentId);
+            if (equipment.getHospitalId().getHospitalId()==hospitalId||(group.getHospitalId().getHospitalName().equals("Trust Admin")&&group.getHospitalId().getTrust().getTrustId()==equipment.getHospitalId().getTrust().getTrustId())){
+                service.update(equipmentId,name,content,type,category);
+                return "Equipment Updated Successfully";
+            }else {
+                //if the user is the admin of this equipment's trust
+                return "Failed to update the equipment, error: Your user group has no right to edit this equipment";
+            }
+        }catch(Exception e){
+            return "Failed to update the equipment, error: "+e.getMessage();
+        }
+    }
+
     @PostMapping("/get")
     public Equipment getById(@RequestParam("id") long id,@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
         UserGroup group = userGroupService.findByPK(hospitalId,username);

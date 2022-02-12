@@ -23,6 +23,11 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
     @Query("delete from Equipment e where e.equipmentId = ?1")
     public void deleteById(long id);
 
+    @Transactional
+    @Modifying
+    @Query("update Equipment e set e.name=?2,e.searchName=?3,e.content =?4,e.type=?5,e.category=?6  where e.equipmentId = ?1")
+    public void update(long id,String name, String searchName,String content,String type,String category);
+
     @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4% ")
     public List<Equipment> findByCategoryAndTypeAndNameAndHospital(long id,String type, String category,String text);
 

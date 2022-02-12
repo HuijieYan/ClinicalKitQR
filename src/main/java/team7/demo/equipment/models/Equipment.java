@@ -98,7 +98,10 @@ public class Equipment {
 
     public void setName(String name) {
         this.name = name;
-        this.searchName = name.toLowerCase();
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
     }
 
     public void setHospital(Hospital hospitalId) {
