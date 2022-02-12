@@ -15,7 +15,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
     @Query("select e from Equipment e where e.hospitalId.hospitalId = ?1")
     public List<Equipment> findByHospital(long id);
 
-    @Query("select e from Equipment e where e.hospitalId.trust.trustId = ?1")
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId = ?1 order by e.hospitalId.hospitalId")
     public List<Equipment> findByTrust(long id);
 
     @Transactional

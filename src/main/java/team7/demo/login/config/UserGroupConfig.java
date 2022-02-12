@@ -37,6 +37,7 @@ public class UserGroupConfig {
             Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"A","Neonatal");
             Equipment equipment2 = new Equipment("Equipment2","Some Description",hospital,"C","Adult");
             Equipment equipment3 = new Equipment("Equipment3","Some Description",hospital2,"B","Children");
+            Equipment equipment4 = new Equipment("Equipment4","Some Description",hospital2,"A","Adult");
             trustAdmin.addGroup(g3);
             hospital.addGroup(group);
             hospital.addGroup(group2);
@@ -44,6 +45,7 @@ public class UserGroupConfig {
             hospital.addEquipment(equipment1);
             hospital.addEquipment(equipment2);
             hospital2.addEquipment(equipment3);
+            hospital2.addEquipment(equipment4);
             Issue issue = new Issue(LocalDate.now(),group,equipment1,"Some Problem Description");
             equipment1.addIssue(issue);
             group.addIssue(issue);
