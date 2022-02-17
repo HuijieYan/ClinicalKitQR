@@ -4,6 +4,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.models.SentEquipment;
 import team7.demo.issue.models.Issue;
 import team7.demo.issue.services.IssueService;
 import team7.demo.login.models.Hospital;
@@ -53,22 +54,30 @@ public class UserGroupConfig {
             service.save(hospital);
             service.save(hospital2);
 
-            Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description");
-            mail.addReceiver(g3);
-            mail.addEquipment(equipment1);
+            Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description",g3);
+            mail.addEquipment(new SentEquipment(equipment1));
+            mail.addEquipment(new SentEquipment(equipment3));
             mailService.save(mail);
+            Mail mailCopy = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description",null);
+            mailCopy.addEquipment(new SentEquipment(equipment1));
+            mailCopy.addEquipment(new SentEquipment(equipment3));
+            mailService.save(mailCopy);
 
-            Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description");
-            mail2.addReceiver(group);
-            mail2.addReceiver(group2);
-            mail2.addEquipment(equipment1);
-            mail2.addEquipment(equipment2);
+            Mail mail2 = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description",group);
+            mail2.addEquipment(new SentEquipment(equipment1));
+            mail2.addEquipment(new SentEquipment(equipment2));
             mailService.save(mail2);
+            mailCopy = new Mail(g3.getHospitalId().getHospitalId(), g3.getUsername(), LocalDateTime.now(),"Title2","description",null);
+            mailCopy.addEquipment(new SentEquipment(equipment1));
+            mailCopy.addEquipment(new SentEquipment(equipment2));
+            mailService.save(mailCopy);
 
-            Mail mail3 = new Mail(group2.getHospitalId().getHospitalId(), group2.getUsername(), LocalDateTime.now(),"Title3","description");
-            mail3.addReceiver(g3);
-            mail3.addEquipment(equipment3);
+            Mail mail3 = new Mail(group2.getHospitalId().getHospitalId(), group2.getUsername(), LocalDateTime.now(),"Title3","description",g3);
+            mail3.addEquipment(new SentEquipment(equipment3));
             mailService.save(mail3);
+            mailCopy = new Mail(group2.getHospitalId().getHospitalId(), group2.getUsername(), LocalDateTime.now(),"Title3","description",null);
+            mailCopy.addEquipment(new SentEquipment(equipment3));
+            mailService.save(mailCopy);
 
         };
     }

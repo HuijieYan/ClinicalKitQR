@@ -238,4 +238,18 @@ public class EquipmentService {
     public String[] getCategories(){
         return Constant.categories;
     }
+
+    public long findNextCopyIndex(){
+        Equipment equipment = repository.findTop();
+        long id = equipment.getEquipmentId();
+        if (id> Constant.MAX_EQUIPMENT){
+            return id+1;
+        }else{
+            return Constant.MAX_EQUIPMENT;
+        }
+    }
+
+    public void updateId(long id,long newId){
+        repository.updateId(id,newId);
+    }
 }

@@ -4,7 +4,9 @@ package team7.demo.mail.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.models.SentEquipment;
 import team7.demo.equipment.services.EquipmentService;
+import team7.demo.equipment.services.SentEquipmentService;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.UserGroupService;
 import team7.demo.mail.models.Mail;
@@ -16,18 +18,20 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/","http://localhost:3000/loginFail","http://localhost:3000/editUserGroup"})
+@CrossOrigin(origins = {"http://localhost:3000/"})
 @RestController
 @RequestMapping("/mail")
 public class MailController {
     private final MailService service;
     private final UserGroupService groupService;
     private final EquipmentService equipmentService;
+    private final SentEquipmentService sentEquipmentService;
 
     @Autowired
-    public MailController(MailService service,UserGroupService groupService,EquipmentService equipmentService){
+    public MailController(MailService service,UserGroupService groupService,EquipmentService equipmentService,SentEquipmentService sentEquipmentService){
         this.service = service;
         this.groupService = groupService;
+        this.sentEquipmentService = sentEquipmentService;
         this.equipmentService = equipmentService;
     }
 
@@ -59,6 +63,22 @@ public class MailController {
         return result;
     }
 
+    @PostMapping("/delete")
+    public void delete(@RequestParam("id") String id,
+                       @RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username){
+        if (groupService.findByPK(hospitalId,username)==null){
+            return;
+        }
+        Mail mail = service.getByPK(id);
+        if (mail == null){
+            return;
+        }
+        for (SentEquipment equipment:mail.getEquipments()){
+            sentEquipmentService.delete(equipment.getId());
+        }
+        service.delete(id);
+    }
+
     @PostMapping("/sending")
     public boolean send(@RequestParam("senderHospitalId") long senderHospitalId,@RequestParam("senderUsername") String senderUsername,
                         @RequestParam("receivers") List<String>receivers,
@@ -73,30 +93,47 @@ public class MailController {
 
             ZonedDateTime zonedTime = ZonedDateTime.parse(timeString, DateTimeFormatter.RFC_1123_DATE_TIME);
             LocalDateTime time = zonedTime.toLocalDateTime();
-            Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description);
+
             for (int i=0;i<receivers.size();i+=2){
             //because right now when frontend passes 2d array as receivers' data, the backend will just recognise it as a 1d array
             //we have to handle this as a 1d array where each data is two consecutive items in the array
-                long id = Long.parseLong(receivers.get(i));
+                long hospitalId = Long.parseLong(receivers.get(i));
                 String username = receivers.get(i+1);
-                UserGroup receiver = groupService.findByPK(id,username);
+                UserGroup receiver = groupService.findByPK(hospitalId,username);
+
                 if (receiver==null){
                     return false;
                 }
-                mail.addReceiver(receiver);
-            }
-            for(String id:ids){
-                Equipment equipment = equipmentService.get(Long.parseLong(id));
-                if (equipment==null){
+
+                Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,receiver);
+                boolean result = addEquipments(mail,ids);
+                if (!result){
                     return false;
                 }
-                mail.addEquipment(equipment);
+                service.save(mail);
             }
+
+            Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,null);
+            addEquipments(mail,ids);
             service.save(mail);
+            //save a copy for the sender
             return true;
         }catch (Exception e){
             return false;
         }
     }
+
+    private boolean addEquipments(Mail mail,List<String> ids){
+        for(String id:ids){
+            Equipment equipment = equipmentService.get(Long.parseLong(id));
+            if (equipment==null){
+                return false;
+            }
+            SentEquipment sentEquipment = new SentEquipment(equipment);
+            mail.addEquipment(sentEquipment);
+        }
+        return true;
+    }
+
 
 }

@@ -1,35 +1,34 @@
 package team7.demo.mail.models;
 
 import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.models.SentEquipment;
 import team7.demo.login.models.UserGroup;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "Mail")
 @Table(name = "Mail")
-@IdClass(MailPrimaryKey.class)
 public class Mail {
     @Id
+    private String id;
+
     @Column(name = "sender_hospital_id",columnDefinition = "bigint not null")
     private long senderHospitalId;
 
-    @Id
+
     @Column(name = "sender_username",columnDefinition = "TEXT")
     private String senderUsername;
 
-    @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "mail_receivers",
-            joinColumns = {@JoinColumn(name = "senderHospitalId"),@JoinColumn(name = "senderUsername"),@JoinColumn(name = "time")},
-            inverseJoinColumns = {@JoinColumn(name = "username", referencedColumnName = "username", nullable = false,columnDefinition = "TEXT"),
-                    @JoinColumn(name = "hospital_id",referencedColumnName = "hospital_id",columnDefinition = "bigint not null")}
-    )
-    private List<UserGroup> receiver = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumns({@JoinColumn(name = "username", referencedColumnName = "username", nullable = true,columnDefinition = "TEXT"),
+            @JoinColumn(name = "hospital_id",referencedColumnName = "hospital_id",columnDefinition = "bigint", nullable = true)})
+    private UserGroup receiver;
 
-    @Id
+
     @Column(name = "time")
     private LocalDateTime time;
 
@@ -42,21 +41,19 @@ public class Mail {
     @Column(name = "done")
     private boolean done = false;
 
-    @ManyToMany
-    @JoinTable(
-            name = "equipments_in_mail",
-            joinColumns = {@JoinColumn(name = "senderHospitalId"),@JoinColumn(name = "senderUsername"),@JoinColumn(name = "time")},
-            inverseJoinColumns = @JoinColumn(name = "equipmentId"))
-    private List<Equipment> equipments = new ArrayList<>();
+    @OneToMany(mappedBy = "mail",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<SentEquipment> equipments = new ArrayList<>();
 
     public Mail(){}
 
-    public Mail(long senderHospitalId,String senderUsername,LocalDateTime time,String title,String description){
+    public Mail(long senderHospitalId,String senderUsername,LocalDateTime time,String title,String description,UserGroup receiver){
         this.senderHospitalId =senderHospitalId;
         this.senderUsername = senderUsername;
         this.time = time;
         this.title = title;
         this.description = description;
+        this.receiver = receiver;
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getSenderUsername() {
@@ -75,7 +72,11 @@ public class Mail {
         return title;
     }
 
-    public List<UserGroup> getReceiver() {
+    public String getId() {
+        return id;
+    }
+
+    public UserGroup getReceiver() {
         return receiver;
     }
 
@@ -85,6 +86,10 @@ public class Mail {
 
     public LocalDateTime getTime() {
         return time;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setSenderUsername(String senderUsername) {
@@ -103,15 +108,15 @@ public class Mail {
         this.description = description;
     }
 
-    public List<Equipment> getEquipments() {
+    public List<SentEquipment> getEquipments() {
         return equipments;
     }
 
-    public void setEquipments(List<Equipment> equipments) {
+    public void setEquipments(List<SentEquipment> equipments) {
         this.equipments = equipments;
     }
 
-    public void setReceiver(List<UserGroup> receiver) {
+    public void setReceiver(UserGroup receiver) {
         this.receiver = receiver;
     }
 
@@ -123,12 +128,10 @@ public class Mail {
         this.done = done;
     }
 
-    public void addEquipment(Equipment equipment){
+    public void addEquipment(SentEquipment equipment){
         equipments.add(equipment);
+        equipment.setMail(this);
     }
 
-    public void addReceiver(UserGroup group){
-        receiver.add(group);
-    }
 
 }

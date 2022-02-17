@@ -28,6 +28,11 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
     @Query("update Equipment e set e.name=?2,e.searchName=?3,e.content =?4,e.type=?5,e.category=?6  where e.equipmentId = ?1")
     public void update(long id,String name, String searchName,String content,String type,String category);
 
+    @Transactional
+    @Modifying
+    @Query("update Equipment e set e.equipmentId=?2 where e.equipmentId = ?1")
+    public void updateId(long id,long newId);
+
     @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4% ")
     public List<Equipment> findByCategoryAndTypeAndNameAndHospital(long id,String type, String category,String text);
 
@@ -51,4 +56,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
 
     @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.searchName like %?2%")
     public List<Equipment> findByNameAndTrust(long id, String text);
+
+    @Query(value="SELECT * FROM equipment ORDER BY equipment_id DESC LIMIT 1", nativeQuery = true)
+    public Equipment findTop();
 }

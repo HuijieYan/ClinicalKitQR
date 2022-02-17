@@ -3,6 +3,7 @@ package team7.demo.login.models;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.models.SentEquipment;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -36,6 +37,10 @@ public class Hospital {
     @JsonIgnore
     @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Equipment> equipments = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<SentEquipment> sentEquipments = new ArrayList<>();
 
     public Hospital(){}
 
@@ -80,6 +85,11 @@ public class Hospital {
 
     public void addEquipment(Equipment equipment) {
         this.equipments.add(equipment);
+        equipment.setHospital(this);
+    }
+
+    public void addSentEquipment(SentEquipment equipment) {
+        this.sentEquipments.add(equipment);
         equipment.setHospital(this);
     }
 

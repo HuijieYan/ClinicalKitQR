@@ -19,13 +19,11 @@ import java.util.List;
 @RequestMapping("/equipment")
 public class EquipmentController {
     private final EquipmentService service;
-    private final HospitalService hospitalService;
     private final UserGroupService userGroupService;
 
     @Autowired
-    public EquipmentController(EquipmentService service,HospitalService hospitalService,UserGroupService userGroupService){
+    public EquipmentController(EquipmentService service,UserGroupService userGroupService){
         this.service = service;
-        this.hospitalService = hospitalService;
         this.userGroupService = userGroupService;
     }
 
@@ -67,9 +65,26 @@ public class EquipmentController {
             return "Failed to save the equipment, error: User does not exist or login session expired";
         }
         try{
-            Hospital hospital = hospitalService.findByID(hospitalId);
+            Hospital hospital = group.getHospitalId();
             Equipment equipment = new Equipment(name,content,hospital,type,category);
             service.save(equipment);
+            return "Equipment Saved Successfully";
+        }catch(Exception e){
+            return "Failed to save the equipment, error: "+e.getMessage();
+        }
+    }
+
+    @PostMapping("/copy")
+    public String copy(@RequestParam("equipmentId") long id,@RequestParam("hospitalId") long hospitalId,
+                       @RequestParam("username")String username){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return "Failed to save the equipment, error: User does not exist or login session expired";
+        }
+        try{
+            Equipment equipment = service.get(id);
+            Equipment copy = new Equipment(equipment);
+            service.save(copy);
             return "Equipment Saved Successfully";
         }catch(Exception e){
             return "Failed to save the equipment, error: "+e.getMessage();

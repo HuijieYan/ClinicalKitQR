@@ -1,39 +1,23 @@
 package team7.demo.equipment.models;
 
-import javax.imageio.ImageIO;
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.zxing.BarcodeFormat;
-import com.google.zxing.common.BitMatrix;
-import team7.demo.Constant;
-
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Dictionary;
-import java.util.Hashtable;
-import java.util.List;
-
-import com.google.zxing.qrcode.QRCodeWriter;
-import com.google.zxing.client.j2se.MatrixToImageWriter;
 import team7.demo.issue.models.Issue;
 import team7.demo.login.models.Hospital;
-import team7.demo.login.models.UserGroup;
 import team7.demo.mail.models.Mail;
 
-@Entity(name = "Equipment")
-@Table(name = "Equipment")
-public class Equipment {
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Table
+public class SentEquipment{
+
     @Id
-    @SequenceGenerator(
-            name = "EquipmentidSeqGen",
-            sequenceName = "EquipmentidSequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE,generator = "EquipmentidSeqGen")
+    private String id;
+
     @Column(name = "equipmentId",columnDefinition = "bigint not null")
     private long equipmentId;
 
@@ -63,24 +47,20 @@ public class Equipment {
 
     private LocalDate date;
 
+    private boolean saved = false;
+
     @JsonIgnore
-    @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
-    private List<Issue> issueList = new ArrayList<>();
+    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "mail_id",referencedColumnName = "id")
+    private Mail mail;
 
 
-    public Equipment(){}
-
-    public Equipment(String name,String content,Hospital hospitalId,String type,String category){
-        this.name = name;
-        this.content = content;
-        this.hospitalId = hospitalId;
-        this.type = type;
-        this.category = category;
-        this.date = LocalDate.now();
-        this.searchName = name.toLowerCase();
+    public SentEquipment(){
     }
 
-    public Equipment(Equipment equipment){
+    public SentEquipment(Equipment equipment){
+        this.id = UUID.randomUUID().toString();
+        this.equipmentId = equipment.getEquipmentId();
         this.name = equipment.getName();
         this.content = equipment.getContent();
         this.hospitalId = equipment.getHospitalId();
@@ -90,16 +70,9 @@ public class Equipment {
         this.searchName = name.toLowerCase();
     }
 
-    public Equipment(SentEquipment equipment,Hospital hospital){
-        this.name = equipment.getName();
-        this.content = equipment.getContent();
-        this.hospitalId = hospital;
-        this.type = equipment.getType();
-        this.category = equipment.getCategory();
-        this.date = equipment.getDate();
-        this.searchName = name.toLowerCase();
+    public String getId() {
+        return id;
     }
-
 
     public void setEquipmentId(long equipmentId) {
         this.equipmentId = equipmentId;
@@ -113,16 +86,16 @@ public class Equipment {
         this.type = type;
     }
 
-    public List<Issue> getIssueList() {
-        return issueList;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
     public void setSearchName(String searchName) {
         this.searchName = searchName;
+    }
+
+    public boolean getSaved() {
+        return saved;
     }
 
     public void setHospital(Hospital hospitalId) {
@@ -153,10 +126,22 @@ public class Equipment {
         return hospitalId;
     }
 
-    public void addIssue(Issue issue){
-        issueList.add(issue);
+    public Mail getMail() {
+        return mail;
     }
-    
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    public void setMail(Mail mail) {
+        this.mail = mail;
+    }
+
+    public void setSaved(boolean saved) {
+        this.saved = saved;
+    }
+
     public String getCategory() {
         return category;
     }
