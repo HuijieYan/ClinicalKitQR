@@ -3,6 +3,7 @@ package team7.demo.equipment.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.models.SentEquipment;
 import team7.demo.equipment.services.EquipmentService;
 import team7.demo.equipment.services.SentEquipmentService;
 import team7.demo.login.models.Hospital;
@@ -34,5 +35,10 @@ public class SentEquipmentController {
             Equipment equipment = new Equipment(service.getById(id),hospital);
             equipmentService.save(equipment);
         }
+    }
+
+    @PostMapping("/get")
+    public SentEquipment get(@RequestParam("id") String id){
+        return service.getById(id);
     }
 }
