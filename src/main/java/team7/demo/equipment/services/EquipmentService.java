@@ -123,18 +123,18 @@ public class EquipmentService {
     }
 
     private String getTypeAndCategoryStr(Equipment equipment){
-        String type="";
-        switch (equipment.getType()){
+        String category="";
+        switch (equipment.getCategory()){
             case "Adult":
-                type = "A";
+                category = "A";
                 break;
             case "Neonatal":
-                type = "N";
+                category = "N";
                 break;
             case "Children":
-                type = "C";
+                category = "C";
         }
-        return type+equipment.getCategory()+Integer.toString(equipment.getDate().getYear()).substring(2)+" ";
+        return category+equipment.getType()+Integer.toString(equipment.getDate().getYear()).substring(2)+" ";
     }
 
 
@@ -156,7 +156,11 @@ public class EquipmentService {
             String s = txt.replaceAll("-","");
             s = s.replaceAll(" ","");
             long id = Long.parseLong(s,16);
-            equipments.add(repository.findById(id));
+            Equipment equipment = repository.findById(id);
+            if (equipment!=null){
+                equipments.add(equipment);
+            }
+
             //try to find the equipment with the input id
         }catch (Exception e){
             equipments = new ArrayList<>();
@@ -208,11 +212,14 @@ public class EquipmentService {
     private List<String> generatePossibleOutcomes(String str){
     //for this function we only generates possible outcomes that are of Levenshtein distance 1
         List<String> possibleOutcomes = new ArrayList<>();
+        possibleOutcomes.add(str);
         char[] subCharacters = Constant.substitutionCharacters;
         for (int i =0;i<str.length();i++){
             StringBuilder deleteAtPos = new StringBuilder(str);
             deleteAtPos.deleteCharAt(i);
-            possibleOutcomes.add(deleteAtPos.toString());
+            if(deleteAtPos.length()>0) {
+                possibleOutcomes.add(deleteAtPos.toString());
+            }
             for (char ch:subCharacters){
                 StringBuilder insertAtPos = new StringBuilder(str);
                 insertAtPos.insert(i,ch);
