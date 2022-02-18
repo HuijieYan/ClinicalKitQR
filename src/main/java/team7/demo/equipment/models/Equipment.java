@@ -23,6 +23,7 @@ import team7.demo.issue.models.Issue;
 import team7.demo.login.models.Hospital;
 import team7.demo.login.models.UserGroup;
 import team7.demo.mail.models.Mail;
+import team7.demo.viewing.models.Viewing;
 
 @Entity(name = "Equipment")
 @Table(name = "Equipment")
@@ -66,6 +67,15 @@ public class Equipment {
     @JsonIgnore
     @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "equipmentId",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<Viewing> viewingList = new ArrayList<>();
 
 
     public Equipment(){}
@@ -167,5 +177,9 @@ public class Equipment {
 
     public String getSearchName() {
         return searchName;
+    }
+
+    public void addViewing(Viewing viewing) {
+        viewingList.add(viewing);
     }
 }

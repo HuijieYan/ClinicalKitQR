@@ -14,6 +14,7 @@ import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
 import team7.demo.mail.models.Mail;
 import team7.demo.mail.services.MailService;
+import team7.demo.viewing.models.Viewing;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -50,6 +51,11 @@ public class UserGroupConfig {
             Issue issue = new Issue(LocalDate.now(),group,equipment1,"Some Problem Description");
             equipment1.addIssue(issue);
             group.addIssue(issue);
+
+            // example code for viewings
+            Viewing viewing =  new Viewing(equipment1, LocalDate.now(),group);
+            equipment1.addViewing(viewing);
+            group.addViewing(viewing);
 
             service.save(hospital);
             service.save(hospital2);

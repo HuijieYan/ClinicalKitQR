@@ -4,6 +4,7 @@ package team7.demo.login.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import team7.demo.issue.models.Issue;
 import team7.demo.mail.models.Mail;
+import team7.demo.viewing.models.Viewing;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -54,6 +55,15 @@ public class UserGroup{
     @JsonIgnore
     @ManyToMany(mappedBy = "receiver")
     private List<Mail> inbox = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(
+            mappedBy = "userGroup",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<Viewing> viewingList = new ArrayList<>();
 
     public UserGroup(){}
     //added because we must have a default constructor
@@ -157,4 +167,7 @@ public class UserGroup{
         inbox.add(mail);
     }
 
+    public void addViewing(Viewing viewing) {
+        viewingList.add(viewing);
+    }
 }
