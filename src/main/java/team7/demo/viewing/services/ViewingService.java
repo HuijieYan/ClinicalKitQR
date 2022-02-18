@@ -19,7 +19,7 @@ public class ViewingService {
         this.repository = repository;
     }
 
-    public List<Viewing> getAllByEquipment(long equipment) {
+    public List<Viewing> getAllByEquipment(Long equipment) {
         return repository.getAllByEquipmentId(equipment);
     }
 

@@ -26,7 +26,7 @@ public class ViewingController {
     }
 
     @GetMapping("/equipmentId={equipmentId}")
-    public List<Viewing> getByEquipment(@PathVariable long equipmentId) {
+    public List<Viewing> getByEquipment(@PathVariable Long equipmentId) {
         return viewingService.getAllByEquipment(equipmentId);
     }
 
