@@ -2,6 +2,7 @@ package team7.demo.viewing.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team7.demo.equipment.models.Equipment;
 import team7.demo.login.models.UserGroup;
 import team7.demo.viewing.models.Viewing;
 import team7.demo.viewing.repositories.ViewingRepository;
@@ -18,8 +19,8 @@ public class ViewingService {
         this.repository = repository;
     }
 
-    public List<Viewing> getAllByEquipment(Long id) {
-        return repository.getAllByEquipmentId(id);
+    public List<Viewing> getAllByEquipment(Equipment equipment) {
+        return repository.getAllByEquipmentId(equipment);
     }
 
     public  List<Viewing> getAllByDate(LocalDate date) {
