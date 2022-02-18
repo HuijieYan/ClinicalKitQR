@@ -12,7 +12,7 @@ import java.util.List;
 public interface ViewingRepository extends JpaRepository<Viewing, Long> {
 
     @Query("select v from Viewing v where v.equipmentId = ?1")
-    public List<Viewing> getAllByEquipmentId(Equipment id);
+    public List<Viewing> getAllByEquipmentId(long id);
 
     @Query("select v from  Viewing v where v.date = ?1")
     public List<Viewing> getAllByDate(LocalDate date);
