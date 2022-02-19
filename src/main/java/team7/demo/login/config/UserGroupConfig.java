@@ -35,6 +35,7 @@ public class UserGroupConfig {
             UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
             UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,true,"trustAdmin@nhs.com",specialty);
             UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
+            UserGroup g5 = new UserGroup("group5","g5","123",hospital,false);
 
             Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"A","Neonatal");
             Equipment equipment2 = new Equipment("Equipment2","Some Description",hospital,"C","Adult");
@@ -43,6 +44,7 @@ public class UserGroupConfig {
             trustAdmin.addGroup(g3);
             hospital.addGroup(group);
             hospital.addGroup(group2);
+            hospital.addGroup(g5);
             hospital2.addGroup(g4);
             hospital.addEquipment(equipment1);
             hospital.addEquipment(equipment2);

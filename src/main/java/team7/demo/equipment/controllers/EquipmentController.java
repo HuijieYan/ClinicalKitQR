@@ -10,8 +10,12 @@ import team7.demo.login.models.Hospital;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
 import team7.demo.login.services.UserGroupService;
+import team7.demo.viewing.models.Viewing;
+import team7.demo.viewing.services.ViewingService;
 
+import javax.sound.midi.SysexMessage;
 import java.awt.image.BufferedImage;
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -20,11 +24,13 @@ import java.util.List;
 public class EquipmentController {
     private final EquipmentService service;
     private final UserGroupService userGroupService;
+    private final ViewingService viewingService;
 
     @Autowired
-    public EquipmentController(EquipmentService service,UserGroupService userGroupService){
+    public EquipmentController(EquipmentService service,UserGroupService userGroupService, ViewingService viewingService){
         this.service = service;
         this.userGroupService = userGroupService;
+        this.viewingService = viewingService;
     }
 
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
@@ -121,6 +127,10 @@ public class EquipmentController {
         }
         Equipment equipment = service.get(id);
         if (equipment.getHospitalId().getHospitalId()==hospitalId){
+            if (!group.getIsAdmin()) {
+                // creates new viewing if the user is not an admin (therefore does not increment on editing equipment)
+                viewingService.save(new Viewing(equipment, LocalDate.now(),group));
+            }
             return equipment;
         }else if(group.getHospitalId().getHospitalName().equals("Trust Admin")&&group.getHospitalId().getTrust().getTrustId()==equipment.getHospitalId().getTrust().getTrustId()){
             //if the user is the admin of this equipment's trust

@@ -33,7 +33,7 @@ public class ViewingController {
     @GetMapping("/hospitalId={hospitalId}/username={username}")
     public List<Viewing> getByUserGroup(@PathVariable long hospitalId, @PathVariable String username) {
         UserGroup userGroup = userGroupService.findByPK(hospitalId, username);
-        return viewingService.getAllByUserGroup(userGroup);
+        return viewingService.getAllByUserGroup(hospitalId, username);
 
     }
 }

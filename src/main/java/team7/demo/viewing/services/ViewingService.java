@@ -30,11 +30,12 @@ public class ViewingService {
     public void save(Viewing viewing) {
         viewing.getEquipmentId().addViewing(viewing);
         viewing.getUserGroup().addViewing(viewing);
+        System.out.println("Viewing:" + viewing + " saved at" + LocalDate.now());
         repository.save(viewing);
     }
 
-    public List<Viewing> getAllByUserGroup(UserGroup userGroup) {
-        return repository.getAllByUserGroup(userGroup);
+    public List<Viewing> getAllByUserGroup(Long hospitalId, String username) {
+        return repository.getAllByUserGroup(hospitalId, username);
     }
 
 }
