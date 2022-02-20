@@ -44,13 +44,17 @@ public class UserGroupController {
     }
 
     private String getRole(UserGroup group){
+        String specialty = "";
+        if (group.getSpecialty()!=null){
+            specialty = " - " + group.getSpecialty();
+        }
         if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
-            return "Trust Admin";
+            return "Trust Admin"+specialty;
         }else{
             if (group.getIsAdmin()){
-                return "Hospital Admin";
+                return "Hospital Admin"+specialty;
             }else {
-                return "Normal User";
+                return "Normal User"+specialty;
             }
         }
     }
@@ -115,11 +119,16 @@ public class UserGroupController {
             return false;
         }
         UserGroup group;
-        group = new UserGroup(name,username,password,hospital,isAdmin,email,specialtyService.findByName(speciality));
+        group = new UserGroup(name,username,password,hospital,isAdmin,email,speciality);
         //assume that specialty passed is inside the database
 
         service.save(group);
         return true;
+    }
+
+    @PostMapping("/get")
+    public UserGroup getById(@RequestParam("hospitalId")long hospitalId,@RequestParam("username") String username){
+        return service.findByPK(hospitalId,username);
     }
 
     @GetMapping("/all/admins")
@@ -134,7 +143,6 @@ public class UserGroupController {
             groupls.add(Long.toString(group.getHospitalId().getHospitalId()));
             groupls.add(group.getEmail());
             groupls.add(group.getUsername());
-            groupls.add(group.getSpecialty().getSpecialty());
             groupls.add(group.getHospitalId().getTrust().getTrustName());
             result.add(groupls);
         }

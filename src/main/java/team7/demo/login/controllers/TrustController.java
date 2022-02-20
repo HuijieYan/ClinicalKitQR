@@ -36,6 +36,11 @@ public class TrustController {
         return true;
     }
 
+    @PostMapping("/get")
+    public Trust getById(@RequestParam("id")long id){
+        return service.findByID(id);
+    }
+
     @GetMapping("/all/admins")
     public List<UserGroup> getAllAdminsInOrder(){
         List<Trust> trusts = service.getAll();

@@ -1,4 +1,4 @@
-package team7.demo.login.config;
+package team7.demo.login.models.config;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -30,10 +30,10 @@ public class UserGroupConfig {
             Hospital hospital2 = new Hospital("MyHospital2",trust);
             trust.addHospital(hospital2);
             Specialty specialty = new Specialty("admin");
-            UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com",specialty);
+            UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com","admin");
             UserGroup group2 = new UserGroup("group2","g2","123",hospital,true);
             UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
-            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,true,"trustAdmin@nhs.com",specialty);
+            UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,true,"trustAdmin@nhs.com","admin");
             UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
 
             Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"A","Neonatal");
