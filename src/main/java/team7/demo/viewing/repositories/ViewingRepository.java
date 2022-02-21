@@ -1,10 +1,12 @@
 package team7.demo.viewing.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import team7.demo.login.models.UserGroup;
 import team7.demo.viewing.models.Viewing;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -43,4 +45,11 @@ public interface ViewingRepository extends JpaRepository<Viewing, Long> {
     @Query("select v from  Viewing v where v.date = ?1")
     public List<Viewing> getAllByDate(LocalDate date);
 
+    @Query("select v from Viewing v where v.equipmentId.equipmentId=?1 and v.date=?2 and v.userGroup = ?3")
+    Viewing getViewToUpdate(long equipmentId,LocalDate date,UserGroup group);
+
+    @Transactional
+    @Modifying
+    @Query("update Viewing v set v.viewCounter = ?2,v.version = v.version+1 where v.viewingId=?1 and v.version=?3")
+    void incrementCounter(String id,long counter,long version);
 }

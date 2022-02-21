@@ -5,6 +5,7 @@ import team7.demo.login.models.UserGroup;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.UUID;
 
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -12,21 +13,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 public class Viewing
 {
     @Id
-    @SequenceGenerator(
-            name = "viewing_sequence",
-            sequenceName = "viewing_sequence_name",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "viewing_sequence"
-    )
-    @Column(
-            name = "viewing_id",
-            updatable = false,
-            columnDefinition = "bigint not null"
-    )
-    private Long viewingId;
+    private String viewingId;
 
     @ManyToOne(
             optional = false,
@@ -58,10 +45,21 @@ public class Viewing
     )
     private LocalDate date;
 
+    @Column(
+            name = "counter",
+            columnDefinition = "bigint not null"
+    )
+    private long viewCounter;
+
+    @Version
+    private long version;
+
     public Viewing( Equipment equipmentId, LocalDate date, UserGroup userGroup) {
+        this.viewingId = UUID.randomUUID().toString();
         this.equipmentId = equipmentId;
         this.date = date;
         this.userGroup = userGroup;
+        this.viewCounter = 1L;
     }
 
 
@@ -69,12 +67,16 @@ public class Viewing
 
     }
 
-    public Long getViewingId()
+    public long getVersion() {
+        return version;
+    }
+
+    public String getViewingId()
     {
         return viewingId;
     }
 
-    public void setViewingId(Long viewingId)
+    public void setViewingId(String viewingId)
     {
         this.viewingId = viewingId;
     }
@@ -105,5 +107,17 @@ public class Viewing
 
     public void setUserGroup(UserGroup userGroup) {
         this.userGroup = userGroup;
+    }
+
+    public void setViewCounter(long viewCounter) {
+        this.viewCounter = viewCounter;
+    }
+
+    public long getViewCounter() {
+        return viewCounter;
+    }
+
+    public void setVersion(long version) {
+        this.version = version;
     }
 }

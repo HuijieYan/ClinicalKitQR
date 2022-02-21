@@ -129,7 +129,7 @@ public class EquipmentController {
         if (equipment.getHospitalId().getHospitalId()==hospitalId){
             if (!group.getIsAdmin()) {
                 // creates new viewing if the user is not an admin (therefore does not increment on editing equipment)
-                viewingService.save(new Viewing(equipment, LocalDate.now(),group));
+                viewingService.addNewView(equipment, LocalDate.now(),group);
             }
             return equipment;
         }else if(group.getHospitalId().getHospitalName().equals("Trust Admin")&&group.getHospitalId().getTrust().getTrustId()==equipment.getHospitalId().getTrust().getTrustId()){
