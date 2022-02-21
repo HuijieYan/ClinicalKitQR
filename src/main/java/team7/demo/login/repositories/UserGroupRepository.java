@@ -18,8 +18,8 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
 
     @Transactional //if update failed, nothing is going to change
     @Modifying
-    @Query("update UserGroup u set u.name = ?4, u.password=?3 where u.username = ?2 and u.hospitalId.hospitalId = ?1")
-    int updateUserGroup(long id,String username,String password,String name);
+    @Query("update UserGroup u set u.name = ?3, u.password=?4,u.email=?5,u.specialty=?6 where u.username = ?2 and u.hospitalId.hospitalId = ?1")
+    int updateUserGroup(long id,String username,String name,String password,String email,String specialty);
 
     @Query("select u from UserGroup u where u.hospitalId.hospitalId = ?1")
     List<UserGroup> findAllByHospitalId(long id);

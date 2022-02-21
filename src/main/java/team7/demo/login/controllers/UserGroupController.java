@@ -3,6 +3,7 @@ package team7.demo.login.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import team7.demo.login.models.Hospital;
+import team7.demo.login.models.Trust;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.HospitalService;
 import team7.demo.login.services.SpecialtyService;
@@ -147,6 +148,63 @@ public class UserGroupController {
             result.add(groupls);
         }
         return result;
+    }
+
+    @PostMapping("/addTrust")
+    public boolean addTrust(@RequestParam("trustName")String trustName,@RequestParam("username")String username,
+                            @RequestParam("password")String password,@RequestParam("name")String name,
+                            @RequestParam("email")String email,@RequestParam("specialty")String specialty){
+        try{
+            Trust newTrust = new Trust(trustName);
+            Hospital newHospital = new Hospital("Trust Admin",newTrust);
+
+            if (email.length()==0){
+                email=null;
+            }
+            if(specialty.length() == 0){
+                specialty = null;
+            }
+            UserGroup group = new UserGroup(name,username,password,newHospital,true,email,specialty);
+            newHospital.addGroup(group);
+            newTrust.addHospital(newHospital);
+
+            service.save(group);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    @PostMapping("/update")
+    public boolean update(@RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username,
+                          @RequestParam("name")String name,@RequestParam("password")String password,
+                          @RequestParam("email")String email,@RequestParam("specialty")String specialty){
+        UserGroup group = service.findByPK(hospitalId,username);
+        String updateName = name;
+        String updatePassword = password;
+        String updateEmail = email;
+        String updateSpecialty = specialty;
+        if (group == null){
+            return false;
+        }
+        if (name.length()==0){
+            updateName = group.getName();
+        }
+        if (password.length()==0){
+            updatePassword = group.getPassword();
+        }
+        if (email.length()==0){
+            updateEmail = group.getEmail();
+        }
+        if (specialty.length()==0){
+            updateSpecialty = group.getSpecialty();
+        }
+        try{
+            service.update(hospitalId,username,updateName,updatePassword,updateEmail,updateSpecialty);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     private boolean checkStringIsInvalid(String str){

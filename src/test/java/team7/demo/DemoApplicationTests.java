@@ -67,14 +67,4 @@ class DemoApplicationTests {
 		Assertions.assertTrue(originalSize==service.getAll().size());
 	}
 
-	@Test
-	@Order(5)
-	void testUpdateUserGroupSuccess(){
-		String result = "UserGroup{" +
-				"name='test2'" +
-				", username='test1'" +
-				", password='123'}";
-		service.update(hospital_id,"test1","123","test2");
-		Assertions.assertEquals(result,service.findByPK(hospital_id,"test1").toString());
-	}
 }

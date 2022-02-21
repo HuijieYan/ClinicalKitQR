@@ -49,8 +49,8 @@ public class UserGroupService {
         return repository.findByHospitalIdAndUsername(id,username);
     }
 
-    public void update(long id, String username,String pwd,String name){
-        repository.updateUserGroup(id,username,pwd,name);
+    public void update(long id, String username,String name,String pwd,String email,String specialty){
+        repository.updateUserGroup(id,username,name,pwd,email,specialty);
     }
 
     public boolean login(long id,String username,String pwd){
