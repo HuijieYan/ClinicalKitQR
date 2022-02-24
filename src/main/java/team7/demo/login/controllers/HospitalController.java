@@ -45,6 +45,16 @@ public class HospitalController {
         return true;
     }
 
+    @PostMapping("/delete")
+    public boolean delete(@RequestParam("id")long id){
+        try {
+            service.delete(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
     private boolean checkStringIsInvalid(String str){
         if (str == null||str.isEmpty()){
             return true;
