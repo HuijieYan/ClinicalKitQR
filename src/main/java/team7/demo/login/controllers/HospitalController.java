@@ -36,8 +36,8 @@ public class HospitalController {
         return service.getAllByTrust(trustId);
     }
 
-    @PostMapping("/register/trustId={trustId} name={name}")
-    public boolean register(@PathVariable long trustId,@PathVariable String name){
+    @PostMapping("/new")
+    public boolean register(@RequestParam("id") long trustId,@RequestParam("name") String name){
         if(checkStringIsInvalid(name)){
             return false;
         }
@@ -53,6 +53,17 @@ public class HospitalController {
         }catch (Exception e){
             return false;
         }
+    }
+
+    @PostMapping("/update")
+    public boolean update(@RequestParam("id")long id,@RequestParam("name")String newName){
+        try {
+            service.update(id,newName);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+
     }
 
     private boolean checkStringIsInvalid(String str){

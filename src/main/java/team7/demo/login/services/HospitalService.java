@@ -42,4 +42,8 @@ public class HospitalService {
         repository.deleteByPK(id);
     }
 
+    public void update(long id,String name){
+        repository.update(id,name);
+    }
+
 }

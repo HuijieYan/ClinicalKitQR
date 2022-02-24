@@ -19,4 +19,9 @@ public interface HospitalRepository extends JpaRepository<Hospital,Long> {
     @Modifying
     @Query("delete from Hospital h where h.hospitalId = ?1")
     void deleteByPK(long id);
+
+    @Transactional
+    @Modifying
+    @Query("update Hospital h set h.hospitalName=?2 where h.hospitalId = ?1")
+    void update(long id,String name);
 }
