@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.login.models.UserGroup;
+import team7.demo.viewing.models.EquipmentViewing;
 import team7.demo.viewing.models.Viewing;
 import team7.demo.viewing.repositories.ViewingRepository;
 
@@ -20,7 +21,7 @@ public class ViewingService {
         this.repository = repository;
     }
 
-    public List<Viewing> getAllByEquipment(Long equipment) {
+    public List<EquipmentViewing> getAllByEquipment(Long equipment) {
         return repository.getAllByEquipmentId(equipment);
     }
 

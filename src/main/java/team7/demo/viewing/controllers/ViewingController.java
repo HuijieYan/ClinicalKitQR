@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.services.EquipmentService;
 import team7.demo.login.models.UserGroup;
 import team7.demo.login.services.UserGroupService;
+import team7.demo.viewing.models.EquipmentViewing;
 import team7.demo.viewing.services.ViewingService;
 import team7.demo.viewing.models.Viewing;
 
@@ -26,7 +27,7 @@ public class ViewingController {
     }
 
     @GetMapping("/equipmentId={equipmentId}")
-    public List<Viewing> getByEquipment(@PathVariable Long equipmentId) {
+    public List<EquipmentViewing> getByEquipment(@PathVariable Long equipmentId) {
         return viewingService.getAllByEquipment(equipmentId);
     }
 

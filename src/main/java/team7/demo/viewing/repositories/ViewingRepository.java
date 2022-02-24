@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import team7.demo.login.models.UserGroup;
+import team7.demo.viewing.models.EquipmentViewing;
 import team7.demo.viewing.models.Viewing;
 
 import javax.transaction.Transactional;
@@ -14,8 +15,9 @@ public interface ViewingRepository extends JpaRepository<Viewing, Long> {
 
     // equipment only queries
 
-    @Query("select v from Viewing v where v.equipmentId.equipmentId = ?1")
-    public List<Viewing> getAllByEquipmentId(Long id);
+    @Query("select new team7.demo.viewing.models.EquipmentViewing(v.userGroup, sum(v.viewCounter))" +
+            " from Viewing v where v.equipmentId.equipmentId = ?1 group by v.userGroup")
+    public List<EquipmentViewing> getAllByEquipmentId(Long id);
 
     @Query("select v from Viewing v where v.equipmentId.equipmentId = ?1 and v.date between ?2 and ?3")
     public List<Viewing> findAllByEquipmentIdAndDateBetween(Long id, LocalDate startDate, LocalDate endDate);
