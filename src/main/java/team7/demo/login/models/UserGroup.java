@@ -2,6 +2,8 @@ package team7.demo.login.models;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import team7.demo.issue.models.Issue;
 import team7.demo.mail.models.Mail;
 import team7.demo.viewing.models.Viewing;
@@ -48,14 +50,17 @@ public class UserGroup{
     private boolean isAdmin;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "userGroupName",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "receiver",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Mail> inbox = new ArrayList<>();
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(
             mappedBy = "userGroup",
             orphanRemoval = true,

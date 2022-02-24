@@ -6,6 +6,8 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.common.BitMatrix;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import team7.demo.Constant;
 
 import java.awt.image.BufferedImage;
@@ -65,10 +67,12 @@ public class Equipment {
     private LocalDate date;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Issue> issueList = new ArrayList<>();
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(
             mappedBy = "equipmentId",
             orphanRemoval = true,
