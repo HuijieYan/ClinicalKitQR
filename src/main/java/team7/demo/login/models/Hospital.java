@@ -2,6 +2,8 @@ package team7.demo.login.models;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import team7.demo.equipment.models.Equipment;
 import team7.demo.equipment.models.SentEquipment;
 
@@ -30,15 +32,19 @@ public class Hospital {
     private Trust trust;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    //added OnDelete since it is part of primary key of user group
     @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     //mappedBy is the name of variable in UserGroup
     private List<UserGroup> groups = new ArrayList<>();
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Equipment> equipments = new ArrayList<>();
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<SentEquipment> sentEquipments = new ArrayList<>();
 
@@ -69,6 +75,10 @@ public class Hospital {
 
     public void setHospitalName(String hospitalName) {
         this.hospitalName = hospitalName;
+    }
+
+    public List<Equipment> getEquipments() {
+        return equipments;
     }
 
     public Trust getTrust() {

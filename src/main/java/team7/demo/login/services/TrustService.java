@@ -2,6 +2,7 @@ package team7.demo.login.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import team7.demo.login.models.Hospital;
 import team7.demo.login.models.Trust;
 import team7.demo.login.repositories.TrustRepository;
 
@@ -26,5 +27,10 @@ public class TrustService {
 
     public void save(Trust trust){
         repository.saveAndFlush(trust);
+    }
+
+    public void delete(long id){
+        Trust trust = repository.findByTrustId(id);
+        repository.deleteByPK(id);
     }
 }

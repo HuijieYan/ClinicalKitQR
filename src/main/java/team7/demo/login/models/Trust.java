@@ -1,6 +1,8 @@
 package team7.demo.login.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class Trust {
     private String trustName;
 
     @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(mappedBy = "trust",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     private List<Hospital> hospitals = new ArrayList<>();
 

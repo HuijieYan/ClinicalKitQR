@@ -37,4 +37,9 @@ public class HospitalService {
     public String getNameByID(long id){
         return findByID(id).getHospitalName();
     }
+
+    public void delete(long id){
+        repository.deleteByPK(id);
+    }
+
 }

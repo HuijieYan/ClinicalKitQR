@@ -2,10 +2,14 @@ package team7.demo.login.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import team7.demo.equipment.models.Equipment;
+import team7.demo.equipment.services.EquipmentService;
 import team7.demo.login.models.Hospital;
 import team7.demo.login.models.Trust;
 import team7.demo.login.models.UserGroup;
+import team7.demo.login.services.HospitalService;
 import team7.demo.login.services.TrustService;
+import team7.demo.login.services.UserGroupService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +19,14 @@ import java.util.List;
 @RequestMapping("/trusts")
 public class TrustController {
     private final TrustService service;
+    private final EquipmentService equipmentService;
+    private final UserGroupService userGroupService;
 
     @Autowired
-    public TrustController(TrustService service){
+    public TrustController(TrustService service,EquipmentService equipmentService,UserGroupService userGroupService){
         this.service = service;
+        this.equipmentService = equipmentService;
+        this.userGroupService = userGroupService;
     }
 
     @GetMapping("/all")
@@ -52,6 +60,20 @@ public class TrustController {
             }
         }
         return groups;
+    }
+
+    @PostMapping("/delete")
+    public boolean delete(@RequestParam("id") long id){
+        try {
+            Trust trust = service.findByID(id);
+            if (trust == null){
+                return false;
+            }
+            service.delete(id);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     private boolean checkStringIsInvalid(String str){
