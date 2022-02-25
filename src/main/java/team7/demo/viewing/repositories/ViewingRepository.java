@@ -19,14 +19,19 @@ public interface ViewingRepository extends JpaRepository<Viewing, Long> {
             " from Viewing v where v.equipmentId.equipmentId = ?1 group by v.userGroup")
     public List<EquipmentViewing> getAllByEquipmentId(Long id);
 
-    @Query("select v from Viewing v where v.equipmentId.equipmentId = ?1 and v.date between ?2 and ?3")
-    public List<Viewing> findAllByEquipmentIdAndDateBetween(Long id, LocalDate startDate, LocalDate endDate);
 
-    @Query("select v from Viewing v where v.equipmentId.equipmentId = ?1 and v.date < ?2")
-    public List<Viewing> findAllByEquipmentIdAndDateBefore(Long id, LocalDate endDate);
+    @Query("select new team7.demo.viewing.models.EquipmentViewing(v.userGroup, sum(v.viewCounter))" +
+            " from Viewing v where v.equipmentId.equipmentId = ?1 and v.date between ?2 and ?3 group by v.userGroup")
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateBetween(Long id, LocalDate startDate, LocalDate endDate);
 
-    @Query("select v from Viewing v where v.equipmentId.equipmentId = ?1 and v.date > ?2")
-    public List<Viewing> findAllByEquipmentIdAndDateAfter(Long id, LocalDate startDate);
+
+    @Query("select new team7.demo.viewing.models.EquipmentViewing(v.userGroup, sum(v.viewCounter))" +
+            " from Viewing v where v.equipmentId.equipmentId = ?1 and v.date <= ?2 group by v.userGroup")
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateBefore(Long id, LocalDate endDate);
+
+    @Query("select new team7.demo.viewing.models.EquipmentViewing(v.userGroup, sum(v.viewCounter))" +
+            " from Viewing v where v.equipmentId.equipmentId = ?1 and v.date >= ?2 group by v.userGroup")
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateAfter(Long equipmentId, LocalDate startDate);
 
     // user group only queries
 

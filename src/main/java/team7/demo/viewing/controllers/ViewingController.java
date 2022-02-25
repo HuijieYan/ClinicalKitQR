@@ -1,6 +1,7 @@
 package team7.demo.viewing.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import team7.demo.equipment.services.EquipmentService;
 import team7.demo.login.models.UserGroup;
@@ -9,6 +10,8 @@ import team7.demo.viewing.models.EquipmentViewing;
 import team7.demo.viewing.services.ViewingService;
 import team7.demo.viewing.models.Viewing;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @CrossOrigin(origins = {"http://localhost:3000"})
@@ -26,9 +29,18 @@ public class ViewingController {
         this.userGroupService = userGroupService;
     }
 
-    @GetMapping("/equipmentId={equipmentId}")
-    public List<EquipmentViewing> getByEquipment(@PathVariable Long equipmentId) {
-        return viewingService.getAllByEquipment(equipmentId);
+    @GetMapping("/equipmentId={equipmentId}/startDate={startDate}/endDate={endDate}")
+    public  List<EquipmentViewing> getByEquipmentAndDateBetween(@PathVariable Long equipmentId, @PathVariable String startDate, @PathVariable String endDate){
+        if (startDate.isEmpty() && endDate.isEmpty()){
+            return viewingService.getAllByEquipmentId(equipmentId);
+        } else if (!startDate.isEmpty() && !endDate.isEmpty()){
+            return viewingService.getAllByEquipmentIdAndDateBetween(equipmentId,LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME), LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
+        } else if (startDate.isEmpty() && !endDate.isEmpty()){
+            return viewingService.getAllByEquipmentIdAndDateBefore(equipmentId, LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
+        } else if (!startDate.isEmpty() && endDate.isEmpty()){
+            return viewingService.getAllByEquipmentIdAndDateAfter(equipmentId, LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME));
+        }
+        return null;
     }
 
     @GetMapping("/hospitalId={hospitalId}/username={username}")

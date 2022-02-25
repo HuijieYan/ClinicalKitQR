@@ -21,8 +21,16 @@ public class ViewingService {
         this.repository = repository;
     }
 
-    public List<EquipmentViewing> getAllByEquipment(Long equipment) {
+    public List<EquipmentViewing> getAllByEquipmentId(Long equipment) {
         return repository.getAllByEquipmentId(equipment);
+    }
+
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateBetween(Long equipment, LocalDate startDate, LocalDate endDate) {
+        return repository.getAllByEquipmentIdAndDateBetween(equipment, startDate, endDate);
+    }
+
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateBefore(Long equipment, LocalDate endDate) {
+        return repository.getAllByEquipmentIdAndDateBefore(equipment,endDate);
     }
 
     public  List<Viewing> getAllByDate(LocalDate date) {
@@ -66,4 +74,7 @@ public class ViewingService {
 
     }
 
+    public List<EquipmentViewing> getAllByEquipmentIdAndDateAfter(Long equipmentId, LocalDate startDate) {
+        return repository.getAllByEquipmentIdAndDateAfter(equipmentId, startDate);
+    }
 }
