@@ -44,6 +44,7 @@ public class UserGroupConfig {
             trustAdmin.addGroup(g3);
             hospital.addGroup(group);
             hospital.addGroup(group2);
+            hospital.addGroup(group3);
             hospital.addGroup(g5);
             hospital2.addGroup(g4);
             hospital.addEquipment(equipment1);
@@ -55,7 +56,7 @@ public class UserGroupConfig {
             group.addIssue(issue);
 
             // example code for viewings
-            Viewing viewing =  new Viewing(equipment1, LocalDate.now(),group);
+            Viewing viewing =  new Viewing(equipment1, LocalDate.now(),group3);
             equipment1.addViewing(viewing);
             group.addViewing(viewing);
 
