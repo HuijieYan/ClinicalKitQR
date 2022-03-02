@@ -8,6 +8,15 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * This class for storing copies of the shared equipment, so when the
+ * sender changes the equipment after shared, the shared equipment will
+ * not be changed
+ *
+ * @value saved indicates whether the receiver has saved this equipment or not
+ * @value mail the sharing which shares this equipment, a sharing can share multiple equipments
+ */
+
 @Entity
 @Table
 public class SentEquipment{
@@ -36,11 +45,9 @@ public class SentEquipment{
 
     @Column(columnDefinition = "TEXT")
     private String type;
-    //the type of the equipment ie. equipment for stomach
 
     @Column(columnDefinition = "TEXT")
     private String category;
-    //the category of the equipment, can be Neonatal or Adult or Child
 
     private LocalDate date;
 

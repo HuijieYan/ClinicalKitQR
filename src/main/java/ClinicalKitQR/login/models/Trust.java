@@ -8,6 +8,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a trust that manages many hospitals
+ *
+ * @value trustId a long type integer that uniquely identifies the trust
+ * @value trustName name of the trust
+ * @value hospitals stores hospitals that belong to this trust, this is a one to many relationship
+ */
+
 @Entity
 @Table(name = "Trust")
 public class Trust {

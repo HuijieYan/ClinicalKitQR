@@ -14,6 +14,21 @@ import java.util.List;
 import ClinicalKitQR.issue.models.Issue;
 import ClinicalKitQR.login.models.Hospital;
 
+/**
+ * Represents the equipment education page, all values below are not nullable
+ *
+ * @value equipmentId a Long type integer
+ * @value hospitalId the owner (hospital) of this page
+ * @value name the display name of the equipment
+ * @value searchName the name that will be used when searching equipment, must be lowercase letters
+ * @value content a string containing the html code of the page
+ * @value type the type of the equipment i.e. equipment for stomach
+ * @value category the category of the equipment, can be Neonatal or Adult or Child
+ * @value date the year when this equipment was created
+ * @value issueList stores the issues related to this equipment, this is a one to many relationship
+ * @value viewingList stores the issues related to this equipment, this is a one to many relationship
+ */
+
 @Entity(name = "Equipment")
 @Table(name = "Equipment")
 public class Equipment {
@@ -45,14 +60,11 @@ public class Equipment {
 
     @Column(columnDefinition = "TEXT")
     private String type;
-    //the type of the equipment ie. equipment for stomach
 
     @Column(columnDefinition = "TEXT")
     private String category;
-    //the category of the equipment, can be Neonatal or Adult or Child
 
     private LocalDate date;
-    //the year when this equipment was created
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)

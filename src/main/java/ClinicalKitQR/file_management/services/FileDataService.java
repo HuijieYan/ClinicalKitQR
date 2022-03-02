@@ -25,6 +25,9 @@ public class FileDataService {
         this.repository = repository;
     }
 
+    /**
+     * Creates directory /uploadedFiles if it is not yet created
+     */
     @PostConstruct
     public void init(){
         if (!Files.exists(root)) {

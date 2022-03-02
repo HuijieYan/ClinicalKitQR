@@ -12,6 +12,22 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents the user of this website
+ *
+ * @value name the display name of the user group
+ * @value username the username of the user group, must be unique within the same hospital,
+ *        this is a part of the composite primary key
+ * @value password there's no restrictions to ensure safety
+ * @value email optional, the email of this group, often used with admin users
+ * @value specialty optional, this group's specialty, often used with admin users
+ * @value hospitalId the hospital which this group belongs
+ * @value isAdmin indicates whether this group is an admin or not
+ * @value issueList stores the issues which this group reported
+ * @value inbox stores sharings that this group received
+ * @value viewingList stores the viewing history of this group
+ */
+
 @Entity(name = "UserGroup")
 @Table(name = "usergroup")
 @IdClass(UserGroupPrimaryKey.class)
@@ -22,12 +38,11 @@ public class UserGroup{
     @Id
     @Column(name = "username",nullable = false,columnDefinition = "TEXT")
     private String username;
-    //username must be unique within a hospital
 
     @JsonIgnore
+    //you can't access the password of the user group if the object is passed
     @Column(name = "password",nullable = false,columnDefinition = "TEXT")
     private String password;
-    //you can't access the password of the user group if the object is passed
 
     @Column(name = "email",nullable = true,columnDefinition = "TEXT")
     private String email;

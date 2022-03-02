@@ -159,6 +159,17 @@ public class EquipmentService {
         repository.deleteById(id);
     }
 
+
+    /**
+     * Searching for equipment with matched type, category and name given by the
+     * parameters
+     *
+     * @param group the user that is currently using search function
+     * @param type selected type of the equipment
+     * @param category selected category of the equipment
+     * @param text searching name
+     * @return the list of equipments found using search term, type and categories
+     */
     public List<Equipment> search(UserGroup group, String type, String category, String text){
         String txt = text.toLowerCase();
         List<Equipment> equipments = new ArrayList<>();
@@ -219,8 +230,15 @@ public class EquipmentService {
         }
     }
 
+
+    /**
+     * Generates possible search terms that are of Levenshtein distance 1
+     * https://en.wikipedia.org/wiki/Levenshtein_distance
+     *
+     * @param str the search term entered by the user
+     * @return a list of possible search terms
+     */
     private List<String> generatePossibleOutcomes(String str){
-        //for this function we only generates possible outcomes that are of Levenshtein distance 1
         List<String> possibleOutcomes = new ArrayList<>();
         possibleOutcomes.add(str);
         char[] subCharacters = Constant.substitutionCharacters;

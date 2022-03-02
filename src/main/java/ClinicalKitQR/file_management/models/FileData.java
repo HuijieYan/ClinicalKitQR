@@ -5,6 +5,14 @@ import ClinicalKitQR.Constant;
 import javax.persistence.*;
 import java.util.UUID;
 
+/**
+ * Represents uploaded file that are locally stored in the database,
+ * the actual file is stored under /uploadedFiles
+ *
+ * @value id a uuid that identifies the file
+ * @value name the name of the file
+ * @value extension file extension i.e. png, mp4
+ */
 @Table(name = "files")
 @Entity(name = "FileData")
 public class FileData {
@@ -17,7 +25,6 @@ public class FileData {
 
     @Column(name = "extension")
     private String extension;
-    //file extension ie. png, mp4
 
     public FileData(){}
 

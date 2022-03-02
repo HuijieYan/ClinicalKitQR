@@ -7,6 +7,17 @@ import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * Represents number of views of a user group that views equipment in one day,
+ * admins are not counted
+ *
+ * @value viewingId an uuid that uniquely identifies the viewing
+ * @value equipmentId the equipment that the user group viewed
+ * @value userGroup the user group that viewed equipment
+ * @value date the day when the user group viewed the equipment
+ * @value viewCounter number of times this group viewed the equipment
+ * @value version used to avoid concurrent update
+ */
 @Entity(name = "Viewing")
 public class Viewing
 {

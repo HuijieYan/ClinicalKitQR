@@ -10,6 +10,17 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *  Represents a hospital that has many users
+ *
+ * @value hospitalId a long type integer that uniquely identifies the hospital
+ * @value hospitalName name of the hospital
+ * @value trust the trust which this hospital belongs to
+ * @value groups stores user groups that belongs to this hospital, this is a one to many relationship
+ * @value equipments stores equipments that belong to this hospital, this is a one to many relationship
+ * @value sentEquipments stores copies of equipments that belong to this hospital, this is a one to many relationship
+ */
+
 @Entity(name = "Hospital")
 @Table(name = "hospital")
 public class Hospital {

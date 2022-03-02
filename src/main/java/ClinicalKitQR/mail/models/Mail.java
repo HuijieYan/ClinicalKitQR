@@ -9,6 +9,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Represents when an admin shares one or more equipments to the other admins
+ *
+ * @value id an uuid that uniquely identifies the sharing
+ * @value senderHospitalId stores the id of the hospital of the sender
+ * @value senderUsername the username of the sender
+ * @value receiver the receiver user group, can be null since when a sharing is
+ *        sent the system also automatically generates a copy for the sender to
+ *        view the sharings he/she sent
+ * @value time the exact time(year/month/day/hour:minute:seconds) when the sharing
+ *        is sent
+ * @value title like title in an email
+ * @value description like content in an email
+ * @value equipments stores shared equipments, their data will not be changed after sending
+ */
+
 @Entity(name = "Mail")
 @Table(name = "Mail")
 public class Mail {
@@ -36,9 +52,6 @@ public class Mail {
 
     @Column(name = "description",columnDefinition = "TEXT")
     private String description;
-
-    @Column(name = "done")
-    private boolean done = false;
 
     @OneToMany(mappedBy = "mail",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
     private List<SentEquipment> equipments = new ArrayList<>();
@@ -78,10 +91,6 @@ public class Mail {
 
     public UserGroup getReceiver() {
         return receiver;
-    }
-
-    public boolean getDone() {
-        return done;
     }
 
     public LocalDateTime getTime() {
@@ -124,9 +133,6 @@ public class Mail {
         this.title = title;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
-    }
 
     public void addEquipment(SentEquipment equipment){
         equipments.add(equipment);

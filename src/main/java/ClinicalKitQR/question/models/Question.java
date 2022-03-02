@@ -2,6 +2,14 @@ package ClinicalKitQR.question.models;
 
 import javax.persistence.*;
 
+/**
+ * Represents the question and answers in FAQ section
+ *
+ * @value id a long type integer that uniquely identifies the question
+ * @value question not null
+ * @value answer not null
+ */
+
 @Entity(name = "Question")
 @Table(name = "Question")
 public class Question {

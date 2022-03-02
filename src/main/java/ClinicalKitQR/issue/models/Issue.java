@@ -6,6 +6,17 @@ import ClinicalKitQR.login.models.UserGroup;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+/**
+ * Represent the issue of the equipment page raised by normal users
+ *
+ * @value issueId a long type integer that is the id of the issue
+ * @value userGroupName the user group that raised this problem
+ * @value description the description of the issue written by the user
+ * @value equipmentId the equipment page that has the issue
+ * @value solved indicates whether this problem has been solved or not
+ * @value date the date when this issue is raised
+ */
+
 @Entity(name = "Issue")
 @Table(name = "Issue")
 public class Issue {
