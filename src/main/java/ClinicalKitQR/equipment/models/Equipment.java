@@ -1,0 +1,177 @@
+package ClinicalKitQR.equipment.models;
+
+import javax.persistence.*;
+
+import ClinicalKitQR.viewing.models.Viewing;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+import ClinicalKitQR.issue.models.Issue;
+import ClinicalKitQR.login.models.Hospital;
+
+@Entity(name = "Equipment")
+@Table(name = "Equipment")
+public class Equipment {
+    @Id
+    @SequenceGenerator(
+            name = "EquipmentidSeqGen",
+            sequenceName = "EquipmentidSequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(strategy =  GenerationType.SEQUENCE,generator = "EquipmentidSeqGen")
+    @Column(name = "equipmentId",columnDefinition = "bigint not null")
+    private long equipmentId;
+
+    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @JoinColumn(name = "hospitalId",
+            referencedColumnName = "hospitalId",
+            columnDefinition = "bigint not null"
+    )
+    public Hospital hospitalId;
+
+    @Column(columnDefinition = "TEXT")
+    private String searchName;
+
+    @Column(columnDefinition = "TEXT")
+    private String name;
+
+    @Column(columnDefinition = "TEXT")
+    private String content;
+
+    @Column(columnDefinition = "TEXT")
+    private String type;
+    //the type of the equipment ie. equipment for stomach
+
+    @Column(columnDefinition = "TEXT")
+    private String category;
+    //the category of the equipment, can be Neonatal or Adult or Child
+
+    private LocalDate date;
+    //the year when this equipment was created
+
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(mappedBy = "equipmentId",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    private List<Issue> issueList = new ArrayList<>();
+
+    @JsonIgnore
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(
+            mappedBy = "equipmentId",
+            orphanRemoval = true,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    private List<Viewing> viewingList = new ArrayList<>();
+
+
+    public Equipment(){}
+
+    public Equipment(String name,String content,Hospital hospitalId,String type,String category){
+        this.name = name;
+        this.content = content;
+        this.hospitalId = hospitalId;
+        this.type = type;
+        this.category = category;
+        this.date = LocalDate.now();
+        this.searchName = name.toLowerCase();
+    }
+
+    public Equipment(Equipment equipment){
+        this.name = equipment.getName();
+        this.content = equipment.getContent();
+        this.hospitalId = equipment.getHospitalId();
+        this.type = equipment.getType();
+        this.category = equipment.getCategory();
+        this.date = equipment.getDate();
+        this.searchName = name.toLowerCase();
+    }
+
+    public Equipment(SentEquipment equipment,Hospital hospital){
+        this.name = equipment.getName();
+        this.content = equipment.getContent();
+        this.hospitalId = hospital;
+        this.type = equipment.getType();
+        this.category = equipment.getCategory();
+        this.date = equipment.getDate();
+        this.searchName = name.toLowerCase();
+    }
+
+
+    public void setEquipmentId(long equipmentId) {
+        this.equipmentId = equipmentId;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setSearchName(String searchName) {
+        this.searchName = searchName;
+    }
+
+    public void setHospital(Hospital hospitalId) {
+        this.hospitalId = hospitalId;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public long getEquipmentId() {
+        return equipmentId;
+    }
+
+    public Hospital getHospitalId() {
+        return hospitalId;
+    }
+
+    public void addIssue(Issue issue){
+        issueList.add(issue);
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getSearchName() {
+        return searchName;
+    }
+
+    public void addViewing(Viewing viewing) {
+        viewingList.add(viewing);
+    }
+}
