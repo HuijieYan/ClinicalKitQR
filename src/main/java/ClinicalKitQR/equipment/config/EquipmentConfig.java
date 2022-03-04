@@ -1,5 +1,7 @@
 package ClinicalKitQR.equipment.config;
 
+import ClinicalKitQR.equipment.models.EquipmentModel;
+import ClinicalKitQR.equipment.models.Manufacturer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +23,8 @@ public class EquipmentConfig {
             Hospital hospital = new Hospital("New Hospital",new Trust("Trust2"));
             UserGroup group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
             hospital.addGroup(group);
-            Equipment equipment = new Equipment("Equipment3","Some description",hospital,"Neonatal","A");
+            Manufacturer manufacturer = new Manufacturer("cat");
+            Equipment equipment = new Equipment("Equipment3","Some description",hospital,"Neonatal","A",new EquipmentModel("C1",manufacturer));
             service.save(equipment);
         };
     }

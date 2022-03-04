@@ -20,10 +20,11 @@ import ClinicalKitQR.login.models.Hospital;
  * @value equipmentId a Long type integer
  * @value hospitalId the owner (hospital) of this page
  * @value name the display name of the equipment
- * @value searchName the name that will be used when searching equipment, must be lowercase letters
+ * @value searchName the name that will be used when searching equipment, must be lowercase letters and no spaces
  * @value content a string containing the html code of the page
- * @value type the type of the equipment i.e. equipment for stomach
- * @value category the category of the equipment, can be Neonatal or Adult or Child
+ * @value type the type of clinical system of the equipment i.e. equipment for stomach
+ * @value category the patient demographic of the equipment, can be Neonatal or Adult or Child
+ * @value model the model of the equipment i.e. UX-001
  * @value date the year when this equipment was created
  * @value issueList stores the issues related to this equipment, this is a one to many relationship
  * @value viewingList stores the issues related to this equipment, this is a one to many relationship
@@ -43,7 +44,8 @@ public class Equipment {
     private long equipmentId;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "hospitalId",
+    @JoinColumn(
+            name = "hospitalId",
             referencedColumnName = "hospitalId",
             columnDefinition = "bigint not null"
     )
@@ -63,6 +65,10 @@ public class Equipment {
 
     @Column(columnDefinition = "TEXT")
     private String category;
+
+    @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @JoinColumn(name = "modelId")
+    private EquipmentModel model;
 
     private LocalDate date;
 
@@ -84,14 +90,15 @@ public class Equipment {
 
     public Equipment(){}
 
-    public Equipment(String name,String content,Hospital hospitalId,String type,String category){
+    public Equipment(String name,String content,Hospital hospitalId,String type,String category,EquipmentModel model){
         this.name = name;
         this.content = content;
         this.hospitalId = hospitalId;
         this.type = type;
         this.category = category;
         this.date = LocalDate.now();
-        this.searchName = name.toLowerCase();
+        this.searchName = name.replaceAll(" ","").toLowerCase();
+        this.setModel(model);
     }
 
     public Equipment(Equipment equipment){
@@ -101,19 +108,26 @@ public class Equipment {
         this.type = equipment.getType();
         this.category = equipment.getCategory();
         this.date = equipment.getDate();
-        this.searchName = name.toLowerCase();
+        this.setModel(new EquipmentModel(equipment.getModel()));
+        this.searchName = name.replaceAll(" ","").toLowerCase();
     }
 
-    public Equipment(SentEquipment equipment,Hospital hospital){
+    public Equipment(SentEquipment equipment,Hospital hospital,Manufacturer manufacturer){
         this.name = equipment.getName();
         this.content = equipment.getContent();
         this.hospitalId = hospital;
         this.type = equipment.getType();
         this.category = equipment.getCategory();
         this.date = equipment.getDate();
-        this.searchName = name.toLowerCase();
+        this.setModel(new EquipmentModel(equipment.getModelName(),manufacturer));
+        this.searchName = name.replaceAll(" ","").toLowerCase();
     }
 
+
+    public void setModel(EquipmentModel model) {
+        model.setEquipment(this);
+        this.model = model;
+    }
 
     public void setEquipmentId(long equipmentId) {
         this.equipmentId = equipmentId;
@@ -181,6 +195,10 @@ public class Equipment {
 
     public String getSearchName() {
         return searchName;
+    }
+
+    public EquipmentModel getModel() {
+        return model;
     }
 
     public void addViewing(Viewing viewing) {

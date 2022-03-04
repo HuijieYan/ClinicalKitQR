@@ -1,6 +1,8 @@
 package ClinicalKitQR.equipment.controllers;
 
 import ClinicalKitQR.Constant;
+import ClinicalKitQR.equipment.models.Manufacturer;
+import ClinicalKitQR.equipment.services.ManufacturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.equipment.models.Equipment;
@@ -17,12 +19,15 @@ public class SentEquipmentController {
     private final SentEquipmentService service;
     private final EquipmentService equipmentService;
     private final HospitalService hospitalService;
+    private final ManufacturerService manufacturerService;
 
     @Autowired
-    public SentEquipmentController(SentEquipmentService service,EquipmentService equipmentService,HospitalService hospitalService){
+    public SentEquipmentController(SentEquipmentService service,EquipmentService equipmentService,
+                                   HospitalService hospitalService,ManufacturerService manufacturerService){
         this.service = service;
         this.equipmentService = equipmentService;
         this.hospitalService = hospitalService;
+        this.manufacturerService = manufacturerService;
     }
 
     @PostMapping("/saving")
@@ -33,8 +38,16 @@ public class SentEquipmentController {
         }
         for (String id:ids){
             service.updateSaved(id);
-            Equipment equipment = new Equipment(service.getById(id),hospital);
-            equipmentService.save(equipment);
+            SentEquipment sentEquipment = service.getById(id);
+            if(sentEquipment!=null){
+                Manufacturer manufacturer = manufacturerService.getByName(sentEquipment.getManufacturer());
+                if(manufacturer==null){
+                    manufacturer = new Manufacturer(sentEquipment.getManufacturer());
+                }
+                Equipment equipment = new Equipment(sentEquipment,hospital,manufacturer);
+                equipmentService.save(equipment);
+            }
+
         }
     }
 

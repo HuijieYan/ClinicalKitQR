@@ -35,6 +35,7 @@ public class EquipmentService {
             return;
         }
         equipment.getHospitalId().addEquipment(equipment);
+        equipment.getModel().setEquipment(equipment);
         repository.save(equipment);
     }
 
@@ -171,12 +172,10 @@ public class EquipmentService {
      * @return the list of equipments found using search term, type and categories
      */
     public List<Equipment> search(UserGroup group, String type, String category, String text){
-        String txt = text.toLowerCase();
+        String txt = text.replaceAll(" ","").toLowerCase();
         List<Equipment> equipments = new ArrayList<>();
         try {
-            String s = txt.replaceAll("-","");
-            s = s.replaceAll(" ","");
-            long id = Long.parseLong(s,16);
+            long id = Long.parseLong(txt,16);
             Equipment equipment = repository.findById(id);
             if (equipment!=null){
                 equipments.add(equipment);

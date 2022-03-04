@@ -49,6 +49,10 @@ public class SentEquipment{
     @Column(columnDefinition = "TEXT")
     private String category;
 
+    private String manufacturer;
+
+    private String modelName;
+
     private LocalDate date;
 
     private boolean saved = false;
@@ -72,6 +76,9 @@ public class SentEquipment{
         this.category = equipment.getCategory();
         this.date = equipment.getDate();
         this.searchName = name.toLowerCase();
+        EquipmentModel model = equipment.getModel();
+        this.manufacturer = model.getManufacturer().getManufacturerName();
+        this.modelName = model.getModelName();
     }
 
     public String getId() {
@@ -110,6 +117,14 @@ public class SentEquipment{
         this.content = content;
     }
 
+    public void setManufacturer(String manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
     public String getContent() {
         return content;
     }
@@ -128,6 +143,14 @@ public class SentEquipment{
 
     public Hospital getHospitalId() {
         return hospitalId;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public String getManufacturer() {
+        return manufacturer;
     }
 
     public Mail getMail() {

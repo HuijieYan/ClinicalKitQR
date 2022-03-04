@@ -1,6 +1,8 @@
 package ClinicalKitQR.login.models.config;
 
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.EquipmentModel;
+import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.issue.models.Issue;
 import ClinicalKitQR.mail.models.Mail;
 import ClinicalKitQR.mail.services.MailService;
@@ -34,10 +36,12 @@ public class UserGroupConfig {
             UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
             UserGroup g5 = new UserGroup("group5","g5","123",hospital,false);
 
-            Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"A","Neonatal");
-            Equipment equipment2 = new Equipment("Equipment2","Some Description",hospital,"C","Adult");
-            Equipment equipment3 = new Equipment("Equipment3","Some Description",hospital2,"B","Children");
-            Equipment equipment4 = new Equipment("Equipment4","Some Description",hospital2,"A","Adult");
+            Manufacturer apple = new Manufacturer("Apple");
+            Manufacturer banana = new Manufacturer("Banana");
+            Equipment equipment1 = new Equipment("Equipment1","Some Description",hospital,"A","Neonatal",new EquipmentModel("B1",banana));
+            Equipment equipment2 = new Equipment("Equipment2","Some Description",hospital,"C","Adult",new EquipmentModel("A1",apple));
+            Equipment equipment3 = new Equipment("Equipment3","Some Description",hospital2,"B","Children",new EquipmentModel("B2",banana));
+            Equipment equipment4 = new Equipment("Equipment4","Some Description",hospital2,"A","Adult",new EquipmentModel("A2",apple));
             trustAdmin.addGroup(g3);
             hospital.addGroup(group);
             hospital.addGroup(group2);

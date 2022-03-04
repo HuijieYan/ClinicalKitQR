@@ -2,7 +2,10 @@ package ClinicalKitQR.equipment.controllers;
 
 import ClinicalKitQR.Constant;
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.EquipmentModel;
+import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.equipment.services.EquipmentService;
+import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.viewing.services.ViewingService;
@@ -23,10 +26,13 @@ public class EquipmentController {
     private final EquipmentService service;
     private final UserGroupService userGroupService;
     private final ViewingService viewingService;
+    private final ManufacturerService manufacturerService;
 
     @Autowired
-    public EquipmentController(EquipmentService service,UserGroupService userGroupService, ViewingService viewingService){
+    public EquipmentController(EquipmentService service,UserGroupService userGroupService, ViewingService viewingService,
+                               ManufacturerService manufacturerService){
         this.service = service;
+        this.manufacturerService = manufacturerService;
         this.userGroupService = userGroupService;
         this.viewingService = viewingService;
     }
@@ -63,14 +69,19 @@ public class EquipmentController {
 
     @PostMapping("/save")
     public String save(@RequestParam("name") String name,@RequestParam("content") String content,@RequestParam("hospitalId") long hospitalId,
-                       @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username){
+                       @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username,
+                       @RequestParam("Model")String modelName,@RequestParam("manufacturer")String manufacturerName){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
             return "Failed to save the equipment, error: User does not exist or login session expired";
         }
         try{
             Hospital hospital = group.getHospitalId();
-            Equipment equipment = new Equipment(name,content,hospital,type,category);
+            Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
+            if(manufacturer==null){
+                manufacturer = new Manufacturer(manufacturerName);
+            }
+            Equipment equipment = new Equipment(name,content,hospital,type,category,new EquipmentModel(modelName,manufacturer));
             service.save(equipment);
             return "Equipment Saved Successfully";
         }catch(Exception e){
