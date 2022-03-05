@@ -42,6 +42,10 @@ public class Manufacturer {
         this.manufacturerName = name;
     }
 
+    public List<EquipmentModel> getModels() {
+        return models;
+    }
+
     public void addModel(EquipmentModel model){
         model.setManufacturer(this);
         models.add(model);

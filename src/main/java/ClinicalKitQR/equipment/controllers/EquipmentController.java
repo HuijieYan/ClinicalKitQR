@@ -4,6 +4,7 @@ import ClinicalKitQR.Constant;
 import ClinicalKitQR.equipment.models.Equipment;
 import ClinicalKitQR.equipment.models.EquipmentModel;
 import ClinicalKitQR.equipment.models.Manufacturer;
+import ClinicalKitQR.equipment.services.EquipmentModelService;
 import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.login.models.Hospital;
@@ -17,6 +18,7 @@ import ClinicalKitQR.login.services.UserGroupService;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
@@ -27,14 +29,16 @@ public class EquipmentController {
     private final UserGroupService userGroupService;
     private final ViewingService viewingService;
     private final ManufacturerService manufacturerService;
+    private final EquipmentModelService modelService;
 
     @Autowired
     public EquipmentController(EquipmentService service,UserGroupService userGroupService, ViewingService viewingService,
-                               ManufacturerService manufacturerService){
+                               ManufacturerService manufacturerService,EquipmentModelService modelService){
         this.service = service;
         this.manufacturerService = manufacturerService;
         this.userGroupService = userGroupService;
         this.viewingService = viewingService;
+        this.modelService = modelService;
     }
 
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
@@ -160,6 +164,42 @@ public class EquipmentController {
             return null;
         }
         return service.search(group,type,category,name,manufacturerName,modelName);
+    }
+
+    @PostMapping("/manufacturers/all")
+    public List<Manufacturer> getAllManufacturers(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return null;
+        }
+        return manufacturerService.getAll();
+    }
+
+    @PostMapping("/models/getByUser")
+    public List<EquipmentModel> getModelsByUser(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return null;
+        }
+        if(group.getHospitalId().getHospitalName().equals("Trust Admin")){
+            return modelService.getModelsByTrust(group.getHospitalId().getTrust().getTrustId());
+        }else{
+            return modelService.getModelsByHospital(group.getHospitalId().getHospitalId());
+        }
+    }
+
+    @PostMapping("/models/getByManufacturer")
+    public List<EquipmentModel> getModelsByUser(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username,
+                                                @RequestParam("manufacturer") String manufactureName){
+        UserGroup group = userGroupService.findByPK(hospitalId,username);
+        if (group == null){
+            return null;
+        }
+        if(group.getHospitalId().getHospitalName().equals("Trust Admin")){
+            return modelService.getModelsByTrustAndManufacture(group.getHospitalId().getTrust().getTrustId(),manufactureName);
+        }else{
+            return modelService.getModelsByHospitalAndManufacture(group.getHospitalId().getHospitalId(),manufactureName);
+        }
     }
 
     @GetMapping("/types")

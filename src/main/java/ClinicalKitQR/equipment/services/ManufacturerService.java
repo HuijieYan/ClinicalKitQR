@@ -5,6 +5,8 @@ import ClinicalKitQR.equipment.repositories.ManufacturerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ManufacturerService {
     private final ManufacturerRepository repository;
@@ -16,6 +18,10 @@ public class ManufacturerService {
 
     public Manufacturer getByName(String name){
         return repository.findByName(name);
+    }
+
+    public List<Manufacturer> getAll(){
+        return repository.getAll();
     }
 
     public void save(Manufacturer manufacturer){
