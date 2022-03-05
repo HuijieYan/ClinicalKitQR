@@ -153,12 +153,13 @@ public class EquipmentController {
     @PostMapping("/search")
     public List<Equipment> search(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username,
                                   @RequestParam("type") String type,@RequestParam("category")String category,
+                                  @RequestParam("manufacturer") String manufacturerName,@RequestParam("model")String modelName,
                                   @RequestParam("name") String name){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
             return null;
         }
-        return service.search(group,type,category,name);
+        return service.search(group,type,category,name,manufacturerName,modelName);
     }
 
     @GetMapping("/types")

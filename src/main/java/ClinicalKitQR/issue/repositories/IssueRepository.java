@@ -9,10 +9,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface IssueRepository extends JpaRepository<Issue,Long> {
-    @Query("select i from Issue i where i.userGroupName.hospitalId = ?1")
+    @Query("select i from Issue i where i.userGroupName.hospitalId = ?1 order by i.date DESC")
     public List<Issue> getAllByHospitalId(long id);
 
-    @Query("select i from Issue i where i.equipmentId.hospitalId.trust.trustId= ?1")
+    @Query("select i from Issue i where i.equipmentId.hospitalId.trust.trustId= ?1 order by i.date DESC")
     public List<Issue> getAllByTrustId(long id);
 
     @Transactional

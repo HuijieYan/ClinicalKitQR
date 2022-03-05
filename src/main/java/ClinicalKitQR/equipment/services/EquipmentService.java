@@ -162,108 +162,48 @@ public class EquipmentService {
 
 
     /**
-     * Searching for equipment with matched type, category and name given by the
-     * parameters
+     * Searching for equipment with matched patient demographic, clinical system, manufacturer,
+     * model and name given by the parameters
      *
      * @param group the user that is currently using search function
      * @param type selected type of the equipment
      * @param category selected category of the equipment
      * @param text searching name
+     * @param manufacturerName the name of the manufacturer
+     * @param modelName the name of the model
      * @return the list of equipments found using search term, type and categories
+     *
+     * These strings can be empty
      */
-    public List<Equipment> search(UserGroup group, String type, String category, String text){
+    public List<Equipment> search(UserGroup group, String type, String category, String text,String manufacturerName,String modelName){
         String txt = text.replaceAll(" ","").toLowerCase();
         List<Equipment> equipments = new ArrayList<>();
         try {
-            long id = Long.parseLong(txt,16);
+            long id = Long.parseLong(txt.replaceAll("-",""),16);
             Equipment equipment = repository.findById(id);
             if (equipment!=null){
                 equipments.add(equipment);
             }
-
             //try to find the equipment with the input id
         }catch (Exception e){
             equipments = new ArrayList<>();
         }
 
-        List<String> possibleStrings = generatePossibleOutcomes(txt);
-        //convert the search text to lower for searching
 
-        for (String str:possibleStrings){
-            List<Equipment> result = new ArrayList<>();
-            if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
-                result = trustAdminCallSearchFunction(group.getHospitalId().getTrust().getTrustId(),type,category,str);
-            }else{
-                result = normalUserAndHospitalAdminCallSearchFunction(group.getHospitalId().getHospitalId(),type,category,str);
-            }
-            for (Equipment equipment:result){
-                if (!equipments.contains(equipment)){
-                    equipments.add(equipment);
-                }
+        List<Equipment> result = new ArrayList<>();
+        if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
+            result = repository.searchByTrust(group.getHospitalId().getTrust().getTrustId(),type,category,txt,manufacturerName,modelName);
+        }else{
+            result = repository.searchByHospital(group.getHospitalId().getHospitalId(),type,category,txt,manufacturerName,modelName);
+        }
+        for (Equipment equipment:result){
+            if (!equipments.contains(equipment)){
+                equipments.add(equipment);
             }
         }
         return equipments;
     }
 
-    private List<Equipment> normalUserAndHospitalAdminCallSearchFunction(long hospitalId,String type, String category, String text){
-        if (!category.equals("") && type.equals("")){
-            return repository.findByCategoryAndNameAndHospital(hospitalId,category,text);
-        }else if (category.equals("") && !type.equals("")){
-            return repository.findByTypeAndNameAndHospital(hospitalId,type,text);
-        }else if (!category.equals("") && !type.equals("")){
-            return repository.findByCategoryAndTypeAndNameAndHospital(hospitalId, type, category, text);
-        }else{
-            return repository.findByNameAndHospital(hospitalId,text);
-        }
-    }
-
-    private List<Equipment> trustAdminCallSearchFunction(long trustId,String type, String category, String text){
-        if (!category.equals("") && type.equals("")){
-            return repository.findByCategoryAndNameAndTrust(trustId,category,text);
-        }else if (category.equals("") && !type.equals("")){
-            return repository.findByTypeAndNameAndTrust(trustId,type,text);
-        }else if (!category.equals("") && !type.equals("")){
-            return repository.findByCategoryAndTypeAndNameAndTrust(trustId, type, category, text);
-        }else{
-            return repository.findByNameAndTrust(trustId,text);
-        }
-    }
-
-
-    /**
-     * Generates possible search terms that are of Levenshtein distance 1
-     * https://en.wikipedia.org/wiki/Levenshtein_distance
-     *
-     * @param str the search term entered by the user
-     * @return a list of possible search terms
-     */
-    private List<String> generatePossibleOutcomes(String str){
-        List<String> possibleOutcomes = new ArrayList<>();
-        possibleOutcomes.add(str);
-        char[] subCharacters = Constant.substitutionCharacters;
-        for (int i =0;i<str.length();i++){
-            StringBuilder deleteAtPos = new StringBuilder(str);
-            deleteAtPos.deleteCharAt(i);
-            if(deleteAtPos.length()>0) {
-                possibleOutcomes.add(deleteAtPos.toString());
-            }
-            for (char ch:subCharacters){
-                StringBuilder insertAtPos = new StringBuilder(str);
-                insertAtPos.insert(i,ch);
-                possibleOutcomes.add(insertAtPos.toString());
-                StringBuilder subAtPos = new StringBuilder(str);
-                subAtPos.setCharAt(i,ch);
-                possibleOutcomes.add(subAtPos.toString());
-                if (i==str.length()-1){
-                    StringBuilder appendAtPos = new StringBuilder(str);
-                    appendAtPos.append(ch);
-                    possibleOutcomes.add((appendAtPos.toString()));
-                }
-            }
-        }
-        return possibleOutcomes;
-        //this algorithm is of time complexity O(n)
-    }
 
     public String[] getTypes(){
         return Constant.types;

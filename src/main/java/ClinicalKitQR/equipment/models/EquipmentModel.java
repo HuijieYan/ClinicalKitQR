@@ -1,6 +1,9 @@
 package ClinicalKitQR.equipment.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -17,10 +20,13 @@ public class EquipmentModel {
     @Id
     private String modelId;
 
-    @OneToOne(orphanRemoval = true,mappedBy = "model")
+    @JsonIgnore
+    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "model")
     private Equipment equipment;
 
     private String modelName;
+
+    private String modelSearchName;
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(
@@ -35,16 +41,13 @@ public class EquipmentModel {
         this.modelId = UUID.randomUUID().toString();
         this.modelName = model.getModelName();
         this.manufacturer = model.getManufacturer();
-    }
-
-    public EquipmentModel(String modelName){
-        this.modelId = UUID.randomUUID().toString();
-        this.modelName = modelName;
+        this.modelSearchName = model.getModelSearchName();
     }
 
     public EquipmentModel(String modelName,Manufacturer manufacturer){
         this.modelId = UUID.randomUUID().toString();
         this.modelName = modelName;
+        this.modelSearchName = modelName.replaceAll(" ","").toLowerCase();
         manufacturer.addModel(this);
     }
 
@@ -64,6 +67,10 @@ public class EquipmentModel {
         this.modelId = modelId;
     }
 
+    public void setModelSearchName(String modelSearchName) {
+        this.modelSearchName = modelSearchName;
+    }
+
     public String getModelId() {
         return modelId;
     }
@@ -78,5 +85,9 @@ public class EquipmentModel {
 
     public String getModelName() {
         return modelName;
+    }
+
+    public String getModelSearchName() {
+        return modelSearchName;
     }
 }

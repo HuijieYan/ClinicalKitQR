@@ -33,29 +33,15 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
     @Query("update Equipment e set e.equipmentId=?2 where e.equipmentId = ?1")
     void updateId(long id,long newId);
 
-    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4% ")
-    List<Equipment> findByCategoryAndTypeAndNameAndHospital(long id,String type, String category,String text);
+    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and (?2 = '' or e.type=?2) and (?3 = '' or e.category=?3)" +
+            " and (?4 = '' or e.searchName like %?4% or e.model.modelSearchName like %?4%) and " +
+            "(?5 = '' or e.model.manufacturer.manufacturerName = ?5) and (?6 = '' or e.model.modelName = ?6)")
+    List<Equipment> searchByHospital(long id,String type, String category,String text,String manufacturer,String model);
 
-    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.category=?2 and e.searchName like %?3%")
-    List<Equipment> findByCategoryAndNameAndHospital(long id, String category,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.type=?2 and e.searchName like %?3% ")
-    List<Equipment> findByTypeAndNameAndHospital(long id, String type,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and e.searchName like %?2% ")
-    List<Equipment> findByNameAndHospital(long id,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.type=?2 and e.category=?3 and e.searchName like %?4%")
-    List<Equipment> findByCategoryAndTypeAndNameAndTrust(long id,String type, String category,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.category=?2 and e.searchName like %?3%")
-    List<Equipment> findByCategoryAndNameAndTrust(long id, String category,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.type=?2 and e.searchName like %?3%")
-    List<Equipment> findByTypeAndNameAndTrust(long id, String type,String text);
-
-    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and e.searchName like %?2%")
-    List<Equipment> findByNameAndTrust(long id, String text);
+    @Query("select e from Equipment e where e.hospitalId.trust.trustId=?1 and (?2 = '' or e.type=?2) and (?3 = '' or e.category=?3)" +
+            " and (?4 = '' or e.searchName like %?4% or e.model.modelSearchName like %?4%) and " +
+            "(?5 = '' or e.model.manufacturer.manufacturerName = ?5) and (?6 = '' or e.model.modelName = ?6)")
+    List<Equipment> searchByTrust(long id,String type, String category,String text,String manufacturer,String model);
 
     @Query(value="SELECT * FROM equipment ORDER BY equipment_id DESC LIMIT 1", nativeQuery = true)
     Equipment findTop();
