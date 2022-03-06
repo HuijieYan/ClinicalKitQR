@@ -23,7 +23,7 @@ public class Manufacturer {
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "manufacturer",orphanRemoval = true,fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "manufacturer",orphanRemoval = true,fetch = FetchType.LAZY)
     private List<EquipmentModel> models = new ArrayList<>();
 
     public Manufacturer(){
@@ -44,6 +44,11 @@ public class Manufacturer {
 
     public List<EquipmentModel> getModels() {
         return models;
+    }
+
+    public void removeModel(EquipmentModel model){
+        model.setManufacturer(null);
+        models.remove(model);
     }
 
     public void addModel(EquipmentModel model){

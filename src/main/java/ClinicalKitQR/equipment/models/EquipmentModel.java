@@ -42,12 +42,14 @@ public class EquipmentModel {
         this.modelName = model.getModelName();
         this.manufacturer = model.getManufacturer();
         this.modelSearchName = model.getModelSearchName();
+        manufacturer.addModel(this);
     }
 
     public EquipmentModel(String modelName,Manufacturer manufacturer){
         this.modelId = UUID.randomUUID().toString();
         this.modelName = modelName;
         this.modelSearchName = modelName.replaceAll(" ","").toLowerCase();
+        this.manufacturer = manufacturer;
         manufacturer.addModel(this);
     }
 
@@ -57,6 +59,7 @@ public class EquipmentModel {
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
+        this.modelSearchName = modelName.replaceAll(" ","").toLowerCase();
     }
 
     public void setManufacturer(Manufacturer manufacturer) {
@@ -65,10 +68,6 @@ public class EquipmentModel {
 
     public void setModelId(String modelId) {
         this.modelId = modelId;
-    }
-
-    public void setModelSearchName(String modelSearchName) {
-        this.modelSearchName = modelSearchName;
     }
 
     public String getModelId() {

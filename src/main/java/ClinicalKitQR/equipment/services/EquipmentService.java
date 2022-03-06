@@ -2,6 +2,7 @@ package ClinicalKitQR.equipment.services;
 
 import ClinicalKitQR.Constant;
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.EquipmentModel;
 import ClinicalKitQR.issue.models.Issue;
 import ClinicalKitQR.issue.repositories.IssueRepository;
 import ClinicalKitQR.login.models.UserGroup;
@@ -53,6 +54,10 @@ public class EquipmentService {
 
     public void update(long id,String name,String content,String type,String category) throws Exception{
         repository.update(id,name,name.toLowerCase(),content,type,category);
+    }
+
+    public void updateModel(long id,EquipmentModel model) throws Exception{
+        repository.updateModel(id,model);
     }
 
     /**
@@ -211,19 +216,5 @@ public class EquipmentService {
 
     public String[] getCategories(){
         return Constant.categories;
-    }
-
-    public long findNextCopyIndex(){
-        Equipment equipment = repository.findTop();
-        long id = equipment.getEquipmentId();
-        if (id> Constant.MAX_EQUIPMENT){
-            return id+1;
-        }else{
-            return Constant.MAX_EQUIPMENT;
-        }
-    }
-
-    public void updateId(long id,long newId){
-        repository.updateId(id,newId);
     }
 }

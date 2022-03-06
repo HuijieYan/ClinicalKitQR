@@ -23,7 +23,7 @@ public class EquipmentConfig {
             Hospital hospital = new Hospital("New Hospital",new Trust("Trust2"));
             UserGroup group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
             hospital.addGroup(group);
-            Manufacturer manufacturer = new Manufacturer("cat");
+            Manufacturer manufacturer = new Manufacturer("Cat");
             Equipment equipment = new Equipment("Equipment3","Some description",hospital,"Neonatal","A",new EquipmentModel("C1",manufacturer));
             service.save(equipment);
         };

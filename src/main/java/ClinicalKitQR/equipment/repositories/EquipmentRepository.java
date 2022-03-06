@@ -1,6 +1,7 @@
 package ClinicalKitQR.equipment.repositories;
 
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.EquipmentModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -30,8 +31,8 @@ public interface EquipmentRepository extends JpaRepository<Equipment,Long> {
 
     @Transactional
     @Modifying
-    @Query("update Equipment e set e.equipmentId=?2 where e.equipmentId = ?1")
-    void updateId(long id,long newId);
+    @Query("update Equipment e set e.model=?2 where e.equipmentId = ?1")
+    void updateModel(long id, EquipmentModel model);
 
     @Query("select e from Equipment e where e.hospitalId.hospitalId=?1 and (?2 = '' or e.type=?2) and (?3 = '' or e.category=?3)" +
             " and (?4 = '' or e.searchName like %?4% or e.model.modelSearchName like %?4%) and " +

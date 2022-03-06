@@ -1,6 +1,7 @@
 package ClinicalKitQR.equipment.services;
 
 import ClinicalKitQR.equipment.models.EquipmentModel;
+import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.equipment.repositories.EquipmentModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,4 +32,9 @@ public class EquipmentModelService {
     public List<EquipmentModel> getModelsByTrustAndManufacture(long trustId,String manufacture){
         return repository.findByTrustIdAndManufacturer(trustId,manufacture);
     }
+
+    public void updateName(String id,String newName){
+        repository.updateName(id,newName);
+    }
+
 }
