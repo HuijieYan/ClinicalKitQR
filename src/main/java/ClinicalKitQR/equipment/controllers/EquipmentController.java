@@ -135,7 +135,6 @@ public class EquipmentController {
                     Manufacturer newManufacturer = manufacturerService.getByName(manufacturerName);
                     if(newManufacturer==null){
                         newManufacturer = new Manufacturer(manufacturerName);
-                        manufacturerService.save(newManufacturer);
                     }
                     model.setManufacturer(newManufacturer);
                 }
