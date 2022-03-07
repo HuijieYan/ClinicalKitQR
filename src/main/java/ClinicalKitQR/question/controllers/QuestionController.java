@@ -4,10 +4,11 @@ import ClinicalKitQR.question.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.question.models.Question;
+import ClinicalKitQR.Constant;
 
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:3000/"})
+@CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
 @RequestMapping("/question")
 public class QuestionController {
