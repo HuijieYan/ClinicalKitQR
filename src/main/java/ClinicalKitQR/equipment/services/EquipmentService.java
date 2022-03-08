@@ -75,7 +75,7 @@ public class EquipmentService {
         BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
 
         BufferedImage image = MatrixToImageWriter.toBufferedImage(bitMatrix);
-        return addText(image,generateEquipmentCode(equipment));
+        return addText(image,generateEquipmentCode(equipment),equipment);
     }
 
 
@@ -86,10 +86,10 @@ public class EquipmentService {
      *  -title
      * to the image
      */
-    public BufferedImage addText(BufferedImage image,String text){
+    public BufferedImage addText(BufferedImage image,String text,Equipment equipment){
         int height = image.getHeight();
 
-        BufferedImage outputImage = new BufferedImage(image.getWidth(), height + 40, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage outputImage = new BufferedImage(image.getWidth(), height + 80, BufferedImage.TYPE_INT_ARGB);
         Graphics g = outputImage.getGraphics();
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, outputImage.getWidth(), outputImage.getHeight());
@@ -109,6 +109,16 @@ public class EquipmentService {
         text ="YOU CANNOT SCAN THE QR CODE";
         startingYposition += 15;
         g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        text = "MAKE: "+equipment.getModel().getManufacturer().getManufacturerName();
+        startingYposition += 15;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        text = "MODEL: "+equipment.getModel().getModelName();
+        startingYposition += 15;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+        text = "NAME: "+equipment.getName();
+        startingYposition += 15;
+        g.drawString(text, (outputImage.getWidth() / 2)   - (fm.stringWidth(text) / 2), startingYposition);
+
         g.setFont(new Font("Neue Haas Grotesk Text Pro", Font.BOLD, 16));
         fm = g.getFontMetrics();
         text ="EQUIPMENT EDUCATION QR CODE";
