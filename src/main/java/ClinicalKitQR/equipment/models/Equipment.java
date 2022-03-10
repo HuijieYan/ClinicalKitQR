@@ -67,6 +67,7 @@ public class Equipment {
     private String category;
 
     @OneToOne(orphanRemoval = true,cascade = CascadeType.ALL,fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "modelId")
     private EquipmentModel model;
 

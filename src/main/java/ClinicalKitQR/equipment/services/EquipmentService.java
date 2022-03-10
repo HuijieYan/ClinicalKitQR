@@ -169,9 +169,6 @@ public class EquipmentService {
     }
 
     public void delete(long id){
-        for (Issue issue:repository.findById(id).getIssueList()){
-            issueRepository.deleteById(issue.getIssueId());
-        }
         repository.deleteById(id);
     }
 
