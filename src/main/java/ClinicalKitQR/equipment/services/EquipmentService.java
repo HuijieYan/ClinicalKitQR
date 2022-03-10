@@ -23,11 +23,9 @@ import java.util.List;
 public class EquipmentService {
 
     private final EquipmentRepository repository;
-    private final IssueRepository issueRepository;
     @Autowired
-    public EquipmentService(EquipmentRepository repository,IssueRepository issueRepository){
+    public EquipmentService(EquipmentRepository repository){
         this.repository = repository;
-        this.issueRepository = issueRepository;
     }
 
     public void save(Equipment equipment){

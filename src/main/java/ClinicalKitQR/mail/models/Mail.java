@@ -2,6 +2,8 @@ package ClinicalKitQR.mail.models;
 
 import ClinicalKitQR.equipment.models.SentEquipment;
 import ClinicalKitQR.login.models.UserGroup;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -54,6 +56,7 @@ public class Mail {
     private String description;
 
     @OneToMany(mappedBy = "mail",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<SentEquipment> equipments = new ArrayList<>();
     //the equipments that are shared via this sharing
 
