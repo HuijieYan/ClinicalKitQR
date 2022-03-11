@@ -12,7 +12,7 @@ import ClinicalKitQR.login.services.UserGroupService;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = {Constant.FRONTEND_URL})
+@CrossOrigin(origins = {Constant.FRONTEND_URL, Constant.VMFRONTEND_URL})
 @RestController
 @RequestMapping("/usergroup")
 public class UserGroupController {

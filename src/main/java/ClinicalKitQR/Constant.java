@@ -13,4 +13,5 @@ public class Constant {
     public static final String[] types = {"A","B","C"};
     public static final String[] categories = {"Adult","Neonatal","Children"};
     public static final String FRONTEND_URL = "http://localhost:3000";
+    public static final String VMFRONTEND_URL = "http://20.108.44.175:3000";
 }

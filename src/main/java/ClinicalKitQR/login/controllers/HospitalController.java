@@ -9,7 +9,7 @@ import ClinicalKitQR.login.services.TrustService;
 
 import java.util.List;
 
-@CrossOrigin(origins = {Constant.FRONTEND_URL})
+@CrossOrigin(origins = {Constant.FRONTEND_URL, Constant.VMFRONTEND_URL})
 @RestController
 @RequestMapping("/hospitals")
 public class HospitalController {
