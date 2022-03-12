@@ -3,6 +3,8 @@ package ClinicalKitQR.file_management.controllers;
 import ClinicalKitQR.Constant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +36,6 @@ public class FileDataController {
         }
         String name = file.getOriginalFilename();
         int index = name.lastIndexOf('.');
-        System.out.println(name);
         FileData data = new FileData(name.substring(0,index),name.substring(index));
         try{
             service.save(data,file);
@@ -50,9 +51,12 @@ public class FileDataController {
         try{
             File file = service.get(id);
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
+            ContentDisposition contentDisposition = ContentDisposition.
+                    builder("inline").filename(file.getName()).build();
             return ResponseEntity.ok()
                     .contentLength(file.length())
                     .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                    .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString())
                     .body(resource);
 
         }catch (Exception e){
