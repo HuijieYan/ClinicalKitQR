@@ -102,10 +102,10 @@ public class UserGroupController {
     }
 
     @PostMapping("/register")
-    public boolean register(@RequestParam("trustId") long trustID,@RequestParam("hospitalID") long hospitalID,@RequestParam("name")  String name,
+    public boolean register(@RequestParam("hospitalId") long hospitalID,@RequestParam("name")  String name,
                             @RequestParam("username") String username,@RequestParam("password") String password,
                             @RequestParam("isAdmin") boolean isAdmin,@RequestParam("email") String email,
-                            @RequestParam("speciality") String speciality){
+                            @RequestParam("specialty") String specialty){
     //request body is the data part of a request
         Hospital hospital = hospitalService.findByID(hospitalID);
         if (checkStringIsInvalid(name)||checkStringIsInvalid(username)||checkStringIsInvalid(password)
@@ -117,7 +117,7 @@ public class UserGroupController {
             return false;
         }
         UserGroup group;
-        group = new UserGroup(name,username,password,hospital,isAdmin,email,speciality);
+        group = new UserGroup(name,username,password,hospital,isAdmin,email,specialty);
         //assume that specialty passed is inside the database
 
         service.save(group);
