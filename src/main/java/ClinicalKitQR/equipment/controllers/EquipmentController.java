@@ -21,7 +21,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@CrossOrigin(origins = {Constant.FRONTEND_URL, Constant.VMFRONTEND_URL})
+@CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
 @RequestMapping("/equipment")
 public class EquipmentController {

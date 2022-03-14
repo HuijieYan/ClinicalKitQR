@@ -68,7 +68,7 @@ public class EquipmentService {
         if (equipment==null){
             return null;
         }
-        String url = Constant.FRONTEND_URL + "/viewEquipment/id="+Long.toString(id);
+        String url = Constant.FRONTEND_URL + "/#/viewEquipment/id="+Long.toString(id);
         QRCodeWriter barcodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = barcodeWriter.encode(url, BarcodeFormat.QR_CODE, width, height);
 
