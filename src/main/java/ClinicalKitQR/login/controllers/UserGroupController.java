@@ -43,7 +43,7 @@ public class UserGroupController {
 
     private String getRole(UserGroup group){
         String specialty = "";
-        if (group.getSpecialty()!=null){
+        if (!group.getSpecialty().isEmpty()){
             specialty = " - " + group.getSpecialty();
         }
         if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
@@ -102,7 +102,7 @@ public class UserGroupController {
     }
 
     @PostMapping("/register")
-    public boolean register(@RequestParam("hospitalId") long hospitalID,@RequestParam("name")  String name,
+    public String register(@RequestParam("hospitalId") long hospitalID,@RequestParam("name")  String name,
                             @RequestParam("username") String username,@RequestParam("password") String password,
                             @RequestParam("isAdmin") boolean isAdmin,@RequestParam("email") String email,
                             @RequestParam("specialty") String specialty){
@@ -110,18 +110,27 @@ public class UserGroupController {
         Hospital hospital = hospitalService.findByID(hospitalID);
         if (checkStringIsInvalid(name)||checkStringIsInvalid(username)||checkStringIsInvalid(password)
                 ||hospital==null){
-            return false;
+            return "Error: Invalid entries of required columns";
         }
         if (service.findByPK(hospitalID,username)!=null){
         //All usernames are unique
-            return false;
+            return "Error: This username has already been occupied";
         }
         UserGroup group;
+        if(specialty.isEmpty()){
+            specialty = null;
+            //set specialty to null if it is empty
+        }
         group = new UserGroup(name,username,password,hospital,isAdmin,email,specialty);
         //assume that specialty passed is inside the database
 
-        service.save(group);
-        return true;
+        try {
+            service.save(group);
+            return "";
+        }catch (Exception e){
+            return "Error: "+e.getMessage();
+        }
+
     }
 
     @PostMapping("/get")
@@ -148,7 +157,7 @@ public class UserGroupController {
     }
 
     @PostMapping("/addTrust")
-    public boolean addTrust(@RequestParam("trustName")String trustName,@RequestParam("username")String username,
+    public String addTrust(@RequestParam("trustName")String trustName,@RequestParam("username")String username,
                             @RequestParam("password")String password,@RequestParam("name")String name,
                             @RequestParam("email")String email,@RequestParam("specialty")String specialty){
         try{
@@ -166,14 +175,14 @@ public class UserGroupController {
             newTrust.addHospital(newHospital);
 
             service.save(group);
-            return true;
+            return "";
         }catch (Exception e){
-            return false;
+            return "Error: "+e.getMessage();
         }
     }
 
     @PostMapping("/update")
-    public boolean update(@RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username,
+    public String update(@RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username,
                           @RequestParam("name")String name,@RequestParam("password")String password,
                           @RequestParam("email")String email,@RequestParam("specialty")String specialty){
         UserGroup group = service.findByPK(hospitalId,username);
@@ -182,25 +191,19 @@ public class UserGroupController {
         String updateEmail = email;
         String updateSpecialty = specialty;
         if (group == null){
-            return false;
+            return "Error: Your login details are invalid";
         }
-        if (name.length()==0){
+        if (name.isEmpty()){
             updateName = group.getName();
         }
-        if (password.length()==0){
+        if (password.isEmpty()){
             updatePassword = group.getPassword();
-        }
-        if (email.length()==0){
-            updateEmail = group.getEmail();
-        }
-        if (specialty.length()==0){
-            updateSpecialty = group.getSpecialty();
         }
         try{
             service.update(hospitalId,username,updateName,updatePassword,updateEmail,updateSpecialty);
-            return true;
+            return "";
         }catch (Exception e){
-            return false;
+            return "Error: "+e.getMessage();
         }
     }
 

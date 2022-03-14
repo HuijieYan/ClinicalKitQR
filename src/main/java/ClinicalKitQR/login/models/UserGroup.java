@@ -45,10 +45,10 @@ public class UserGroup{
     private String password;
 
     @Column(name = "email",nullable = true,columnDefinition = "TEXT")
-    private String email;
+    private String email = "";
 
     @Column(name = "specialty",nullable = true,columnDefinition = "TEXT")
-    private String specialty;
+    private String specialty = "";
 
     @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     //persist for saving a new group without touching hospital

@@ -44,16 +44,19 @@ public class IssueController {
     }
 
     @PostMapping("/new")
-    public boolean updateSolved(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username,
+    public String addNewIssue(@RequestParam("hospitalId") long hospitalId,@RequestParam("username") String username,
                              @RequestParam("equipmentId") long equipmentId,@RequestParam("description") String description){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         Equipment equipment = equipmentService.get(equipmentId);
-        if (group==null||equipment==null){
-            return false;
+        if (group==null){
+            return "Error: The user group is not found";
+        }
+        if(equipment==null){
+            return "Error: The Equipment is not found";
         }
         Issue issue = new Issue(LocalDate.now(),group,equipment,description);
         service.save(issue);
-        return true;
+        return "";
     }
 
     @DeleteMapping("/delete/issueId={issueId}")
