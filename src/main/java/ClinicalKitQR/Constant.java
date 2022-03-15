@@ -12,5 +12,5 @@ public class Constant {
     '4','5','6','7','8','9','-'};
     public static final String[] types = {"A","B","C"};
     public static final String[] categories = {"Adult","Neonatal","Children"};
-    public static final String FRONTEND_URL = "http://51.142.202.254";
+    public static final String FRONTEND_URL = "http://localhost:3000";
 }
