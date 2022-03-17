@@ -117,10 +117,6 @@ public class UserGroupController {
             return "Error: This username has already been occupied";
         }
         UserGroup group;
-        if(specialty.isEmpty()){
-            specialty = null;
-            //set specialty to null if it is empty
-        }
         group = new UserGroup(name,username,password,hospital,isAdmin,email,specialty);
         //assume that specialty passed is inside the database
 
@@ -184,7 +180,8 @@ public class UserGroupController {
     @PostMapping("/update")
     public String update(@RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username,
                           @RequestParam("name")String name,@RequestParam("password")String password,
-                          @RequestParam("email")String email,@RequestParam("specialty")String specialty){
+                          @RequestParam("email")String email,@RequestParam("specialty")String specialty,
+                         @RequestParam("isAdmin") boolean isAdmin){
         UserGroup group = service.findByPK(hospitalId,username);
         String updateName = name;
         String updatePassword = password;
@@ -200,7 +197,7 @@ public class UserGroupController {
             updatePassword = group.getPassword();
         }
         try{
-            service.update(hospitalId,username,updateName,updatePassword,updateEmail,updateSpecialty);
+            service.update(hospitalId,username,updateName,updatePassword,updateEmail,updateSpecialty,isAdmin);
             return "";
         }catch (Exception e){
             return "Error: "+e.getMessage();

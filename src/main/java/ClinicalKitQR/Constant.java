@@ -10,7 +10,8 @@ public class Constant {
     public static final char[] substitutionCharacters = {'a','b','c','d','e','f','g','h','i','j',
             'k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z','0','1','2','3',
     '4','5','6','7','8','9','-'};
-    public static final String[] types = {"A","B","C"};
+    public static final String[] types = {"Cardiac / Cardiovascular","Respiratory","Gastrointestinal","Metabolic","Infection/Immunity","Neurological","Haematological","Surgery","Other"};
+    public static final String[] typesAbbreviation = {"C","R","G","M","I","N","H","S","O"};
     public static final String[] categories = {"Adult","Neonatal","Children"};
     public static final String FRONTEND_URL = "http://13.87.78.62";
 }

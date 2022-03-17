@@ -146,7 +146,6 @@ public class EquipmentService {
      * the category and last two digits representing the year of this equipment was generated
      */
     private String getTypeAndCategoryStr(Equipment equipment){
-
         String category="";
         switch (equipment.getCategory()){
             case "Adult":
@@ -158,7 +157,17 @@ public class EquipmentService {
             case "Children":
                 category = "C";
         }
-        return category+equipment.getType()+Integer.toString(equipment.getDate().getYear()).substring(2)+" ";
+        return category+getTypeAbbrev(equipment.getType())+Integer.toString(equipment.getDate().getYear()).substring(2)+" ";
+    }
+
+    private String getTypeAbbrev(String type){
+        String[] types = Constant.types;
+        for (int i =0;i< types.length;i++){
+            if(type.equals(types[i])){
+                return Constant.typesAbbreviation[i];
+            }
+        }
+        return "";
     }
 
 
