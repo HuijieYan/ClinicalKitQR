@@ -12,8 +12,11 @@ public interface HospitalRepository extends JpaRepository<Hospital,Long> {
     @Query("select h from Hospital h where h.hospitalId = ?1")
     Hospital findByHospitalId(long id);
 
-    @Query("select h from Hospital h where h.trust.trustId = ?1 order by h.hospitalName ASC")
-    List<Hospital> findByTrustId(long id);
+    @Query("select h from Hospital h where h.trust.trustId = ?1 and h.hospitalName <> ?2 order by h.hospitalName ASC")
+    List<Hospital> findByTrustId(long id,String trustAdmin);
+
+    @Query("select h from Hospital h where h.trust.trustId = ?1 and h.hospitalName = ?2")
+    Hospital findTrustAdmin(long id,String trustAdmin);
 
     @Query("select h from Hospital h order by h.hospitalName ASC")
     List<Hospital> getAll();

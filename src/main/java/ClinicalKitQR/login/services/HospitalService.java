@@ -5,6 +5,7 @@ import ClinicalKitQR.login.repositories.HospitalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,7 +24,14 @@ public class HospitalService {
     }
 
     public List<Hospital> getAllByTrust(long id){
-        return repository.findByTrustId(id);
+        List<Hospital> hospitals = new ArrayList<>();
+        Hospital trustAdmin = repository.findTrustAdmin(id,"Trust Admin");
+        if(trustAdmin != null){
+            hospitals.add(trustAdmin);
+        }
+        //order the list so trust admin will always be the first hospital in the list
+        hospitals.addAll(repository.findByTrustId(id,"Trust Admin"));
+        return hospitals;
     }
 
     public List<Hospital> getAll(){
