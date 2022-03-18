@@ -133,7 +133,7 @@ public class IssueSystemTest {
         assertEquals(1,issueController.getByHospital(testHospital1.getHospitalId()).size());
         //when deleting non-existing issue, nothing happens
     }
-    
+
     @AfterAll
     public void cleanUp(){
         trustService.delete(testTrust.getTrustId());
