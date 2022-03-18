@@ -40,6 +40,7 @@ public class FileDataController {
         try{
             service.save(data,file);
             System.out.println(data.getPath());
+            System.out.println(data.getId());
             return "{ \"location\": \""+ Constant.URL +"/file/download/" +data.getId()+"\" }";
         }catch (Exception e){
             return "Unable to save file. Error:"+e.getMessage();

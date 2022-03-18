@@ -17,14 +17,7 @@ import java.util.UUID;
 @Entity(name = "FileData")
 public class FileData {
     @Id
-    @SequenceGenerator(
-            name = "FileidSeqGen",
-            sequenceName = "FileidSequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(strategy =  GenerationType.SEQUENCE,generator = "FileidSeqGen")
-    private long id;
-    //using uuid since there may be large amount of files uploaded
+    private String id;
 
     @Column(name = "name")
     private String name;
@@ -35,6 +28,7 @@ public class FileData {
     public FileData(){}
 
     public FileData(String name,String extension){
+        id = UUID.randomUUID().toString()+extension;
         this.name = name;
         this.extension = extension;
     }
@@ -56,7 +50,7 @@ public class FileData {
     }
 
     public String getId() {
-        return Long.toString(id)+extension;
+        return id;
     }
 
     public String getExtension() {
