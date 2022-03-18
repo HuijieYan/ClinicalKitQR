@@ -27,7 +27,7 @@ public class SentEquipment{
     @Column(name = "equipmentId",columnDefinition = "bigint not null")
     private long equipmentId;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name = "hospitalId",
             referencedColumnName = "hospitalId",
             columnDefinition = "bigint not null"
@@ -58,7 +58,7 @@ public class SentEquipment{
     private boolean saved = false;
 
     @JsonIgnore
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(name = "mail_id",referencedColumnName = "id")
     private Mail mail;
 
@@ -72,6 +72,7 @@ public class SentEquipment{
         this.name = equipment.getName();
         this.content = equipment.getContent();
         this.hospitalId = equipment.getHospitalId();
+        equipment.getHospitalId().addSentEquipment(this);
         this.type = equipment.getType();
         this.category = equipment.getCategory();
         this.date = equipment.getDate();

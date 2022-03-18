@@ -21,8 +21,6 @@ public class UserGroupService {
         if (repository.findByHospitalIdAndUsername(group.getHospitalId().getHospitalId(), group.getUsername())!=null){
             return null;
         }
-        group.getHospitalId().addGroup(group);
-        //we need to add group for usergroup to establish connection between hospital and usergroup
         return repository.save(group);
     }
 
@@ -43,7 +41,7 @@ public class UserGroupService {
     }
 
     public UserGroup findByPK(long id,String username){
-        if (username.length()==0||username == null){
+        if (username == null||username.length()==0){
             return null;
         }
         return repository.findByHospitalIdAndUsername(id,username);
@@ -65,7 +63,7 @@ public class UserGroupService {
     }
 
     public List<UserGroup> getAllAdmins(){
-        return repository.findALlAdmins();
+        return repository.findAllAdmins();
     }
 
 }

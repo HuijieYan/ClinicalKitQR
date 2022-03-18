@@ -49,6 +49,9 @@ public class HospitalController {
     @PostMapping("/delete")
     public boolean delete(@RequestParam("id")long id){
         try {
+            if(service.findByID(id)==null){
+                return false;
+            }
             service.delete(id);
             return true;
         }catch (Exception e){
@@ -59,6 +62,9 @@ public class HospitalController {
     @PostMapping("/update")
     public boolean update(@RequestParam("id")long id,@RequestParam("name")String newName){
         try {
+            if(checkStringIsInvalid(newName)){
+                return false;
+            }
             service.update(id,newName);
             return true;
         }catch (Exception e){

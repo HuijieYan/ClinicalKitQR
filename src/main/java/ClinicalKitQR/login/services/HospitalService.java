@@ -19,7 +19,6 @@ public class HospitalService {
     }
 
     public Hospital save(Hospital hospital){
-        hospital.getTrust().addHospital(hospital);
         return repository.save(hospital);
     }
 
@@ -40,10 +39,6 @@ public class HospitalService {
 
     public Hospital findByID(long id){
         return repository.findByHospitalId(id);
-    }
-
-    public String getNameByID(long id){
-        return findByID(id).getHospitalName();
     }
 
     public void delete(long id){

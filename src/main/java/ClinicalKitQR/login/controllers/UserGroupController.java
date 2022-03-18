@@ -75,14 +75,17 @@ public class UserGroupController {
 
     @DeleteMapping("/delete/hospitalId={hospitalId} username={username}")
     public void delete(@PathVariable long hospitalId,@PathVariable String username){
+        UserGroup group = service.findByPK(hospitalId,username);
+        if(group == null){
+            return;
+        }
         service.delete(hospitalId,username);
     }
 
     @PostMapping("/login")
-    public List<String> login(@RequestParam("hospitalId") String hospitalId, @RequestParam("username") String username, @RequestParam("password") String password){
+    public List<String> login(@RequestParam("hospitalId") long hospitalId, @RequestParam("username") String username, @RequestParam("password") String password){
         List<String> result = new ArrayList<>();
-        long HospitalID = Long.parseLong(hospitalId);
-        UserGroup group = service.findByPK(HospitalID,username);
+        UserGroup group = service.findByPK(hospitalId,username);
         if(group!=null&&group.getPassword().equals(password)){
             if (group.getHospitalId().getHospitalName().equals("Trust Admin")){
                 result.add(Integer.toString(3));
@@ -152,31 +155,6 @@ public class UserGroupController {
         return result;
     }
 
-    @PostMapping("/addTrust")
-    public String addTrust(@RequestParam("trustName")String trustName,@RequestParam("username")String username,
-                            @RequestParam("password")String password,@RequestParam("name")String name,
-                            @RequestParam("email")String email,@RequestParam("specialty")String specialty){
-        try{
-            Trust newTrust = new Trust(trustName);
-            Hospital newHospital = new Hospital("Trust Admin",newTrust);
-
-            if (email.length()==0){
-                email=null;
-            }
-            if(specialty.length() == 0){
-                specialty = null;
-            }
-            UserGroup group = new UserGroup(name,username,password,newHospital,true,email,specialty);
-            newHospital.addGroup(group);
-            newTrust.addHospital(newHospital);
-
-            service.save(group);
-            return "";
-        }catch (Exception e){
-            return "Error: "+e.getMessage();
-        }
-    }
-
     @PostMapping("/update")
     public String update(@RequestParam("hospitalId")long hospitalId,@RequestParam("username")String username,
                           @RequestParam("name")String name,@RequestParam("password")String password,
@@ -188,7 +166,7 @@ public class UserGroupController {
         String updateEmail = email;
         String updateSpecialty = specialty;
         if (group == null){
-            return "Error: Your login details are invalid";
+            return "Error: User details are invalid";
         }
         if (name.isEmpty()){
             updateName = group.getName();

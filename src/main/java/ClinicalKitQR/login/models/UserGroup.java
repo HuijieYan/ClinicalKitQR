@@ -50,7 +50,7 @@ public class UserGroup{
     @Column(name = "specialty",nullable = true,columnDefinition = "TEXT")
     private String specialty = "";
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     //persist for saving a new group without touching hospital
     @JoinColumn(
             name = "hospital_id",
@@ -100,6 +100,7 @@ public class UserGroup{
         }else{
             this.isAdmin = isAdmin;
         }
+        hospital.addGroup(this);
     }
 
     public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email){
@@ -113,6 +114,7 @@ public class UserGroup{
         }else{
             this.isAdmin = isAdmin;
         }
+        hospital.addGroup(this);
     }
 
     public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin){
@@ -125,6 +127,7 @@ public class UserGroup{
         }else{
             this.isAdmin = isAdmin;
         }
+        hospital.addGroup(this);
     }
 
     public void setUsername(String username) {

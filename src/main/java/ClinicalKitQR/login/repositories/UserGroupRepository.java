@@ -20,14 +20,14 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
     @Query("update UserGroup u set u.name = ?3, u.password=?4,u.email=?5,u.specialty=?6,u.isAdmin=?7 where u.username = ?2 and u.hospitalId.hospitalId = ?1")
     int updateUserGroup(long id,String username,String name,String password,String email,String specialty,boolean isAdmin);
 
-    @Query("select u from UserGroup u where u.hospitalId.hospitalId = ?1")
+    @Query("select u from UserGroup u where u.hospitalId.hospitalId = ?1 order by u.name ASC")
     List<UserGroup> findAllByHospitalId(long id);
 
-    @Query("select u from UserGroup u where u.hospitalId.trust.trustId = ?1")
+    @Query("select u from UserGroup u where u.hospitalId.trust.trustId = ?1 order by u.hospitalId.hospitalId ASC")
     List<UserGroup> findAllByTrustId(long id);
 
     @Query("select u from UserGroup u where u.isAdmin = true")
-    List<UserGroup> findALlAdmins();
+    List<UserGroup> findAllAdmins();
 
 
     @Transactional

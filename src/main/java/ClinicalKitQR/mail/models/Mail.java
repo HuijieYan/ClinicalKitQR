@@ -40,7 +40,7 @@ public class Mail {
     @Column(name = "sender_username",columnDefinition = "TEXT")
     private String senderUsername;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumns({@JoinColumn(name = "username", referencedColumnName = "username", nullable = true,columnDefinition = "TEXT"),
             @JoinColumn(name = "hospital_id",referencedColumnName = "hospital_id",columnDefinition = "bigint", nullable = true)})
     private UserGroup receiver;

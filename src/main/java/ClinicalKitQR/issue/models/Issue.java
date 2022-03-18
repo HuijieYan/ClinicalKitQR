@@ -30,7 +30,7 @@ public class Issue {
     @Column(name = "issue_id",columnDefinition = "bigint not null")
     private long issueId;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumns(
             {@JoinColumn(name = "username", referencedColumnName = "username", nullable = false,columnDefinition = "TEXT"),
             @JoinColumn(name = "hospital_id",referencedColumnName = "hospital_id",columnDefinition = "bigint not null")}
@@ -40,7 +40,7 @@ public class Issue {
     @Column(columnDefinition = "Text")
     private String description;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(
             name = "equipment_id",
             referencedColumnName = "equipmentId",
@@ -64,16 +64,9 @@ public class Issue {
         this.description = description;
         this.solved = false;
         //solved is set to false by default
+        equipment.addIssue(this);
+        group.addIssue(this);
     }
-
-    public Issue(LocalDate date,UserGroup group,Equipment equipment,String description,boolean solved){
-        this.date = date;
-        this.userGroupName = group;
-        this.equipmentId = equipment;
-        this.description = description;
-        this.solved = solved;
-    }
-
 
     public void setDate(LocalDate date) {
         this.date = date;

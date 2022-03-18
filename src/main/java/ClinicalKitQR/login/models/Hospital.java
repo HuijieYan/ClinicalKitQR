@@ -37,7 +37,7 @@ public class Hospital {
     @Column(columnDefinition = "TEXT")
     private String hospitalName;
 
-    @ManyToOne(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "trust_id",referencedColumnName = "trustId",columnDefinition = "bigint not null")
     private Trust trust;
     //the trust which this hospital belongs
@@ -64,12 +64,14 @@ public class Hospital {
     public Hospital(String name,Trust trust){
         this.hospitalName = name;
         this.trust = trust;
+        trust.addHospital(this);
     }
 
     public Hospital(String name,Trust trust,List<UserGroup>  groups){
         this.hospitalName = name;
         this.trust = trust;
         this.groups = groups;
+        trust.addHospital(this);
     }
 
     public long getHospitalId() {

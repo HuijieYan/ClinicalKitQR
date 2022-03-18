@@ -18,14 +18,9 @@ import java.util.List;
 @RequestMapping("/trusts")
 public class TrustController {
     private final TrustService service;
-    private final EquipmentService equipmentService;
-    private final UserGroupService userGroupService;
-
     @Autowired
-    public TrustController(TrustService service,EquipmentService equipmentService,UserGroupService userGroupService){
+    public TrustController(TrustService service){
         this.service = service;
-        this.equipmentService = equipmentService;
-        this.userGroupService = userGroupService;
     }
 
     @GetMapping("/all")
@@ -34,13 +29,35 @@ public class TrustController {
         return trusts;
     }
 
-    @PostMapping("/register/name={name}")
-    public boolean register(@PathVariable String name){
-        if(checkStringIsInvalid(name)){
-            return false;
+    @PostMapping("/addTrust")
+    public String addTrust(@RequestParam("trustName")String trustName,@RequestParam("username")String username,
+                           @RequestParam("password")String password,@RequestParam("name")String name,
+                           @RequestParam("email")String email,@RequestParam("specialty")String specialty){
+        try{
+            if(checkStringIsInvalid(trustName)){
+                return "Error: New trust's name is invalid";
+            }
+            Trust newTrust = new Trust(trustName);
+            Hospital newHospital = newTrust.getHospitals().get(0);
+
+            if(checkStringIsInvalid(username)||checkStringIsInvalid(password)||checkStringIsInvalid(name)){
+                return "Error: New trust's trust admin details are invalid";
+            }
+            if (email == null){
+                email = "";
+            }
+            if(specialty == null){
+                specialty = "";
+            }
+            UserGroup group = new UserGroup(name,username,password,newHospital,true,email,specialty);
+            newHospital.addGroup(group);
+            newTrust.addHospital(newHospital);
+
+            service.save(newTrust);
+            return "";
+        }catch (Exception e){
+            return "Error: "+e.getMessage();
         }
-        service.save(new Trust(name));
-        return true;
     }
 
     @PostMapping("/get")
@@ -64,8 +81,7 @@ public class TrustController {
     @PostMapping("/delete")
     public boolean delete(@RequestParam("id") long id){
         try {
-            Trust trust = service.findByID(id);
-            if (trust == null){
+            if(service.findByID(id)==null){
                 return false;
             }
             service.delete(id);
@@ -81,5 +97,4 @@ public class TrustController {
         }
         return false;
     }
-
 }

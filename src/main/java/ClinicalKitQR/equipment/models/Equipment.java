@@ -43,7 +43,7 @@ public class Equipment {
     @Column(name = "equipmentId",columnDefinition = "bigint not null")
     private long equipmentId;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(
             name = "hospitalId",
             referencedColumnName = "hospitalId",
@@ -100,6 +100,7 @@ public class Equipment {
         this.date = LocalDate.now();
         this.searchName = name.replaceAll(" ","").toLowerCase();
         this.setModel(model);
+        hospitalId.addEquipment(this);
     }
 
     public Equipment(Equipment equipment){
@@ -111,6 +112,7 @@ public class Equipment {
         this.date = equipment.getDate();
         this.setModel(new EquipmentModel(equipment.getModel()));
         this.searchName = name.replaceAll(" ","").toLowerCase();
+        hospitalId.addEquipment(this);
     }
 
     public Equipment(SentEquipment equipment,Hospital hospital,Manufacturer manufacturer){
@@ -122,6 +124,7 @@ public class Equipment {
         this.date = equipment.getDate();
         this.setModel(new EquipmentModel(equipment.getModelName(),manufacturer));
         this.searchName = name.replaceAll(" ","").toLowerCase();
+        hospitalId.addEquipment(this);
     }
 
 

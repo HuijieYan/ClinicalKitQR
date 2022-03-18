@@ -13,5 +13,5 @@ public class Constant {
     public static final String[] types = {"Cardiac / Cardiovascular","Respiratory","Gastrointestinal","Metabolic","Infection/Immunity","Neurological","Haematological","Surgery","Other"};
     public static final String[] typesAbbreviation = {"C","R","G","M","I","N","H","S","O"};
     public static final String[] categories = {"Adult","Neonatal","Children"};
-    public static final String FRONTEND_URL = "http://13.87.78.62";
+    public static final String FRONTEND_URL = "http://localhost:3000/";
 }

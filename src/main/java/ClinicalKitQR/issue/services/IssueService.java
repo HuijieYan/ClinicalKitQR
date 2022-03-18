@@ -29,8 +29,6 @@ public class IssueService {
     }
 
     public void save(Issue issue){
-        issue.getEquipmentId().addIssue(issue);
-        issue.getUserGroupName().addIssue(issue);
         repository.save(issue);
     }
 

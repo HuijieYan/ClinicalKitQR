@@ -38,9 +38,6 @@ public class ViewingService {
     }
 
     public void save(Viewing viewing) {
-        viewing.getEquipmentId().addViewing(viewing);
-        viewing.getUserGroup().addViewing(viewing);
-        System.out.println("Viewing:" + viewing + " saved at" + LocalDate.now());
         repository.save(viewing);
     }
 

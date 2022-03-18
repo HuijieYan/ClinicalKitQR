@@ -10,6 +10,7 @@ import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.models.Trust;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.HospitalService;
+import ClinicalKitQR.login.services.TrustService;
 import ClinicalKitQR.login.services.UserGroupService;
 import ClinicalKitQR.mail.models.Mail;
 import ClinicalKitQR.mail.services.MailService;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 @Profile("sample")
 public class SampleConfig {
     @Bean
-    CommandLineRunner sampleCommandLineRunner(HospitalService service, MailService mailService, EquipmentService equipmentService, UserGroupService userGroupService){
+    CommandLineRunner sampleCommandLineRunner(HospitalService service, MailService mailService, EquipmentService equipmentService, UserGroupService userGroupService, TrustService trustService){
         return args -> {
             if (userGroupService.getAll().size()>1){
                 return;
@@ -38,7 +39,6 @@ public class SampleConfig {
             Hospital trustAdmin = trust.getHospitals().get(0);
             Hospital hospital = new Hospital("MyHospital",trust);
             Hospital hospital2 = new Hospital("MyHospital2",trust);
-            trust.addHospital(hospital2);
             UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com","admin");
             UserGroup group2 = new UserGroup("group2","g2","123",hospital,true);
             UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
@@ -71,8 +71,7 @@ public class SampleConfig {
             equipment1.addViewing(viewing);
             group.addViewing(viewing);
 
-            service.save(hospital);
-            service.save(hospital2);
+            trustService.save(trust);
 
             Mail mail = new Mail(group.getHospitalId().getHospitalId(), group.getUsername(), LocalDateTime.now(),"Title","description",g3);
             mail.addEquipment(new SentEquipment(equipment1));
@@ -99,11 +98,12 @@ public class SampleConfig {
             mailCopy.addEquipment(new SentEquipment(equipment3));
             mailService.save(mailCopy);
 
-            hospital = new Hospital("New Hospital",new Trust("Sample Trust 2"));
+            trust = new Trust("Sample Trust 2");
+            hospital = new Hospital("New Hospital",trust);
             group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
-            hospital.addGroup(group);
             Manufacturer manufacturer = new Manufacturer("Cat");
             Equipment equipment = new Equipment("Equipment3",sampleData,hospital,"Haematological","Neonatal",new EquipmentModel("C1",manufacturer));
+            trustService.save(trust);
             equipmentService.save(equipment);
         };
 

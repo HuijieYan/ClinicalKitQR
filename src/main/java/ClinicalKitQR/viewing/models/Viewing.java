@@ -26,8 +26,7 @@ public class Viewing
 
     @ManyToOne(
             optional = false,
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
+            fetch = FetchType.EAGER
     )
     @JoinColumn(
             name = "equipment_id",
@@ -38,8 +37,7 @@ public class Viewing
 
     @ManyToOne(
             optional = false,
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
+            fetch = FetchType.EAGER
     )
     @JoinColumns(
             {@JoinColumn(name = "username", referencedColumnName = "username", nullable = false,columnDefinition = "TEXT"),
@@ -69,6 +67,8 @@ public class Viewing
         this.date = date;
         this.userGroup = userGroup;
         this.viewCounter = 1L;
+        userGroup.addViewing(this);
+        equipmentId.addViewing(this);
     }
 
 
