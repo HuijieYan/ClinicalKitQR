@@ -45,13 +45,9 @@ public class LoginSystemTest {
     @Order(1)
     public void testAddTrust() {
         int originalTrustSize = trustService.getAll().size();
-        long lastId = 0;
-        if(originalTrustSize>0){
-            lastId = trustService.getAll().get(originalTrustSize - 1).getTrustId();
-        }
         trustController.addTrust("Test Trust", "admin", "123", "trust admin", "trustAdmin@email.com", "admin");
         assertTrue(trustService.getAll().size() == originalTrustSize + 1);
-        trust = trustService.findByID(lastId + 1);
+        trust = trustService.getAll().get(originalTrustSize);
         //since the new trust will have the latest ID + 1 as its id
         assertTrue(trust.getTrustName().equals("Test Trust"));
         assertTrue(trust.getHospitals().size() == 1);
@@ -93,13 +89,9 @@ public class LoginSystemTest {
     @Order(4)
     public void testRegisterNewHospital(){
         int originalHospitalSize = hospitalService.getAll().size();
-        long lastId = 0;
-        if(originalHospitalSize>0){
-            lastId = hospitalService.getAll().get(originalHospitalSize - 1).getHospitalId();
-        }
         hospitalController.register(trust.getTrustId(),"Test Hospital");
         assertEquals(originalHospitalSize+1,hospitalService.getAll().size());
-        testHospital = hospitalService.findByID(lastId+1);
+        testHospital = hospitalService.findAll().get(originalHospitalSize);
         //since the new hospital will have the latest ID + 1 as its id
         assertEquals(testHospital.getHospitalName(),"Test Hospital");
 

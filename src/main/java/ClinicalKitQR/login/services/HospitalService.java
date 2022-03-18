@@ -37,6 +37,10 @@ public class HospitalService {
         return repository.getAll();
     }
 
+    public List<Hospital> findAll(){
+        return repository.findAll();
+    }
+
     public Hospital findByID(long id){
         return repository.findByHospitalId(id);
     }
