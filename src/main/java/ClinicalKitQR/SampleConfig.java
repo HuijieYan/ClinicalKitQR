@@ -5,11 +5,11 @@ import ClinicalKitQR.equipment.models.EquipmentModel;
 import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.equipment.models.SentEquipment;
 import ClinicalKitQR.equipment.services.EquipmentService;
+import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.issue.models.Issue;
 import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.models.Trust;
 import ClinicalKitQR.login.models.UserGroup;
-import ClinicalKitQR.login.services.HospitalService;
 import ClinicalKitQR.login.services.TrustService;
 import ClinicalKitQR.login.services.UserGroupService;
 import ClinicalKitQR.mail.models.Mail;
@@ -27,7 +27,7 @@ import java.time.LocalDateTime;
 @Profile("sample")
 public class SampleConfig {
     @Bean
-    CommandLineRunner sampleCommandLineRunner(HospitalService service, MailService mailService, EquipmentService equipmentService, UserGroupService userGroupService, TrustService trustService){
+    CommandLineRunner sampleCommandLineRunner(ManufacturerService manufacturerService, MailService mailService, EquipmentService equipmentService, UserGroupService userGroupService, TrustService trustService){
         return args -> {
             if (userGroupService.getAll().size()>1){
                 return;
@@ -48,6 +48,8 @@ public class SampleConfig {
 
             Manufacturer apple = new Manufacturer("Apple");
             Manufacturer banana = new Manufacturer("Banana");
+            manufacturerService.save(apple);
+            manufacturerService.save(banana);
             Equipment equipment1 = new Equipment("Equipment1",sampleData,hospital,"Respiratory","Neonatal",new EquipmentModel("B1",banana));
             Equipment equipment2 = new Equipment("Equipment2",sampleData,hospital,"Gastrointestinal","Adult",new EquipmentModel("A1",apple));
             Equipment equipment3 = new Equipment("Equipment3",sampleData,hospital2,"Metabolic","Children",new EquipmentModel("B2",banana));
@@ -102,6 +104,7 @@ public class SampleConfig {
             hospital = new Hospital("New Hospital",trust);
             group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
             Manufacturer manufacturer = new Manufacturer("Cat");
+            manufacturerService.save(manufacturer);
             Equipment equipment = new Equipment("Equipment3",sampleData,hospital,"Haematological","Neonatal",new EquipmentModel("C1",manufacturer));
             trustService.save(trust);
             equipmentService.save(equipment);

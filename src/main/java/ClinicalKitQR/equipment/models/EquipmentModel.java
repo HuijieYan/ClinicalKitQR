@@ -28,7 +28,7 @@ public class EquipmentModel {
 
     private String modelSearchName;
 
-    @ManyToOne(optional = false,fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+    @ManyToOne(optional = false,fetch = FetchType.EAGER)
     @JoinColumn(
             name = "manufacturer",
             referencedColumnName = "manufacturerName"

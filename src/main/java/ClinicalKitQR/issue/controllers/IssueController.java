@@ -52,8 +52,12 @@ public class IssueController {
             return "Error: The user group is not found";
         }
         if(equipment==null){
-            return "Error: The Equipment is not found";
+            return "Error: The equipment is not found";
         }
+        if(checkStringIsInvalid(description)){
+            return "Error: The description entered is empty";
+        }
+
         Issue issue = new Issue(LocalDate.now(),group,equipment,description);
         service.save(issue);
         return "";
@@ -62,5 +66,12 @@ public class IssueController {
     @DeleteMapping("/delete/issueId={issueId}")
     public void deleteById(@PathVariable long issueId){
         service.delete(issueId);
+    }
+
+    private boolean checkStringIsInvalid(String str){
+        if (str == null||str.isEmpty()){
+            return true;
+        }
+        return false;
     }
 }

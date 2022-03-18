@@ -20,12 +20,15 @@ public class QuestionController {
     }
 
     @GetMapping("/all")
-    public List<Question> getALl(){
+    public List<Question> getAll(){
         return service.getAll();
     }
 
     @PostMapping("/new")
     public void addNew(@RequestParam("question")String question,@RequestParam("answer") String answer){
+        if(checkStringIsInvalid(question)||checkStringIsInvalid(answer)){
+            return;
+        }
         service.save(new Question(question,answer));
     }
 
@@ -34,14 +37,24 @@ public class QuestionController {
         if (service.getById(id)==null){
             return;
         }
+        if(checkStringIsInvalid(question)||checkStringIsInvalid(answer)){
+            return;
+        }
         service.update(id, question, answer);
     }
 
     @PostMapping("/delete")
-    public void update(@RequestParam("id")long id){
+    public void delete(@RequestParam("id")long id){
         if (service.getById(id)==null){
             return;
         }
         service.delete(id);
+    }
+
+    private boolean checkStringIsInvalid(String str){
+        if (str == null||str.isEmpty()){
+            return true;
+        }
+        return false;
     }
 }

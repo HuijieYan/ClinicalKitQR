@@ -17,7 +17,7 @@ public class QuestionService {
     }
 
     public List<Question> getAll(){
-        return repository.findAll();
+        return repository.getAll();
     }
 
     public void save(Question question){
@@ -29,7 +29,7 @@ public class QuestionService {
     }
 
     public Question getById(long id){
-        return repository.getById(id);
+        return repository.findById(id);
     }
 
     public void delete(long id){

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question,Long> {
     @Transactional
@@ -20,4 +21,7 @@ public interface QuestionRepository extends JpaRepository<Question,Long> {
 
     @Query("select q from Question q where q.id=?1")
     Question findById(long id);
+
+    @Query("select q from Question q order by q.id ASC")
+    List<Question> getAll();
 }

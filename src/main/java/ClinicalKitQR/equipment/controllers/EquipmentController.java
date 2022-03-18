@@ -52,8 +52,7 @@ public class EquipmentController {
 
     @GetMapping(value = "/trustId={id}")
     public List<Equipment> getEquipmentsInTrust(@PathVariable long id){
-        List<Equipment> ls = service.getAllByTrust(id);
-        return ls;
+        return service.getAllByTrust(id);
     }
 
     @GetMapping(value = "/hospitalId={id}")
@@ -84,6 +83,7 @@ public class EquipmentController {
             Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
             if(manufacturer==null){
                 manufacturer = new Manufacturer(manufacturerName);
+                manufacturerService.save(manufacturer);
             }
             Equipment equipment = new Equipment(name,content,hospital,type,category,new EquipmentModel(modelName,manufacturer));
             service.save(equipment);
