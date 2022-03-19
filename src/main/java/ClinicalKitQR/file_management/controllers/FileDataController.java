@@ -39,9 +39,7 @@ public class FileDataController {
         FileData data = new FileData(name.substring(0,index),name.substring(index));
         try{
             service.save(data,file);
-            System.out.println(data.getPath());
-            System.out.println(data.getId());
-            return "{ \"location\": \""+ Constant.URL +"/file/download/" +data.getId()+"\" }";
+            return data.getId();
         }catch (Exception e){
             return "Unable to save file. Error:"+e.getMessage();
         }
