@@ -1,6 +1,0 @@
-[submodule "FrontEnd"]
-	path = FrontEnd
-	url = https://github.com/Robsterbobster/FrontEnd
-[submodule "src/src/main/FrontEnd"]
-	path = src/src/main/FrontEnd
-	url = https://github.com/Robsterbobster/FrontEnd.git
