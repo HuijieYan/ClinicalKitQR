@@ -10,7 +10,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/question")
+@RequestMapping(Constant.API_PREFIX+"/question")
 public class QuestionController {
     private final QuestionService service;
 

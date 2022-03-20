@@ -16,7 +16,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/reports")
+@RequestMapping(Constant.API_PREFIX+"/reports")
 public class ViewingController {
     private final ViewingService viewingService;
     private final EquipmentService equipmentService;

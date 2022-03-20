@@ -18,7 +18,7 @@ import java.nio.file.Files;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/file")
+@RequestMapping(Constant.API_PREFIX+"/file")
 public class FileDataController {
     private final FileDataService service;
     private final UserGroupService userGroupService;

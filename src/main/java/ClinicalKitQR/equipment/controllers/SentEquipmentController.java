@@ -14,7 +14,7 @@ import ClinicalKitQR.login.services.HospitalService;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/sentEquipment")
+@RequestMapping(Constant.API_PREFIX+"/sentEquipment")
 public class SentEquipmentController {
     private final SentEquipmentService service;
     private final EquipmentService equipmentService;

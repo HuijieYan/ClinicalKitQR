@@ -14,7 +14,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/usergroup")
+@RequestMapping(Constant.API_PREFIX+"/usergroup")
 public class UserGroupController {
     private final UserGroupService service;
     private final HospitalService hospitalService;

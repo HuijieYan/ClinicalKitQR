@@ -4,7 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Constant {
-    public static final String URL = "http://localhost:8080";
+    public static final String API_PREFIX = "/api";
     public static final long MAX_EQUIPMENT = (long)Math.pow(16,9);
     public static final Path uploadedFileRoot = Paths.get("uploadedFiles");
     public static final char[] substitutionCharacters = {'a','b','c','d','e','f','g','h','i','j',

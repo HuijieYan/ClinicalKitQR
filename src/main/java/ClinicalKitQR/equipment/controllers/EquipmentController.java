@@ -23,7 +23,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/equipment")
+@RequestMapping(Constant.API_PREFIX+"/equipment")
 public class EquipmentController {
     private final EquipmentService service;
     private final UserGroupService userGroupService;

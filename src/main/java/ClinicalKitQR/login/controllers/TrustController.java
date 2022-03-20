@@ -15,7 +15,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/trusts")
+@RequestMapping(Constant.API_PREFIX+"/trusts")
 public class TrustController {
     private final TrustService service;
     @Autowired

@@ -11,7 +11,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/hospitals")
+@RequestMapping(Constant.API_PREFIX+"/hospitals")
 public class HospitalController {
     private final HospitalService service;
     private final TrustService trustService;
