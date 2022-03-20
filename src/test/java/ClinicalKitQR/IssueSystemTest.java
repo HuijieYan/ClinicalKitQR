@@ -22,18 +22,20 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+/**
+ *  For issue report system, we are testing IssueController
+ */
+
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class IssueSystemTest {
-    private Issue testIssue;
 
     private Trust testTrust;
 
     private Hospital testHospital1;
 
     private Hospital testHospital2;
-
 
     private UserGroup group1;
 
@@ -45,8 +47,6 @@ public class IssueSystemTest {
 
     private Issue testIssue1;
 
-    private Issue testIssue2;
-
     @Autowired
     private IssueService issueService;
 
@@ -55,9 +55,6 @@ public class IssueSystemTest {
 
     @Autowired
     private TrustService trustService;
-
-    @Autowired
-    private EquipmentService equipmentService;
 
     @Autowired
     private ManufacturerService manufacturerService;

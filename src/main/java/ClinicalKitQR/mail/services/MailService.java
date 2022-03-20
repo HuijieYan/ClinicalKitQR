@@ -36,4 +36,8 @@ public class MailService {
         repository.deleteByPK(id);
     }
 
+    public List<Mail> getAll(){
+        return repository.findAll();
+    }
+
 }

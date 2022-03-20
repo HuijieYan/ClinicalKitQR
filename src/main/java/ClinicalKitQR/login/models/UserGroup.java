@@ -170,6 +170,18 @@ public class UserGroup{
         return email;
     }
 
+    public List<Mail> getInbox() {
+        return inbox;
+    }
+
+    public List<Viewing> getViewingList() {
+        return viewingList;
+    }
+
+    public List<Issue> getIssueList() {
+        return issueList;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }

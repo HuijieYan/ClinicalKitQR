@@ -71,11 +71,8 @@ public class MailController {
             return;
         }
         Mail mail = service.getByPK(id);
-        if (mail == null){
+        if (mail == null) {
             return;
-        }
-        for (SentEquipment equipment:mail.getEquipments()){
-            sentEquipmentService.delete(equipment.getId());
         }
         service.delete(id);
     }

@@ -5,6 +5,8 @@ import ClinicalKitQR.equipment.repositories.SentEquipmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SentEquipmentService {
     public SentEquipmentRepository repository;
@@ -29,5 +31,9 @@ public class SentEquipmentService {
 
     public void updateSaved(String id){
         repository.updateSaved(id);
+    }
+
+    public List<SentEquipment> getAll(){
+        return repository.findAll();
     }
 }

@@ -83,10 +83,10 @@
 							<goal>copy-resources</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${basedir}/target/classes/static</outputDirectory>
+							<outputDirectory>${basedir}/target/classes</outputDirectory>
 							<resources>
 								<resource>
-									<directory>FrontEnd/build</directory>
+									<directory>src/main/FrontEnd/build</directory>
 								</resource>
 							</resources>
 						</configuration>
@@ -117,7 +117,7 @@
 				</executions>
 				<configuration>
 					<nodeVersion>${node.version}</nodeVersion>
-					<workingDirectory>FrontEnd</workingDirectory>
+					<workingDirectory>src/main/FrontEnd</workingDirectory>
 					<installDirectory>target</installDirectory>
 				</configuration>
 			</plugin>

@@ -37,15 +37,17 @@ public class SentEquipmentController {
             return;
         }
         for (String id:ids){
-            service.updateSaved(id);
             SentEquipment sentEquipment = service.getById(id);
             if(sentEquipment!=null){
                 Manufacturer manufacturer = manufacturerService.getByName(sentEquipment.getManufacturer());
                 if(manufacturer==null){
                     manufacturer = new Manufacturer(sentEquipment.getManufacturer());
                 }
-                Equipment equipment = new Equipment(sentEquipment,hospital,manufacturer);
-                equipmentService.save(equipment);
+                if(!sentEquipment.getSaved()){
+                    Equipment equipment = new Equipment(sentEquipment,hospital,manufacturer);
+                    equipmentService.save(equipment);
+                    service.updateSaved(id);
+                }
             }
 
         }

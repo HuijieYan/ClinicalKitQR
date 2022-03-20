@@ -94,6 +94,10 @@ public class Hospital {
         return equipments;
     }
 
+    public List<SentEquipment> getSentEquipments() {
+        return sentEquipments;
+    }
+
     public Trust getTrust() {
         return trust;
     }
