@@ -117,6 +117,7 @@ public class MailController {
             //save a copy for the sender
             return true;
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return false;
         }
     }

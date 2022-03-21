@@ -56,7 +56,7 @@ public class Hospital {
 
     @JsonIgnore
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "hospitalId",fetch = FetchType.LAZY,orphanRemoval = true)
     private List<SentEquipment> sentEquipments = new ArrayList<>();
 
     public Hospital(){}
