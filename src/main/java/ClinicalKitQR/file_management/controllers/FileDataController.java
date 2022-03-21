@@ -15,6 +15,7 @@ import ClinicalKitQR.login.services.UserGroupService;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
@@ -46,7 +47,7 @@ public class FileDataController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<ByteArrayResource> download(@PathVariable String id){
+    public ResponseEntity<Object> download(@PathVariable String id){
         try{
             File file = service.get(id);
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
@@ -59,7 +60,7 @@ public class FileDataController {
                     .body(resource);
 
         }catch (Exception e){
-            return null;
+            return ResponseEntity.internalServerError().body(e.getMessage());
         }
     }
 }

@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 @Service
 public class FileDataService {
@@ -55,6 +56,6 @@ public class FileDataService {
 
     public File get(String id) throws Exception{
         FileData fileData = repository.getById(id);
-        return new File(root.toAbsolutePath()+"\\"+fileData.getId());
+        return new File(root.toAbsolutePath()+"/"+fileData.getId());
     }
 }
