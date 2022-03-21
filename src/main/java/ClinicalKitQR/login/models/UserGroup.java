@@ -100,7 +100,6 @@ public class UserGroup{
         }else{
             this.isAdmin = isAdmin;
         }
-        hospital.addGroup(this);
     }
 
     public UserGroup(String name,String username,String password,Hospital hospital,boolean isAdmin,String email){

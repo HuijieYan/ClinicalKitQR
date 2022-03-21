@@ -99,8 +99,11 @@ public class MailSystemTest {
         testEquipment1InH3 = new Equipment("test equipment 1","",testHospital3,"A","B",new EquipmentModel("test model 4",manufacturer));
 
         admin1 = new UserGroup("test admin 1","g1","123",testHospital1,true,"","");
+        testHospital1.addGroup(admin1);
         admin2 = new UserGroup("test admin 2","g2","123",testHospital2,true,"","");
+        testHospital2.addGroup(admin2);
         admin3 = new UserGroup("test admin 3","g3","123",testHospital3,true,"","");
+        testHospital3.addGroup(admin3);
         trustService.save(testTrust);
     }
 

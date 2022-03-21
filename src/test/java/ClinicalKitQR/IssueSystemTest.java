@@ -66,6 +66,8 @@ public class IssueSystemTest {
         testHospital2 = new Hospital("test hospital2",testTrust);
         group1 = new UserGroup("test group 1","g1","123",testHospital1,true,"","");
         group2 = new UserGroup("test group 2","g1","123",testHospital2,true,"","");
+        testHospital1.addGroup(group1);
+        testHospital2.addGroup(group2);
         Manufacturer manufacturer = new Manufacturer("test manufacturer");
         manufacturerService.save(manufacturer);
         testEquipment1 = new Equipment("test equipment 1","",testHospital1,"A","B",new EquipmentModel("test model",manufacturer));
