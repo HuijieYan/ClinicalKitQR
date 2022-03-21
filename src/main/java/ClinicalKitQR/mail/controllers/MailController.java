@@ -21,7 +21,7 @@ import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController
-@RequestMapping("/mail")
+@RequestMapping(Constant.API_PREFIX+"/mail")
 public class MailController {
     private final MailService service;
     private final UserGroupService groupService;
