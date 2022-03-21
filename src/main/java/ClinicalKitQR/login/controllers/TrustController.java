@@ -79,15 +79,15 @@ public class TrustController {
     }
 
     @PostMapping("/delete")
-    public boolean delete(@RequestParam("id") long id){
+    public String delete(@RequestParam("id") long id){
         try {
             if(service.findByID(id)==null){
-                return false;
+                return "Delete Failed: Trust does not exists";
             }
             service.delete(id);
-            return true;
+            return "Delete Successful";
         }catch (Exception e){
-            return false;
+            return "Delete Failed: " + e.getMessage();
         }
     }
 

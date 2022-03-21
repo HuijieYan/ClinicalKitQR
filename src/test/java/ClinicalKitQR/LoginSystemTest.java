@@ -282,13 +282,13 @@ public class LoginSystemTest {
     @Order(16)
     public void testDeleteTrust(){
         int originalTrustSize = trustController.getAll().size();
-        assertTrue(trustController.delete(trust.getTrustId()));
+        assertEquals("Delete Successful",trustController.delete(trust.getTrustId()));
         assertEquals(trustController.getAll().size(),originalTrustSize-1);
         assertNull(hospitalController.getHospital(trustAdminHos.getHospitalId()));
         assertNull(userGroupController.getById(trustAdminHos.getHospitalId(),trustAdmin.getUsername()));
         //when trust is deleted, all data within the trust are deleted
 
-        assertFalse(trustController.delete(trust.getTrustId()));
-        //when a non-existing trust is deleted, false is returned
+        assertTrue(trustController.delete(trust.getTrustId()).contains("Delete Failed:"));
+        //when a non-existing trust is deleted, error message is returned
     }
 }
