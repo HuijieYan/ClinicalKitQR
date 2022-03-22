@@ -74,18 +74,12 @@ public class UserGroupController {
     }
 
     @DeleteMapping("/delete/hospitalId={hospitalId} username={username}")
-    public String delete(@PathVariable long hospitalId,@PathVariable String username){
-        try {
-            UserGroup group = service.findByPK(hospitalId,username);
-            if(group == null){
-                return "Delete Failed: The specified user group does not exist";
-            }
-            service.delete(hospitalId,username);
-            return "";
-        }catch (Exception e){
-            return "Delete Failed: "+e.getMessage();
+    public void delete(@PathVariable long hospitalId,@PathVariable String username){
+        UserGroup group = service.findByPK(hospitalId,username);
+        if(group == null){
+            return;
         }
-
+        service.delete(hospitalId,username);
     }
 
     @PostMapping("/login")
