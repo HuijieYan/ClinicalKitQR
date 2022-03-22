@@ -39,6 +39,8 @@ public class SampleConfig {
             Hospital trustAdmin = trust.getHospitals().get(0);
             Hospital hospital = new Hospital("MyHospital",trust);
             Hospital hospital2 = new Hospital("MyHospital2",trust);
+            trust.addHospital(hospital);
+            trust.addHospital(hospital2);
             UserGroup group = new UserGroup("group1","g1","123",hospital,true,"g1@nhs.com","admin");
             UserGroup group2 = new UserGroup("group2","g2","123",hospital,true);
             UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
@@ -102,7 +104,9 @@ public class SampleConfig {
 
             trust = new Trust("Sample Trust 2");
             hospital = new Hospital("New Hospital",trust);
+            trust.addHospital(hospital);
             group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
+            hospital.addGroup(group);
             Manufacturer manufacturer = new Manufacturer("Cat");
             manufacturerService.save(manufacturer);
             Equipment equipment = new Equipment("Equipment3",sampleData,hospital,"Haematological","Neonatal",new EquipmentModel("C1",manufacturer));

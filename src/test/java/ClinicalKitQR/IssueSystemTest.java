@@ -3,7 +3,6 @@ package ClinicalKitQR;
 import ClinicalKitQR.equipment.models.Equipment;
 import ClinicalKitQR.equipment.models.EquipmentModel;
 import ClinicalKitQR.equipment.models.Manufacturer;
-import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.issue.controllers.IssueController;
 import ClinicalKitQR.issue.models.Issue;
@@ -64,6 +63,8 @@ public class IssueSystemTest {
         testTrust = new Trust("test trust");
         testHospital1 = new Hospital("test hospital1",testTrust);
         testHospital2 = new Hospital("test hospital2",testTrust);
+        testTrust.addHospital(testHospital1);
+        testTrust.addHospital(testHospital2);
         group1 = new UserGroup("test group 1","g1","123",testHospital1,true,"","");
         group2 = new UserGroup("test group 2","g1","123",testHospital2,true,"","");
         testHospital1.addGroup(group1);

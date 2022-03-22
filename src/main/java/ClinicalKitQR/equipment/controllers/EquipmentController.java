@@ -42,7 +42,7 @@ public class EquipmentController {
     }
 
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
-    public ResponseEntity<BufferedImage> getEquipment(@PathVariable long id){
+    public ResponseEntity<BufferedImage> getEquipmentQRCode(@PathVariable long id){
         try {
             return ResponseEntity.ok(service.generateQRCodeImage(id));
         }catch (Exception e){
@@ -79,6 +79,9 @@ public class EquipmentController {
             return "Failed to save the equipment, error: User does not exist or login session expired";
         }
         try{
+            if(checkStringIsInvalid(name)||checkStringIsInvalid(content)||checkStringIsInvalid(type)||checkStringIsInvalid(category)||checkStringIsInvalid(modelName)||checkStringIsInvalid(manufacturerName)){
+                return "Failed to save the equipment, error: Invalid entries";
+            }
             Hospital hospital = group.getHospitalId();
             Manufacturer manufacturer = manufacturerService.getByName(manufacturerName);
             if(manufacturer==null){
@@ -87,23 +90,6 @@ public class EquipmentController {
             }
             Equipment equipment = new Equipment(name,content,hospital,type,category,new EquipmentModel(modelName,manufacturer));
             service.save(equipment);
-            return "Equipment Saved Successfully";
-        }catch(Exception e){
-            return "Failed to save the equipment, error: "+e.getMessage();
-        }
-    }
-
-    @PostMapping("/copy")
-    public String copy(@RequestParam("equipmentId") long id,@RequestParam("hospitalId") long hospitalId,
-                       @RequestParam("username")String username){
-        UserGroup group = userGroupService.findByPK(hospitalId,username);
-        if (group == null){
-            return "Failed to save the equipment, error: User does not exist or login session expired";
-        }
-        try{
-            Equipment equipment = service.get(id);
-            Equipment copy = new Equipment(equipment);
-            service.save(copy);
             return "Equipment Saved Successfully";
         }catch(Exception e){
             return "Failed to save the equipment, error: "+e.getMessage();
@@ -255,5 +241,12 @@ public class EquipmentController {
     @GetMapping("/categories")
     public String[] getCategories(){
         return service.getCategories();
+    }
+
+    private boolean checkStringIsInvalid(String str){
+        if (str == null||str.isEmpty()){
+            return true;
+        }
+        return false;
     }
 }

@@ -90,6 +90,9 @@ public class MailSystemTest {
         testHospital1 = new Hospital("Test Hospital 1",testTrust);
         testHospital2 = new Hospital("Test Hospital 2",testTrust);
         testHospital3 = new Hospital("Test Hospital 3",testTrust);
+        testTrust.addHospital(testHospital1);
+        testTrust.addHospital(testHospital2);
+        testTrust.addHospital(testHospital3);
 
         Manufacturer manufacturer = new Manufacturer("test manufacturer");
         manufacturerService.save(manufacturer);
