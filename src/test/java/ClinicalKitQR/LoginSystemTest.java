@@ -282,7 +282,7 @@ public class LoginSystemTest {
     @Order(16)
     public void testDeleteTrust(){
         int originalTrustSize = trustController.getAll().size();
-        assertEquals("Delete Successful",trustController.delete(trust.getTrustId()));
+        assertEquals("",trustController.delete(trust.getTrustId()));
         assertEquals(trustController.getAll().size(),originalTrustSize-1);
         assertNull(hospitalController.getHospital(trustAdminHos.getHospitalId()));
         assertNull(userGroupController.getById(trustAdminHos.getHospitalId(),trustAdmin.getUsername()));

@@ -85,7 +85,7 @@ public class TrustController {
                 return "Delete Failed: Trust does not exists";
             }
             service.delete(id);
-            return "Delete Successful";
+            return "";
         }catch (Exception e){
             return "Delete Failed: " + e.getMessage();
         }
