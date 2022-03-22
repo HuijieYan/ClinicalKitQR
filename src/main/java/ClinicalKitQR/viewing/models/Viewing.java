@@ -67,8 +67,6 @@ public class Viewing
         this.date = date;
         this.userGroup = userGroup;
         this.viewCounter = 1L;
-        userGroup.addViewing(this);
-        equipmentId.addViewing(this);
     }
 
 

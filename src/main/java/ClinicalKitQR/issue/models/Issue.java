@@ -64,8 +64,6 @@ public class Issue {
         this.description = description;
         this.solved = false;
         //solved is set to false by default
-        equipment.addIssue(this);
-        group.addIssue(this);
     }
 
     public void setDate(LocalDate date) {
