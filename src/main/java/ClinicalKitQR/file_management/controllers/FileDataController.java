@@ -56,7 +56,7 @@ public class FileDataController {
     }
 
     @GetMapping("/download/{id}")
-    public ResponseEntity<InputStreamResource> download(@PathVariable String id, HttpServletResponse response) throws Exception{
+    public ResponseEntity<InputStreamResource> download(@PathVariable String id) throws Exception{
         MediaType mediaType = MediaType.APPLICATION_OCTET_STREAM;
 
         FileData fileData = service.get(id);
@@ -66,12 +66,14 @@ public class FileDataController {
         File file = new File(Constant.uploadedFileRoot.toAbsolutePath()+"/"+fileData.getId());
         FileInputStream stream = new FileInputStream(file);
         InputStreamResource resource = new InputStreamResource(stream);
-        stream.close();
 
-        return ResponseEntity.ok()
+        ResponseEntity<InputStreamResource> response =  ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileData.getName()+fileData.getExtension())
                 .contentType(mediaType)
-                .contentLength(file.length()) //
+                .contentLength(file.length())
                 .body(resource);
+
+        stream.close();
+        return response;
     }
 }
