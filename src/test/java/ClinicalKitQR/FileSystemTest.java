@@ -107,6 +107,9 @@ public class FileSystemTest {
             assertTrue(response.getHeaders().get(HttpHeaders.CONTENT_DISPOSITION).get(0).equals("attachment;filename="+fileName));
 
             assertNull(fileDataController.download("invalid id"));
+
+            body.getInputStream().close();
+            //manually close the stream in test to delete our test file in /uploadedFiles
         }catch (Exception e){
 
         }
@@ -115,7 +118,6 @@ public class FileSystemTest {
 
     @AfterAll
     public void cleanUp(){
-
         trustService.delete(trust.getTrustId());
         fileDataService.delete(data.getId());
     }

@@ -72,8 +72,6 @@ public class FileDataController {
                 .contentType(mediaType)
                 .contentLength(file.length())
                 .body(resource);
-
-        stream.close();
         return response;
     }
 }
