@@ -98,16 +98,18 @@ public class FileSystemTest {
     @Test
     @Order(2)
     public void testDownload(){
-        HttpServletResponse httpServletResponse = new MockHttpServletResponse();
         ResponseEntity<InputStreamResource> response = null;
         try {
-            response = fileDataController.download(data.getId(),httpServletResponse);
+            response = fileDataController.download(data.getId());
             InputStreamResource body = response.getBody();
             String content = new String(body.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
             assertEquals("Testing\nThis is me",content);
             assertTrue(response.getHeaders().get(HttpHeaders.CONTENT_DISPOSITION).get(0).equals("attachment;filename="+fileName));
 
-            assertNull(fileDataController.download("invalid id",httpServletResponse));
+            assertNull(fileDataController.download("invalid id"));
+
+            //body.getInputStream().close();
+            //manually close the stream in test to delete our test file in /uploadedFiles
         }catch (Exception e){
 
         }
@@ -116,7 +118,6 @@ public class FileSystemTest {
 
     @AfterAll
     public void cleanUp(){
-
         trustService.delete(trust.getTrustId());
         fileDataService.delete(data.getId());
     }
