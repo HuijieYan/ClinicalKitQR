@@ -64,14 +64,12 @@ public class FileDataController {
             return null;
         }
         File file = new File(Constant.uploadedFileRoot.toAbsolutePath()+"/"+fileData.getId());
-        FileInputStream stream = new FileInputStream(file);
-        InputStreamResource resource = new InputStreamResource(stream);
+        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 
-        ResponseEntity<InputStreamResource> response =  ResponseEntity.ok()
+        return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileData.getName()+fileData.getExtension())
                 .contentType(mediaType)
                 .contentLength(file.length())
                 .body(resource);
-        return response;
     }
 }

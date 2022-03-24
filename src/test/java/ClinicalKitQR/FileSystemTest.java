@@ -108,7 +108,7 @@ public class FileSystemTest {
 
             assertNull(fileDataController.download("invalid id"));
 
-            body.getInputStream().close();
+            //body.getInputStream().close();
             //manually close the stream in test to delete our test file in /uploadedFiles
         }catch (Exception e){
 
