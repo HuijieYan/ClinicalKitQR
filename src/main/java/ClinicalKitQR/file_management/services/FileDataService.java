@@ -54,8 +54,8 @@ public class FileDataService {
         repository.save(fileData);
     }
 
-    public File get(String id) throws Exception{
+    public FileData get(String id){
         FileData fileData = repository.getById(id);
-        return new File(root.toAbsolutePath()+"/"+fileData.getId());
+        return fileData;
     }
 }

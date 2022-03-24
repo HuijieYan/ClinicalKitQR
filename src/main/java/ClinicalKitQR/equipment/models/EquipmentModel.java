@@ -21,7 +21,7 @@ public class EquipmentModel {
     private String modelId;
 
     @JsonIgnore
-    @OneToOne(orphanRemoval = true,fetch = FetchType.LAZY,mappedBy = "model")
+    @OneToOne(fetch = FetchType.LAZY,mappedBy = "model")
     private Equipment equipment;
 
     private String modelName;

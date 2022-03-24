@@ -34,7 +34,8 @@ public class EquipmentModelService {
     }
 
     public void updateName(String id,String newName){
-        repository.updateName(id,newName);
+        String searchName = newName.replaceAll(" ","").toLowerCase();
+        repository.updateName(id,newName,searchName);
     }
 
 }

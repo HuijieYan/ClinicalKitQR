@@ -19,14 +19,10 @@ import java.util.List;
 @RequestMapping(Constant.API_PREFIX+"/reports")
 public class ViewingController {
     private final ViewingService viewingService;
-    private final EquipmentService equipmentService;
-    private final UserGroupService userGroupService;
 
     @Autowired
-    public ViewingController(ViewingService viewingService, EquipmentService equipmentService, UserGroupService userGroupService) {
+    public ViewingController(ViewingService viewingService) {
         this.viewingService = viewingService;
-        this.equipmentService = equipmentService;
-        this.userGroupService = userGroupService;
     }
 
     @GetMapping("/equipmentId={equipmentId}/startDate={startDate}/endDate={endDate}")
@@ -41,12 +37,5 @@ public class ViewingController {
             return viewingService.getAllByEquipmentIdAndDateAfter(equipmentId, LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME));
         }
         return null;
-    }
-
-    @GetMapping("/hospitalId={hospitalId}/username={username}")
-    public List<Viewing> getByUserGroup(@PathVariable long hospitalId, @PathVariable String username) {
-        UserGroup userGroup = userGroupService.findByPK(hospitalId, username);
-        return viewingService.getAllByUserGroup(hospitalId, username);
-
     }
 }

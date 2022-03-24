@@ -60,11 +60,6 @@ public class EquipmentController {
         return service.getAllByHospital(id);
     }
 
-    @GetMapping("/all")
-    public List<Equipment> getAll(){
-        return service.getAll();
-    }
-
     @DeleteMapping("/delete/id={id}")
     public void deleteById(@PathVariable long id){
         service.delete(id);
@@ -98,7 +93,7 @@ public class EquipmentController {
 
     @PostMapping("/update")
     public String update(@RequestParam("name") String name,@RequestParam("content") String content,@RequestParam("hospitalId") long hospitalId,
-                       @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username,
+                         @RequestParam("type")String type,@RequestParam("category")String category,@RequestParam("username")String username,
                          @RequestParam("equipmentId")long equipmentId,@RequestParam("model")String modelName,
                          @RequestParam("manufacturer")String manufacturerName){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
@@ -106,10 +101,17 @@ public class EquipmentController {
             return "Failed to update the equipment, error: User does not exist or login session expired";
         }
         try{
+            if(checkStringIsInvalid(name)||checkStringIsInvalid(content)||checkStringIsInvalid(type)||checkStringIsInvalid(category)||checkStringIsInvalid(modelName)||checkStringIsInvalid(manufacturerName)){
+                return "Failed to update the equipment, error: Invalid entries";
+            }
             Equipment equipment = service.get(equipmentId);
+            if(equipment==null){
+                return "Failed to update the equipment, error: Equipment not found";
+            }
             if (equipment.getHospitalId().getHospitalId()==hospitalId||(group.getHospitalId().getHospitalName().equals("Trust Admin")&&group.getHospitalId().getTrust().getTrustId()==equipment.getHospitalId().getTrust().getTrustId())){
                 EquipmentModel model = equipment.getModel();
                 if(!modelName.equals(model.getModelName())){
+                    modelService.updateName(model.getModelId(),modelName);
                     model.setModelName(modelName);
                 }
                 //if model has changed, update the model
@@ -122,7 +124,8 @@ public class EquipmentController {
                     if(newManufacturer==null){
                         newManufacturer = new Manufacturer(manufacturerName);
                     }
-                    model.setManufacturer(newManufacturer);
+                    newManufacturer.addModel(model);
+                    manufacturerService.save(newManufacturer);
                 }
                 //if the manufacturer has changed, see if the new manufacturer already exists in the database or not
 
@@ -135,6 +138,7 @@ public class EquipmentController {
                 return "Failed to update the equipment, error: Your user group has no right to edit this equipment";
             }
         }catch(Exception e){
+            System.out.println("Failed to update the equipment, error: "+e.getMessage());
             return "Failed to update the equipment, error: "+e.getMessage();
         }
     }
@@ -146,6 +150,9 @@ public class EquipmentController {
             return null;
         }
         Equipment equipment = service.get(id);
+        if(equipment == null){
+            return null;
+        }
         if (equipment.getHospitalId().getHospitalId()==hospitalId){
             if (!group.getIsAdmin()) {
                 // creates new viewing if the user is not an admin (therefore does not increment on editing equipment)
@@ -168,16 +175,20 @@ public class EquipmentController {
                                   @RequestParam("name") String name){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
-            return null;
+            return new ArrayList<>();
         }
-        return service.search(group,type,category,name,manufacturerName,modelName);
+        List<Equipment> result = service.search(group,type,category,name,manufacturerName,modelName);
+        if(result == null){
+            return new ArrayList<>();
+        }
+        return result;
     }
 
     @PostMapping("/manufacturers/all")
     public String[] getAllManufacturers(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
-            return null;
+            return new String[]{};
         }
         List<Manufacturer> manufacturers = manufacturerService.getAll();
         String[] data = new String[manufacturers.size()];
@@ -193,13 +204,17 @@ public class EquipmentController {
     public String[] getModelsByUser(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
-            return null;
+            return new String[]{};
         }
         List<EquipmentModel> models = new ArrayList<>();
         if(group.getHospitalId().getHospitalName().equals("Trust Admin")){
             models =  modelService.getModelsByTrust(group.getHospitalId().getTrust().getTrustId());
         }else{
             models =  modelService.getModelsByHospital(group.getHospitalId().getHospitalId());
+        }
+
+        if (models.size() == 0){
+            return new String[]{};
         }
 
         String[] data = new String[models.size()];
@@ -213,16 +228,20 @@ public class EquipmentController {
 
     @PostMapping("/models/getByManufacturer")
     public String[] getModelsByManufacturer(@RequestParam("hospitalId") long hospitalId, @RequestParam("username")String username,
-                                                @RequestParam("manufacturer") String manufactureName){
+                                            @RequestParam("manufacturer") String manufactureName){
         UserGroup group = userGroupService.findByPK(hospitalId,username);
         if (group == null){
-            return null;
+            return new String[]{};
         }
         List<EquipmentModel> models = new ArrayList<>();
         if(group.getHospitalId().getHospitalName().equals("Trust Admin")){
             models = modelService.getModelsByTrustAndManufacture(group.getHospitalId().getTrust().getTrustId(),manufactureName);
         }else{
             models = modelService.getModelsByHospitalAndManufacture(group.getHospitalId().getHospitalId(),manufactureName);
+        }
+
+        if (models.size() == 0){
+            return new String[]{};
         }
 
         String[] data = new String[models.size()];

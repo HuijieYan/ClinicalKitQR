@@ -27,4 +27,10 @@ public class ManufacturerService {
     public void save(Manufacturer manufacturer){
         repository.save(manufacturer);
     }
+
+    public void delete(String name){
+        //this function is for testing only
+        //this clears up the testing data
+        repository.deleteByName(name);
+    }
 }

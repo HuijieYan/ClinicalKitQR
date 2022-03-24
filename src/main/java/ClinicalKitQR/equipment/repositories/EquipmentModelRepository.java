@@ -25,6 +25,6 @@ public interface EquipmentModelRepository extends JpaRepository<EquipmentModel, 
 
     @Transactional
     @Modifying
-    @Query("update EquipmentModel m set m.modelName =?2 where m.modelId=?1")
-    void updateName(String modelId,String name);
+    @Query("update EquipmentModel m set m.modelName =?2, m.modelSearchName = ?3 where m.modelId=?1")
+    void updateName(String modelId,String name,String searchName);
 }
