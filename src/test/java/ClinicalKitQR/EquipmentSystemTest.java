@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -58,9 +57,6 @@ public class EquipmentSystemTest {
 
     @Autowired
     private EquipmentService equipmentService;
-
-    @Autowired
-    private EquipmentModelService equipmentModelService;
 
     @Autowired
     private ManufacturerService manufacturerService;

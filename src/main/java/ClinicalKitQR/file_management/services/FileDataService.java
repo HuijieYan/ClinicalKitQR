@@ -58,4 +58,19 @@ public class FileDataService {
         FileData fileData = repository.getById(id);
         return fileData;
     }
+
+    //function getAll and delete is for testing only
+
+    public List<FileData> getAll(){
+        return repository.findAll();
+    }
+
+    public void delete(String id){
+        repository.deleteById(id);
+        try{
+            Path path = root.resolve(id);
+            Files.delete(path);
+        }catch (Exception e){
+        }
+    }
 }

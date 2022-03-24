@@ -39,7 +39,10 @@ public class FileDataController {
     @PostMapping("/upload")
     public String upload(@RequestParam("file")MultipartFile file,@RequestParam("username") String username,@RequestParam("hospitalId") long hospitalId){
         if (userGroupService.findByPK(hospitalId,username) == null){
-            return null;
+            return "Unable to save file. Error: your login details are either invalid or expired";
+        }
+        if(file == null||file.isEmpty()){
+            return "Unable to save file. Error: uploaded file is empty";
         }
         String name = file.getOriginalFilename();
         int index = name.lastIndexOf('.');
@@ -61,7 +64,9 @@ public class FileDataController {
             return null;
         }
         File file = new File(Constant.uploadedFileRoot.toAbsolutePath()+"/"+fileData.getId());
-        InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
+        FileInputStream stream = new FileInputStream(file);
+        InputStreamResource resource = new InputStreamResource(stream);
+        stream.close();
 
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=" + fileData.getName()+fileData.getExtension())
@@ -69,25 +74,4 @@ public class FileDataController {
                 .contentLength(file.length()) //
                 .body(resource);
     }
-
-    /**
-    @GetMapping("/pass/{id}")
-    public ResponseEntity<Object> passFile(@PathVariable String id){
-        try {
-            File file = service.get(id);
-
-
-            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(file.toPath()));
-            ContentDisposition contentDisposition = ContentDisposition.
-                    builder("inline").filename(file.getName()).build();
-            return ResponseEntity.ok()
-                    .contentLength(file.length())
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .header(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString())
-                    .body(resource);
-        }catch (Exception e){
-            return ResponseEntity.internalServerError().body(e.getMessage());
-        }
-    }
-    */
 }
