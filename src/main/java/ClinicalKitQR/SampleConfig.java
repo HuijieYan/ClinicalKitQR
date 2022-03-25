@@ -45,8 +45,9 @@ public class SampleConfig {
             UserGroup group2 = new UserGroup("group2","g2","123",hospital,true);
             UserGroup group3 = new UserGroup("group3","g3","123",hospital,false);
             UserGroup g3 = new UserGroup("admin1","admin","123",trustAdmin,true,"trustAdmin@nhs.com","admin");
-            UserGroup g4 = new UserGroup("group1","g1","123",hospital2,false);
+            UserGroup g4 = new UserGroup("group1","g1","123",hospital2,true);
             UserGroup g5 = new UserGroup("group5","g5","123",hospital,false);
+            UserGroup trust2Group3 = new UserGroup("group3","g3","123",hospital2,false);
 
             Manufacturer apple = new Manufacturer("Apple");
             Manufacturer banana = new Manufacturer("Banana");
@@ -62,6 +63,7 @@ public class SampleConfig {
             hospital.addGroup(group3);
             hospital.addGroup(g5);
             hospital2.addGroup(g4);
+            hospital2.addGroup(trust2Group3);
             hospital.addEquipment(equipment1);
             hospital.addEquipment(equipment2);
             hospital2.addEquipment(equipment3);
@@ -106,6 +108,8 @@ public class SampleConfig {
             hospital = new Hospital("New Hospital",trust);
             trust.addHospital(hospital);
             group = new UserGroup("Admin A","admin","123",hospital,true,"adminA@nhs.com");
+            hospital.addGroup(group);
+            group = new UserGroup("Trust Admin","admin","123",trust.getHospitals().get(0), true,"adminA@nhs.com");
             hospital.addGroup(group);
             Manufacturer manufacturer = new Manufacturer("Cat");
             manufacturerService.save(manufacturer);
