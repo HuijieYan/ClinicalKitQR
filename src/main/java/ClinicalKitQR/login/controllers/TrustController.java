@@ -72,7 +72,12 @@ public class TrustController {
         for(Trust trust:trusts){
             List<Hospital> hospitals = trust.getHospitals();
             for (Hospital hospital:hospitals){
-               groups.addAll(hospital.getGroups());
+                List<UserGroup> userGroupsInHospital = hospital.getGroups();
+                for(UserGroup group:userGroupsInHospital){
+                    if(group.getIsAdmin()){
+                        groups.add(group);
+                    }
+                }
             }
         }
         return groups;
