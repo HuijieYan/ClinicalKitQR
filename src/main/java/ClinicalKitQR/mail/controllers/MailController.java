@@ -83,6 +83,7 @@ public class MailController {
                         @RequestParam("title")String title,@RequestParam("description")String description,@RequestParam("time")String timeString,
                         @RequestParam("equipmentIds")List<String>ids){
 
+        List<Mail> sent = new ArrayList<>();
         try{
             UserGroup sender = groupService.findByPK(senderHospitalId,senderUsername);
             if (sender==null||receivers.size()==0||ids.size()==0){
@@ -100,15 +101,24 @@ public class MailController {
                 UserGroup receiver = groupService.findByPK(hospitalId,username);
 
                 if (receiver==null){
+                    for(Mail deletingMail:sent){
+                        service.delete(deletingMail.getId());
+                    }
+                    //delete all sent mails since there are some invalid entries
                     return false;
                 }
 
                 Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,receiver);
                 boolean result = addEquipments(mail,ids);
                 if (!result){
+                    for(Mail deletingMail:sent){
+                        service.delete(deletingMail.getId());
+                    }
+                    //delete all sent mails since there are some invalid entries
                     return false;
                 }
                 service.save(mail);
+                sent.add(mail);
             }
 
             Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,null);
@@ -117,7 +127,10 @@ public class MailController {
             //save a copy for the sender
             return true;
         }catch (Exception e){
-            System.out.println(e.getMessage());
+            for(Mail deletingMail:sent){
+                service.delete(deletingMail.getId());
+            }
+            //delete all sent mails since there are some invalid entries
             return false;
         }
     }

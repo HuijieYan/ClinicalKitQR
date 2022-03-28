@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 public interface MailRepository extends JpaRepository<Mail, String> {
-    @Query("select m from Mail m join m.receiver r where r.hospitalId.hospitalId = ?1 and r.username = ?2 order by m.time DESC ")
+    @Query("select m from Mail m join m.receiver r where r.hospitalId.hospitalId = ?1 and r.username = ?2 order by m.time DESC")
     List<Mail> getAllReceived(long id,String username);
 
     @Query("select m from Mail m where m.senderHospitalId = ?1 and m.senderUsername = ?2 and m.receiver is null order by m.time DESC")
