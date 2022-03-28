@@ -208,6 +208,7 @@ public class LoginSystemTest {
     @Order(11)
     public void testGetAllAdmin(){
         assertTrue(userGroupController.getAllAdmin().size()>=2);
+        assertTrue(trustController.getAllAdminsInOrder().size()>=2);
         //since we've created one trust admin and one hospital admin already, the minimum number of admins is 2
         //because this test can be run at any time, we can't assess the detail of the admin
     }
