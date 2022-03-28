@@ -26,7 +26,7 @@ public interface UserGroupRepository extends JpaRepository<UserGroup, String> {
     @Query("select u from UserGroup u where u.hospitalId.trust.trustId = ?1 order by u.hospitalId.hospitalId ASC")
     List<UserGroup> findAllByTrustId(long id);
 
-    @Query("select u from UserGroup u where u.isAdmin = true")
+    @Query("select u from UserGroup u where u.isAdmin = true order by u.name ASC")
     List<UserGroup> findAllAdmins();
 
 
