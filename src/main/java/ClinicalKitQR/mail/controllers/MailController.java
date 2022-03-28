@@ -82,9 +82,34 @@ public class MailController {
                         @RequestParam("receivers") List<String>receivers,
                         @RequestParam("title")String title,@RequestParam("description")String description,@RequestParam("time")String timeString,
                         @RequestParam("equipmentIds")List<String>ids){
-
         List<Mail> sent = new ArrayList<>();
+        List<UserGroup> receiverLs = new ArrayList<>();
+        List<Equipment> equipments = new ArrayList<>();
+
+        for (int i=0;i<receivers.size();i+=2){
+            //because right now when frontend passes 2d array as receivers' data, the backend will just recognise it as a 1d array
+            //we have to handle this as a 1d array where each data is two consecutive items in the array
+            long hospitalId = Long.parseLong(receivers.get(i));
+            String username = receivers.get(i+1);
+            UserGroup receiver = groupService.findByPK(hospitalId,username);
+
+            if (receiver==null){
+                return false;
+            }
+
+            receiverLs.add(receiver);
+        }
+
+        for(String id:ids){
+            Equipment equipment = equipmentService.get(Long.parseLong(id));
+            if (equipment==null){
+                return false;
+            }
+            equipments.add(equipment);
+        }
+
         try{
+
             UserGroup sender = groupService.findByPK(senderHospitalId,senderUsername);
             if (sender==null||receivers.size()==0||ids.size()==0){
                 return false;
@@ -93,37 +118,17 @@ public class MailController {
             ZonedDateTime zonedTime = ZonedDateTime.parse(timeString, DateTimeFormatter.RFC_1123_DATE_TIME);
             LocalDateTime time = zonedTime.toLocalDateTime();
 
-            for (int i=0;i<receivers.size();i+=2){
-            //because right now when frontend passes 2d array as receivers' data, the backend will just recognise it as a 1d array
-            //we have to handle this as a 1d array where each data is two consecutive items in the array
-                long hospitalId = Long.parseLong(receivers.get(i));
-                String username = receivers.get(i+1);
-                UserGroup receiver = groupService.findByPK(hospitalId,username);
-
-                if (receiver==null){
-                    for(Mail deletingMail:sent){
-                        service.delete(deletingMail.getId());
-                    }
-                    //delete all sent mails since there are some invalid entries
-                    return false;
-                }
-
+            for (UserGroup receiver:receiverLs){
                 Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,receiver);
-                boolean result = addEquipments(mail,ids);
-                if (!result){
-                    for(Mail deletingMail:sent){
-                        service.delete(deletingMail.getId());
-                    }
-                    //delete all sent mails since there are some invalid entries
-                    return false;
-                }
+                addEquipments(mail,equipments);
                 service.save(mail);
                 sent.add(mail);
             }
 
             Mail mail = new Mail(senderHospitalId,senderUsername,time,title,description,null);
-            addEquipments(mail,ids);
+            addEquipments(mail,equipments);
             service.save(mail);
+            sent.add(mail);
             //save a copy for the sender
             return true;
         }catch (Exception e){
@@ -135,16 +140,11 @@ public class MailController {
         }
     }
 
-    private boolean addEquipments(Mail mail,List<String> ids){
-        for(String id:ids){
-            Equipment equipment = equipmentService.get(Long.parseLong(id));
-            if (equipment==null){
-                return false;
-            }
+    private void addEquipments(Mail mail,List<Equipment> equipments){
+        for(Equipment equipment:equipments){
             SentEquipment sentEquipment = new SentEquipment(equipment);
             mail.addEquipment(sentEquipment);
         }
-        return true;
     }
 
 
