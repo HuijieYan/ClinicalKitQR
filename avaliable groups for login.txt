@@ -1,0 +1,18 @@
+Sample Trust
+Hospital	Username	Password	Role
+Trust Admin     admin           123		Trust Admin
+MyHospital	g1		123		Hospital Admin		
+MyHospital	g2		123		Hospital Admin
+MyHospital	g3		123		Normal User
+MyHospital	g5		123		Normal User
+MyHospital2	g1		123		Hospital Admin
+MyHospital2	g3		123		Normal User
+
+Sample Trust 2
+Hospital	Username	Password	Role
+Trust Admin     admin           123		Trust Admin
+New Hospital    admin           123		Hospital Admin
+
+Team7 (If it exist)
+Hospital	Username	Password	Role
+Trust Admin     admin           123		Trust Admin
