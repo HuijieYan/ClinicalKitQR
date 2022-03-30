@@ -120,6 +120,8 @@ public class LoginSystemTest {
         assertEquals(hospitalController.getAllByTrust(trust.getTrustId()).size(),3);
         //trust admin, test hospital and test hospital 2
         assertEquals(hospitalController.getAll().size(),originalHospitalSize+1);
+
+        assertEquals(0,hospitalController.getAllByTrust(-1L).size());
     }
 
     @Test
