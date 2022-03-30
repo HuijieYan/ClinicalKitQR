@@ -1,9 +1,9 @@
 package ClinicalKitQR.mail.services;
 
 import ClinicalKitQR.mail.models.Mail;
+import ClinicalKitQR.mail.repositories.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ClinicalKitQR.mail.repositories.MailRepository;
 
 import java.util.List;
 

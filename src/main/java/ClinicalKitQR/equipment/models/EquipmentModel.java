@@ -3,7 +3,6 @@ package ClinicalKitQR.equipment.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import java.util.Locale;
 import java.util.UUID;
 
 /**

@@ -13,7 +13,6 @@ import ClinicalKitQR.login.models.Trust;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.HospitalService;
 import ClinicalKitQR.login.services.TrustService;
-import ClinicalKitQR.login.services.UserGroupService;
 import ClinicalKitQR.mail.controllers.MailController;
 import ClinicalKitQR.mail.models.Mail;
 import ClinicalKitQR.mail.services.MailService;
@@ -24,7 +23,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  *  For mail system, we are testing MailController and SentEquipmentController
@@ -240,6 +240,7 @@ public class MailSystemTest {
 
         //the code below is to test when invalid entries are entered
         mailController.delete(testMail1.getId(),-1,"invalid user");
+        mailController.delete("invalid id",admin3.getHospitalId().getHospitalId(),admin3.getUsername());
         assertEquals(originalSize-1,mailService.getAll().size());
     }
 

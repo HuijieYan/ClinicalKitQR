@@ -18,9 +18,6 @@ public class UserGroupService {
     }
 
     public UserGroup save(UserGroup group){
-        if (repository.findByHospitalIdAndUsername(group.getHospitalId().getHospitalId(), group.getUsername())!=null){
-            return null;
-        }
         return repository.save(group);
     }
 
@@ -49,17 +46,6 @@ public class UserGroupService {
 
     public void update(long id, String username,String name,String pwd,String email,String specialty,boolean isAdmin){
         repository.updateUserGroup(id,username,name,pwd,email,specialty,isAdmin);
-    }
-
-    public boolean login(long id,String username,String pwd){
-        UserGroup group = this.findByPK(id,username);
-        if (group == null){
-            return false;
-        }
-        if (group.getPassword().equals(pwd)){
-            return true;
-        }
-        return false;
     }
 
     public List<UserGroup> getAllAdmins(){

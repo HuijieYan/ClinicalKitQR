@@ -1,11 +1,11 @@
 package ClinicalKitQR.viewing.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.viewing.models.EquipmentViewing;
 import ClinicalKitQR.viewing.models.Viewing;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;

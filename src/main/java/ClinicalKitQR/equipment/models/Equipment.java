@@ -1,18 +1,16 @@
 package ClinicalKitQR.equipment.models;
 
-import javax.persistence.*;
-
+import ClinicalKitQR.issue.models.Issue;
+import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.viewing.models.Viewing;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-
-import ClinicalKitQR.issue.models.Issue;
-import ClinicalKitQR.login.models.Hospital;
 
 /**
  * Represents the equipment education page, all values below are not nullable

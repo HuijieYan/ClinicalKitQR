@@ -2,16 +2,16 @@ package ClinicalKitQR.mail.controllers;
 
 
 import ClinicalKitQR.Constant;
-import ClinicalKitQR.mail.models.Mail;
-import ClinicalKitQR.mail.services.MailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.equipment.models.Equipment;
 import ClinicalKitQR.equipment.models.SentEquipment;
 import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.equipment.services.SentEquipmentService;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.UserGroupService;
+import ClinicalKitQR.mail.models.Mail;
+import ClinicalKitQR.mail.services.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;

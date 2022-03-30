@@ -9,12 +9,12 @@ import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.models.UserGroup;
+import ClinicalKitQR.login.services.UserGroupService;
 import ClinicalKitQR.viewing.services.ViewingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ClinicalKitQR.login.services.UserGroupService;
 
 import java.awt.image.BufferedImage;
 import java.time.LocalDate;
@@ -44,7 +44,11 @@ public class EquipmentController {
     @GetMapping(value = "/qrcode/id={id}" ,produces = MediaType.IMAGE_PNG_VALUE)
     public ResponseEntity<BufferedImage> getEquipmentQRCode(@PathVariable long id){
         try {
-            return ResponseEntity.ok(service.generateQRCodeImage(id));
+            BufferedImage image = service.generateQRCodeImage(id);
+            if(image == null){
+                return null;
+            }
+            return ResponseEntity.ok(image);
         }catch (Exception e){
             return null;
         }

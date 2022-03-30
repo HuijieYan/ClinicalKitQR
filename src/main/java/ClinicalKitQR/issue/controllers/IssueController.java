@@ -2,13 +2,13 @@ package ClinicalKitQR.issue.controllers;
 
 import ClinicalKitQR.Constant;
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.issue.models.Issue;
 import ClinicalKitQR.issue.services.IssueService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;

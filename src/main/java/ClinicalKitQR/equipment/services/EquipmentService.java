@@ -3,8 +3,6 @@ package ClinicalKitQR.equipment.services;
 import ClinicalKitQR.Constant;
 import ClinicalKitQR.equipment.models.Equipment;
 import ClinicalKitQR.equipment.models.EquipmentModel;
-import ClinicalKitQR.issue.models.Issue;
-import ClinicalKitQR.issue.repositories.IssueRepository;
 import ClinicalKitQR.login.models.UserGroup;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;

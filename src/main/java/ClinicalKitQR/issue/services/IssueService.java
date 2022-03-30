@@ -1,9 +1,9 @@
 package ClinicalKitQR.issue.services;
 
 import ClinicalKitQR.issue.models.Issue;
+import ClinicalKitQR.issue.repositories.IssueRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ClinicalKitQR.issue.repositories.IssueRepository;
 
 import java.util.List;
 

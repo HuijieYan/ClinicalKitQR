@@ -1,16 +1,16 @@
 package ClinicalKitQR.equipment.controllers;
 
 import ClinicalKitQR.Constant;
-import ClinicalKitQR.equipment.models.Manufacturer;
-import ClinicalKitQR.equipment.services.ManufacturerService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.equipment.models.SentEquipment;
 import ClinicalKitQR.equipment.services.EquipmentService;
+import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.equipment.services.SentEquipmentService;
 import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.services.HospitalService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController

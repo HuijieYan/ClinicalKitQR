@@ -1,13 +1,12 @@
 package ClinicalKitQR.login.controllers;
 
 import ClinicalKitQR.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.login.models.Hospital;
-import ClinicalKitQR.login.models.Trust;
 import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.HospitalService;
 import ClinicalKitQR.login.services.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;

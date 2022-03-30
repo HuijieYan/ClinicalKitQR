@@ -4,7 +4,6 @@ import ClinicalKitQR.equipment.controllers.EquipmentController;
 import ClinicalKitQR.equipment.models.Equipment;
 import ClinicalKitQR.equipment.models.EquipmentModel;
 import ClinicalKitQR.equipment.models.Manufacturer;
-import ClinicalKitQR.equipment.services.EquipmentModelService;
 import ClinicalKitQR.equipment.services.EquipmentService;
 import ClinicalKitQR.equipment.services.ManufacturerService;
 import ClinicalKitQR.login.models.Hospital;
@@ -27,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *  For equipment education system, we are testing EquipmentController and ViewingController
  *
- *  Unfortunately we cannot test getEquipmentQRCode from EquipmentController since it is returning an image
+ *  Unfortunately we cannot verify the content of getEquipmentQRCode from EquipmentController since it is returning an image
  */
 
 @SpringBootTest
@@ -181,13 +180,16 @@ public class EquipmentSystemTest {
     @Test
     @Order(3)
     public void testGetEquipmentById(){
-        equipmentController.getById(testEquipment.getEquipmentId(),testUser.getHospitalId().getHospitalId(),testUser.getUsername());
+        testEquipment = equipmentController.getById(testEquipment.getEquipmentId(),testUser.getHospitalId().getHospitalId(),testUser.getUsername());
         assertEquals("updated",testEquipment.getContent());
         assertEquals("updated equipment",testEquipment.getName());
         assertEquals("Gastrointestinal",testEquipment.getType());
         assertEquals("Neonatal",testEquipment.getCategory());
         assertEquals("TEST-4",testEquipment.getModel().getModelName());
         assertEquals("Test Manufacturer",testEquipment.getModel().getManufacturer().getManufacturerName());
+
+        assertNotNull(equipmentController.getById(testEquipment.getEquipmentId(),testNormalUser.getHospitalId().getHospitalId(),testNormalUser.getUsername()));
+        assertNotNull(equipmentController.getById(testEquipment.getEquipmentId(),trustAdmin.getHospitalId().getHospitalId(),trustAdmin.getUsername()));
 
         //the code below tests when invalid entry is entered
         assertNull(equipmentController.getById(-1,testUser.getHospitalId().getHospitalId(),testUser.getUsername()));
@@ -202,14 +204,33 @@ public class EquipmentSystemTest {
         //this will prove that our system is capable of handling
         //view record of multiple user groups and across multiple
         //equipments
-        viewingService.addNewView(testEquipment, LocalDate.of(2022,2,22),testNormalUser);
-        viewingService.addNewView(testEquipment, LocalDate.of(2022,2,22),testNormalUser);
-        viewingService.addNewView(testEquipment, LocalDate.of(2022,2,21),testNormalUser);
-        viewingService.addNewView(testEquipment, LocalDate.of(2022,3,26),testNormalUser);
-        //normal user 1 viewed this equipment twice on 22/2/2022, once on 21/22/2022
-        viewingService.addNewView(testEquipment,LocalDate.of(2022,2,22),testNormalUser2);
-        viewingService.addNewView(testEquipment,LocalDate.of(2022,3,30),testNormalUser2);
-        List<EquipmentViewing> result = viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"2022-02-10T04:09:13Z","2022-03-23T16:50:59Z");
+        viewingService.addNewView(testEquipment, LocalDate.of(2021,2,22),testNormalUser);
+        viewingService.addNewView(testEquipment, LocalDate.of(2021,2,22),testNormalUser);
+        viewingService.addNewView(testEquipment, LocalDate.of(2021,2,21),testNormalUser);
+        viewingService.addNewView(testEquipment, LocalDate.of(2021,3,26),testNormalUser);
+        //normal user 1 viewed this equipment twice on 22/2/2021, once on 21/22/2021
+        viewingService.addNewView(testEquipment,LocalDate.of(2021,2,22),testNormalUser2);
+        viewingService.addNewView(testEquipment,LocalDate.of(2021,3,30),testNormalUser2);
+        //we intentionally add view to 2021 so whenever the test is ran this will not affect the result
+        /**
+         * Group    Date           View
+         * user    21/2/21          1
+         * user    22/2/21          2
+         * user    26/3/21          1
+         * user    now(2022 onward) 1
+         * user 2  22/2/21          1
+         * user 2  30/3/21          1
+         */
+
+        testViewWithStartAndEndDates();
+        testViewWithStartDates();
+        testViewWithEndDates();
+        testViewWithNoDates();
+        testViewWithInvalidEntries();
+    }
+
+    private void testViewWithStartAndEndDates(){
+        List<EquipmentViewing> result = viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"2021-02-10T04:09:13Z","2021-03-23T16:50:59Z");
         int user1Index = 0;
         int user2Index = 0;
         if(result.get(0).getUserGroup().getUsername().equals(testNormalUser.getUsername())){
@@ -221,6 +242,58 @@ public class EquipmentSystemTest {
 
         assertEquals(3,result.get(user1Index).getViewCount());
         assertEquals(1,result.get(user2Index).getViewCount());
+    }
+
+    private void testViewWithStartDates(){
+        List<EquipmentViewing> result = viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"2021-02-25T04:09:13Z","");
+        int user1Index = 0;
+        int user2Index = 0;
+        if(result.get(0).getUserGroup().getUsername().equals(testNormalUser.getUsername())){
+            user2Index = 1;
+        }else{
+            user1Index = 1;
+            user2Index = 0;
+        }
+
+        assertEquals(2,result.get(user1Index).getViewCount());
+        assertEquals(1,result.get(user2Index).getViewCount());
+    }
+
+    private void testViewWithEndDates(){
+        List<EquipmentViewing> result = viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"","2021-03-26T16:50:59Z");
+        int user1Index = 0;
+        int user2Index = 0;
+        if(result.get(0).getUserGroup().getUsername().equals(testNormalUser.getUsername())){
+            user2Index = 1;
+        }else{
+            user1Index = 1;
+            user2Index = 0;
+        }
+
+        assertEquals(4,result.get(user1Index).getViewCount());
+        assertEquals(1,result.get(user2Index).getViewCount());
+    }
+
+    private void testViewWithNoDates(){
+        List<EquipmentViewing> result = viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"","");
+        int user1Index = 0;
+        int user2Index = 0;
+        if(result.get(0).getUserGroup().getUsername().equals(testNormalUser.getUsername())){
+            user2Index = 1;
+        }else{
+            user1Index = 1;
+            user2Index = 0;
+        }
+
+        assertEquals(5,result.get(user1Index).getViewCount());
+        assertEquals(2,result.get(user2Index).getViewCount());
+    }
+
+    private void testViewWithInvalidEntries(){
+        assertEquals(0,viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"aaa","bbb").size());
+        assertEquals(0,viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"aaa","").size());
+        assertEquals(0,viewingController.getByEquipmentAndDateBetween(testEquipment.getEquipmentId(),"","bbb").size());
+        assertEquals(0,viewingController.getByEquipmentAndDateBetween(-1L,"","").size());
     }
 
 
@@ -295,7 +368,7 @@ public class EquipmentSystemTest {
     @Test
     @Order(7)
     public void testGetAllManufacturers(){
-        int originalSize = equipmentController.getAllManufacturers(testUser.getHospitalId().getHospitalId(),testUser.getUsername()).length;
+        int originalSize = manufacturerService.getAll().size();
         manufacturerService.save(new Manufacturer("Test Manufacturer 4"));
         assertEquals(originalSize+1,equipmentController.getAllManufacturers(testUser.getHospitalId().getHospitalId(),testUser.getUsername()).length);
 
@@ -342,6 +415,10 @@ public class EquipmentSystemTest {
         assertEquals(2,equipments.size());
         assertTrue(equipments.get(0).getName().equals("test equipment 2")||equipments.get(0).getName().equals("test equipment 5"));
         assertTrue(equipments.get(1).getName().equals("test equipment 2")||equipments.get(1).getName().equals("test equipment 5"));
+
+        equipments = equipmentController.search(testHospital.getHospitalId(),testUser.getUsername(),"","","","",Long.toHexString(equipment.getEquipmentId()));
+        assertTrue(equipments.size()>0);
+        //because the hex of the equipment id might be a letter, thus search will also return other equipment as well
 
         equipments = equipmentController.search(testHospital.getHospitalId(),testUser.getUsername(),"Gastrointestinal","","","","");
         assertEquals(1,equipments.size());
@@ -400,6 +477,15 @@ public class EquipmentSystemTest {
 
     @Test
     @Order(11)
+    public void testGetQRCode(){
+        assertNotNull(equipmentController.getEquipmentQRCode(testEquipment.getEquipmentId()));
+
+        //the code below tests when invalid entry is entered
+        assertNull(equipmentController.getEquipmentQRCode(-1L));
+    }
+
+    @Test
+    @Order(12)
     public void testDeleteEquipment(){
         int originalSize = equipmentService.getAll().size();
         equipmentController.deleteById(testEquipment.getEquipmentId());
@@ -410,8 +496,19 @@ public class EquipmentSystemTest {
         assertEquals(originalSize-1,equipmentService.getAll().size());
     }
 
+    @Test
+    @Order(13)
+    public void testGetTypeAndCategory(){
+        assertEquals(Constant.categories.length,equipmentController.getCategories().length);
+        assertEquals(Constant.types.length,equipmentController.getTypes().length);
+    }
+
     @AfterAll
     public void cleanUp(){
         trustService.delete(testTrust.getTrustId());
+        manufacturerService.delete("Test Manufacturer");
+        manufacturerService.delete("Test Manufacturer 2");
+        manufacturerService.delete("Test Manufacturer 3");
+        manufacturerService.delete("Test Manufacturer 4");
     }
 }

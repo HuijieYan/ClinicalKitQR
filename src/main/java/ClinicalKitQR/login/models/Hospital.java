@@ -1,10 +1,10 @@
 package ClinicalKitQR.login.models;
 
 import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.equipment.models.SentEquipment;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import ClinicalKitQR.equipment.models.SentEquipment;
 
 import javax.persistence.*;
 import java.util.ArrayList;

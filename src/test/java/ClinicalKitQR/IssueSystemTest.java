@@ -137,5 +137,6 @@ public class IssueSystemTest {
     @AfterAll
     public void cleanUp(){
         trustService.delete(testTrust.getTrustId());
+        manufacturerService.delete("test manufacturer");
     }
 }

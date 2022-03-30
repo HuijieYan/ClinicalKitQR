@@ -25,9 +25,7 @@ public class HospitalService {
     public List<Hospital> getAllByTrust(long id){
         List<Hospital> hospitals = new ArrayList<>();
         Hospital trustAdmin = repository.findTrustAdmin(id,"Trust Admin");
-        if(trustAdmin != null){
-            hospitals.add(trustAdmin);
-        }
+        hospitals.add(trustAdmin);
         //order the list so trust admin will always be the first hospital in the list
         hospitals.addAll(repository.findByTrustId(id,"Trust Admin"));
         return hospitals;

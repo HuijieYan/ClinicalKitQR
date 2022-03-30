@@ -1,27 +1,19 @@
 package ClinicalKitQR.file_management.controllers;
 
 import ClinicalKitQR.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.*;
-import org.springframework.util.StreamUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import ClinicalKitQR.file_management.models.FileData;
 import ClinicalKitQR.file_management.services.FileDataService;
 import ClinicalKitQR.login.services.UserGroupService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-import org.springframework.web.client.RestTemplate;
-
-import javax.servlet.http.HttpServletResponse;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
 @RestController

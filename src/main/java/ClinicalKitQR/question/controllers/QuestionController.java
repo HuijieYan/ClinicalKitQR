@@ -1,10 +1,10 @@
 package ClinicalKitQR.question.controllers;
 
+import ClinicalKitQR.Constant;
+import ClinicalKitQR.question.models.Question;
 import ClinicalKitQR.question.services.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ClinicalKitQR.question.models.Question;
-import ClinicalKitQR.Constant;
 
 import java.util.List;
 

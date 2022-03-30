@@ -1,11 +1,11 @@
 package ClinicalKitQR.login.controllers;
 
 import ClinicalKitQR.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import ClinicalKitQR.login.models.Hospital;
 import ClinicalKitQR.login.services.HospitalService;
 import ClinicalKitQR.login.services.TrustService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class HospitalController {
 
     @PostMapping("/new")
     public boolean register(@RequestParam("id") long trustId,@RequestParam("name") String name){
-        if(checkStringIsInvalid(name)){
+        if(checkStringIsInvalid(name)||name.equals("Trust Admin")){
             return false;
         }
         service.save(new Hospital(name,trustService.findByID(trustId)));

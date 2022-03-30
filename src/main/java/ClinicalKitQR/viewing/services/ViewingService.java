@@ -1,12 +1,12 @@
 package ClinicalKitQR.viewing.services;
 
+import ClinicalKitQR.equipment.models.Equipment;
+import ClinicalKitQR.login.models.UserGroup;
+import ClinicalKitQR.viewing.models.EquipmentViewing;
 import ClinicalKitQR.viewing.models.Viewing;
 import ClinicalKitQR.viewing.repositories.ViewingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ClinicalKitQR.equipment.models.Equipment;
-import ClinicalKitQR.login.models.UserGroup;
-import ClinicalKitQR.viewing.models.EquipmentViewing;
 
 import javax.persistence.OptimisticLockException;
 import java.time.LocalDate;
@@ -31,18 +31,6 @@ public class ViewingService {
 
     public List<EquipmentViewing> getAllByEquipmentIdAndDateBefore(Long equipment, LocalDate endDate) {
         return repository.getAllByEquipmentIdAndDateBefore(equipment,endDate);
-    }
-
-    public  List<Viewing> getAllByDate(LocalDate date) {
-        return repository.getAllByDate(date);
-    }
-
-    public void save(Viewing viewing) {
-        repository.save(viewing);
-    }
-
-    public List<Viewing> getAllByUserGroup(Long hospitalId, String username) {
-        return repository.getAllByUserGroup(hospitalId, username);
     }
 
     public void addNewView(Equipment equipment,LocalDate date,UserGroup group){

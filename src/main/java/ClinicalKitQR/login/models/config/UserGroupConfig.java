@@ -1,12 +1,11 @@
 package ClinicalKitQR.login.models.config;
 
+import ClinicalKitQR.login.models.Trust;
+import ClinicalKitQR.login.models.UserGroup;
 import ClinicalKitQR.login.services.TrustService;
-import ClinicalKitQR.login.services.UserGroupService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ClinicalKitQR.login.models.Trust;
-import ClinicalKitQR.login.models.UserGroup;
 
 
 @Configuration

@@ -67,12 +67,10 @@ public class LoginSystemTest {
 
         //the code below is to test when invalid entries are entered
         trustController.addTrust("", "admin", "123", "trust admin", "trustAdmin@email.com", "admin");
-        assertEquals(originalTrustSize+1,trustService.getAll().size());
         trustController.addTrust("Test Trust", "", "123", "trust admin", "trustAdmin@email.com", "admin");
-        assertEquals(originalTrustSize+1,trustService.getAll().size());
         trustController.addTrust("Test Trust", "admin", "", "trust admin", "trustAdmin@email.com", "admin");
-        assertEquals(originalTrustSize+1,trustService.getAll().size());
         trustController.addTrust("Test Trust", "admin", "123", "", "trustAdmin@email.com", "admin");
+        trustController.addTrust("Test Trust", "admin", null, "", "trustAdmin@email.com", "admin");
         assertEquals(originalTrustSize+1,trustService.getAll().size());
     }
 
@@ -252,6 +250,16 @@ public class LoginSystemTest {
 
     @Test
     @Order(14)
+    public void testGetAllGroupsByTrust(){
+        List<List<String>> result = userGroupController.getAllByTrust(trust.getTrustId());
+        assertEquals(3,result.size());
+
+        assertTrue(userGroupController.getAllByTrust(-1).isEmpty());
+        //if incorrect detail is entered, empty array is returned
+    }
+
+    @Test
+    @Order(15)
     public void testDeleteUsergroup(){
         userGroupController.delete(testHospital.getHospitalId(),testUser.getUsername());
         assertEquals(userGroupController.getAllByHospital(testHospital.getHospitalId()).size(),1);
@@ -263,7 +271,7 @@ public class LoginSystemTest {
     }
 
     @Test
-    @Order(15)
+    @Order(16)
     public void testDeleteHospital(){
         int originalHospitalSize = hospitalController.getAll().size();
         trust = trustController.getById(trust.getTrustId());
@@ -280,7 +288,7 @@ public class LoginSystemTest {
     }
 
     @Test
-    @Order(16)
+    @Order(17)
     public void testDeleteTrust(){
         int originalTrustSize = trustController.getAll().size();
         assertEquals("",trustController.delete(trust.getTrustId()));

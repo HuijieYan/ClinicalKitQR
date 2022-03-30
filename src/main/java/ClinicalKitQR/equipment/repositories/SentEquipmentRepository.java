@@ -13,11 +13,6 @@ public interface SentEquipmentRepository extends JpaRepository<SentEquipment,Str
 
     @Transactional
     @Modifying
-    @Query("delete from SentEquipment e where e.id=?1")
-    void deleteById(String id);
-
-    @Transactional
-    @Modifying
     @Query("update SentEquipment e set e.saved=true where e.id=?1")
     void updateSaved(String id);
 }

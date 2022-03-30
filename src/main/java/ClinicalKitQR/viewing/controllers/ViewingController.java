@@ -1,17 +1,14 @@
 package ClinicalKitQR.viewing.controllers;
 
 import ClinicalKitQR.Constant;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import ClinicalKitQR.equipment.services.EquipmentService;
-import ClinicalKitQR.login.models.UserGroup;
-import ClinicalKitQR.login.services.UserGroupService;
 import ClinicalKitQR.viewing.models.EquipmentViewing;
 import ClinicalKitQR.viewing.services.ViewingService;
-import ClinicalKitQR.viewing.models.Viewing;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = {Constant.FRONTEND_URL})
@@ -27,15 +24,19 @@ public class ViewingController {
 
     @GetMapping("/equipmentId={equipmentId}/startDate={startDate}/endDate={endDate}")
     public  List<EquipmentViewing> getByEquipmentAndDateBetween(@PathVariable Long equipmentId, @PathVariable String startDate, @PathVariable String endDate){
-        if (startDate.isEmpty() && endDate.isEmpty()){
-            return viewingService.getAllByEquipmentId(equipmentId);
-        } else if (!startDate.isEmpty() && !endDate.isEmpty()){
-            return viewingService.getAllByEquipmentIdAndDateBetween(equipmentId,LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME), LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
-        } else if (startDate.isEmpty() && !endDate.isEmpty()){
-            return viewingService.getAllByEquipmentIdAndDateBefore(equipmentId, LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
-        } else if (!startDate.isEmpty() && endDate.isEmpty()){
-            return viewingService.getAllByEquipmentIdAndDateAfter(equipmentId, LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME));
+        try{
+            if (startDate.isEmpty() && endDate.isEmpty()){
+                return viewingService.getAllByEquipmentId(equipmentId);
+            } else if (!startDate.isEmpty() && !endDate.isEmpty()){
+                return viewingService.getAllByEquipmentIdAndDateBetween(equipmentId,LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME), LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
+            } else if (startDate.isEmpty() && !endDate.isEmpty()){
+                return viewingService.getAllByEquipmentIdAndDateBefore(equipmentId, LocalDate.parse(endDate, DateTimeFormatter.ISO_DATE_TIME));
+            } else if (!startDate.isEmpty() && endDate.isEmpty()){
+                return viewingService.getAllByEquipmentIdAndDateAfter(equipmentId, LocalDate.parse(startDate, DateTimeFormatter.ISO_DATE_TIME));
+            }
+            return new ArrayList<>();
+        }catch (Exception e){
+            return new ArrayList<>();
         }
-        return null;
     }
 }

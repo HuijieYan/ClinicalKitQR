@@ -1,8 +1,8 @@
 package ClinicalKitQR.viewing.models;
 
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import ClinicalKitQR.login.models.UserGroup;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class EquipmentViewing {

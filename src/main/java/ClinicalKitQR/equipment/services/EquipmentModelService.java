@@ -1,7 +1,6 @@
 package ClinicalKitQR.equipment.services;
 
 import ClinicalKitQR.equipment.models.EquipmentModel;
-import ClinicalKitQR.equipment.models.Manufacturer;
 import ClinicalKitQR.equipment.repositories.EquipmentModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

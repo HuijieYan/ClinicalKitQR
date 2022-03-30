@@ -10,19 +10,11 @@ import java.util.List;
 @Service
 public class SentEquipmentService {
     public SentEquipmentRepository repository;
+    //no save function because SentEquipment is saved when saving Mails by cascade
 
     @Autowired
     public SentEquipmentService(SentEquipmentRepository repository){
         this.repository = repository;
-    }
-
-    public void save(SentEquipment sentEquipment){
-        sentEquipment.getHospitalId().addSentEquipment(sentEquipment);
-        repository.save(sentEquipment);
-    }
-
-    public void delete(String id){
-        repository.deleteById(id);
     }
 
     public SentEquipment getById(String id){
